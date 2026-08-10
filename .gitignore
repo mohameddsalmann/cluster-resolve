@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+
+# env
+.env
+.env.*
+!.env.example
+
+# backups (never commit production data)
+backups/
+
+# supabase
+supabase/.branches
+supabase/.temp
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# misc
+.DS_Store
+*.pem
+.idea/
+.vscode/
+*.log
+*.tsbuildinfo

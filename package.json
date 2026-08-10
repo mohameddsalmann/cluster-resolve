@@ -1,0 +1,32 @@
+{
+  "name": "cluster-control-tower",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cluster AI Supply Chain Control Tower — an unofficial, candidate-built reliability/observability layer for pharmaceutical AI procurement decisions.",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter web test:e2e",
+    "typecheck": "pnpm -r typecheck",
+    "ci:local": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:db:push": "supabase db push",
+    "supabase:db:reset": "supabase db reset",
+    "supabase:types": "supabase gen types typescript --local > apps/web/lib/db/generated-types.ts",
+    "demo:preflight": "echo 'TODO: Phase 31 preflight script'"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  }
+}
