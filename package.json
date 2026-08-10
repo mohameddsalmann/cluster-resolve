@@ -18,15 +18,16 @@
     "ci:local": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "supabase:start": "supabase start",
-    "supabase:stop": "supabase stop",
+    "supabase:link": "supabase link --project-ref ${SUPABASE_PROJECT_REF:-YOUR_DEV_PROJECT_REF}",
+    "supabase:db:push:check": "supabase db push --dry-run",
     "supabase:db:push": "supabase db push",
-    "supabase:db:reset": "supabase db reset",
-    "supabase:types": "supabase gen types typescript --local > apps/web/lib/db/generated-types.ts",
+    "supabase:types": "supabase gen types typescript --project-id ${SUPABASE_PROJECT_REF:-YOUR_DEV_PROJECT_REF} > apps/web/lib/db/generated-types.ts",
     "demo:preflight": "echo 'TODO: Phase 31 preflight script'"
   },
   "devDependencies": {
+    "eslint": "^9.39.5",
     "prettier": "^3.4.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.66.0"
   }
 }

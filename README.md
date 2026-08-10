@@ -21,7 +21,7 @@ We do not rebuild Cluster's marketplace, Clara, procurement UX, forecasting mode
 
 ## Stack
 
-- **Framework**: Next.js 16 (App Router, TypeScript strict)
+- **Framework**: Next.js 16.3.0 (App Router, TypeScript strict)
 - **Database**: Supabase Postgres (Free tier) with RLS on every table
 - **Deployment**: Vercel Hobby (one project)
 - **Job orchestration**: Vercel Workflows (primary) + pg_cron recovery watchdog (15 min)
@@ -34,11 +34,11 @@ We do not rebuild Cluster's marketplace, Clara, procurement UX, forecasting mode
 # Install dependencies
 pnpm install
 
-# Start local Supabase stack
-pnpm supabase:start
+# Link to the hosted DEV Supabase project
+pnpm supabase:link
 
-# Run migrations
-pnpm supabase:db:push
+# Review pending migrations
+pnpm supabase:db:push:check
 
 # Start dev server
 pnpm dev
@@ -47,14 +47,20 @@ pnpm dev
 pnpm ci:local
 ```
 
+## Architecture notes
+
+- **Docker-free**: no local Supabase stack, no Docker Desktop, no Podman.
+- Development uses a hosted Supabase Free DEV project.
+- See `docs/architecture/supabase-hosted.md` for the full Docker-free Supabase
+  architecture.
+
 ## Project structure
 
 ```
 apps/web/          — the ONE deployable (Next.js)
 packages/core/     — pure domain math (no I/O imports)
 packages/schemas/  — Zod contracts
-packages/design-tokens/ — brand tokens → CSS vars + Tailwind theme
-packages/config/   — shared ESLint, TS, Vitest configs
+packages/design-tokens/ — semantic status colors (brand tokens deferred to Phase 0)
 supabase/          — migrations, seed, tests
 fixtures/          — test fixtures (EPTTS, CSV, EDA)
 docs/              — architecture, runbooks, API docs

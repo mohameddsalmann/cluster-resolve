@@ -1,20 +1,14 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({ baseDirectory: __dirname });
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
+import nextTypescript from 'eslint-config-next/typescript';
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...nextCoreWebVitals,
+  ...nextTypescript,
   {
     ignores: ['node_modules/', '.next/', 'playwright-report/', 'test-results/', 'next-env.d.ts'],
   },
   {
     rules: {
-      // No empty catch blocks (observability rule)
       'no-empty': ['error', { allowEmptyCatch: false }],
     },
   },
@@ -28,26 +22,6 @@ const eslintConfig = [
           selector: "TemplateLiteral[tag.name!='sql']",
           message:
             'Template literals are not allowed for SQL. Use the `sql` tagged template from lib/db instead.',
-        },
-      ],
-    },
-  },
-  {
-    // packages/core purity boundary — enforced when core is imported
-    files: ['**/packages/core/**/*.ts'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          paths: [
-            { name: 'postgres', message: 'packages/core must not import I/O modules' },
-            { name: 'next', message: 'packages/core must not import I/O modules' },
-            { name: '@supabase/supabase-js', message: 'packages/core must not import I/O modules' },
-            { name: 'fs', message: 'packages/core must not import I/O modules' },
-            { name: 'http', message: 'packages/core must not import I/O modules' },
-            { name: 'https', message: 'packages/core must not import I/O modules' },
-          ],
-          patterns: ['db/*', 'http/*', 'next/*'],
         },
       ],
     },

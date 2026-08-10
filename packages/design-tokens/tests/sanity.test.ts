@@ -1,12 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { brandTokens } from '../src/index.js';
+import { statusTokens } from '../src/index.js';
 
 describe('@cluster/design-tokens', () => {
-  it('exports brand color tokens', () => {
-    expect(brandTokens.color.brand[500]).toBe('#14b8a6');
+  it('exports semantic status colors', () => {
+    expect(statusTokens.status.critical).toBe('#dc2626');
   });
 
-  it('exports status colors', () => {
-    expect(brandTokens.color.status.critical).toBe('#dc2626');
+  it('exports all expected status levels', () => {
+    const keys = Object.keys(statusTokens.status);
+    expect(keys).toContain('critical');
+    expect(keys).toContain('high');
+    expect(keys).toContain('medium');
+    expect(keys).toContain('low');
+    expect(keys).toContain('ok');
+    expect(keys).toContain('neutral');
+    expect(keys).toContain('unknown');
   });
 });
