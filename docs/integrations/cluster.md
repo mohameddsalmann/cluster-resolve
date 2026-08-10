@@ -2,7 +2,7 @@
 
 ## Status
 
-- **NO PUBLIC API IDENTIFIED**: Cluster does not publish a public REST/GraphQL API for external procurement integration.
+- **NO PUBLIC API IDENTIFIED IN RESEARCHED PUBLIC MATERIALS**: No public REST/GraphQL API for external procurement integration was found in the public sources reviewed.
 - **NO DIRECT CONNECTION CLAIMED**: The "Cluster Production Integration" source ships permanently as `NOT_CONNECTED / READY_FOR_INTEGRATION`.
 
 ## Public information

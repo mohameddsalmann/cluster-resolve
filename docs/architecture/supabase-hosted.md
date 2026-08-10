@@ -62,8 +62,13 @@ NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable-anon-key>
 SUPABASE_SERVICE_ROLE_KEY=<server-only-service-role>
 SUPABASE_PROJECT_REF=<project-ref>
-DATABASE_URL=postgresql://postgres:<password>@db.<project-ref>.supabase.co:5432/postgres
+
+# Serverless runtime / Shared Pooler (Supavisor TRANSACTION mode)
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true
+
+# Migrations and native PostgreSQL tools (direct IPv6 endpoint, may not work from all serverless runtimes)
 DIRECT_URL=postgresql://postgres:<password>@db.<project-ref>.supabase.co:5432/postgres
+
 SUPABASE_DEVELOPMENT_MODE=HOSTED_DEV
 LOCAL_SUPABASE_DISABLED=true
 DOCKER_REQUIRED=false
@@ -71,19 +76,34 @@ DOCKER_REQUIRED=false
 
 Never commit `.env.local`.
 
+## Connection notes
+
+- **DATABASE_URL** must use the Supabase Shared Pooler / Supavisor `TRANSACTION` mode endpoint on port 6543. Copy the exact `DATABASE_URL` from Supabase Dashboard > Connect > Node.js/Postgres. Do not invent region/hostname.
+- **DIRECT_URL** is the direct Postgres endpoint on port 5432. Free-tier direct endpoints are IPv6 by default. They may not be reachable from Vercel/serverless runtimes or older network stacks. Use `DATABASE_URL` for the application.
+
 ## Phase 1 verification
 
-Phase 1 verified:
 - Supabase CLI v2.109.1 installed
+- Project linked to `gcqcbrcmfequnuprrzqc`
+- `supabase db push --dry-run` reports "Remote database is up to date"
 - Provided project URL reachable (`https://gcqcbrcmfequnuprrzqc.supabase.co`)
 - Auth endpoint reachable (`/auth/v1/health` → 200)
 - Storage buckets endpoint reachable with a valid Authorization header (`/storage/v1/bucket` → 200)
 
-Unverified / Phase 0 blocker:
-- CLI `supabase link --project-ref gcqcbrcmfequnuprrzqc` failed with
-  `"Your account does not have the necessary privileges to access this endpoint"`.
-  The current Supabase CLI token does not have access to the supplied project.
-  This is a Phase 0 finding, not a Phase 1 code defect.
+## Backups
+
+- `supabase db dump` is NOT used because it requires a Docker container.
+- Production backup automation is deferred.
+- Manual logical dumps, when needed, use a native locally installed `pg_dump` binary against `DIRECT_URL`.
+- Never commit dumps.
+- Do not install Docker.
+
+## Inactivity / keep-alive
+
+- Free projects may pause after 7 days of inactivity.
+- No external keep-alive service is added.
+- Use the founder/demo readiness procedure to wake and verify the project before a demo.
+- `pg_cron` watchdog is a LATER recovery feature, not Phase 2.
 
 ## Phase 2 workflow
 

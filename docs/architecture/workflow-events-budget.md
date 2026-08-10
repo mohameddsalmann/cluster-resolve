@@ -2,12 +2,17 @@
 
 ## Constraint
 
-Vercel Hobby Workflows: **50,000 events/month included**, **1 GB data written/month**, **1-day post-completion retention**.
+Vercel Hobby Workflows: **50,000 events/month included**, **1 GB data written/month**.
 
 ## Pricing
 
 - $0.02 per 1,000 events over 50,000.
 - $0.50 per GB data written over 1 GB.
+
+## Retention
+
+- Exact Workflow Data Retention on Hobby is **NEEDS_VERIFICATION** from an official Vercel source at deployment time.
+- This does not affect architecture because Postgres is authoritative state.
 
 ## Demo workload estimate
 

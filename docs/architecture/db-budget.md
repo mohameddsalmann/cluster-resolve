@@ -6,17 +6,22 @@ Supabase Free tier: **500 MB database size per project**.
 
 ## Target
 
-Keep the demo/development database ≤ 250–300 MB with ≥ 40% headroom.
+Keep the candidate demo database **≤ 250 MB**.
 
-## Assumptions
+## Strategy
+
+- Use small, deterministic demo datasets.
+- Large synthetic or performance-scale tests run as pure TypeScript/local tests where possible.
+- DB size telemetry is added later.
+- Warn when approaching 250–300 MB; do not hard-block writes in Phase 2.
+
+## Assumptions for candidate demo
 
 - Reference data: EPTTS rule versions, ingestion_sources, policy_versions (~1 MB).
-- EDA archived notices: 10–20 PDFs; extracted text stored, not raw PDFs (~5 MB).
-- CSV imports: retained as `ingestion_errors` and `raw_events` summaries; source files live in Supabase Storage, not DB.
-- User-imported data: 1,000–5,000 orders per test org in the worst case.
-- Business table rows per test org: products (~100), suppliers (~50), pharmacies (~50), orders (~5,000), order_items (~20,000), offers (~10,000), outcomes (~5,000).
-- Rollups (`supplier_daily_metrics`, `supplier_window_metrics`, `ops_daily_stats`) are the main size drivers.
-- Retention rule: rollups kept for 2 years; raw job logs retained for 30 days; audit events retained for 1 year.
+- EDA archived notices: extracted text only, source PDFs in Supabase Storage (~5 MB).
+- CSV imports: source files stored in Supabase Storage; DB retains only parsed rows and summaries.
+- Demo org: small data set (≤ 1,000 orders, ≤ 5,000 order items, ≤ 6 months of rollups).
+- Raw job logs, audit events, and rollups use short retention (30–90 days).
 
 ## Rough projection
 
@@ -25,24 +30,25 @@ Keep the demo/development database ≤ 250–300 MB with ≥ 40% headroom.
 | Reference data | 500 | 2 KB | 1 MB |
 | Organizations/members | 50 | 1 KB | 0.05 MB |
 | Products, suppliers, pharmacies | 500 | 2 KB | 1 MB |
-| Orders + items + offers + outcomes | 100,000 | 1 KB | 100 MB |
-| Raw events (30 days) | 50,000 | 0.5 KB | 25 MB |
-| Ingestion errors + idempotency keys | 50,000 | 0.5 KB | 25 MB |
-| Job logs (30 days) | 100,000 | 0.5 KB | 50 MB |
-| Audit events (1 year) | 100,000 | 0.5 KB | 50 MB |
-| Supplier metrics rollups (2 years) | 50,000 | 1 KB | 50 MB |
-| Forecasts/alert rollups | 10,000 | 1 KB | 10 MB |
-| Indexes/overhead | — | — | ~50 MB |
-| **Total** | | | **~360 MB** |
+| Orders + items + offers + outcomes | 10,000 | 1 KB | 10 MB |
+| Raw events (30 days) | 10,000 | 0.5 KB | 5 MB |
+| Ingestion errors + idempotency keys | 10,000 | 0.5 KB | 5 MB |
+| Job logs (30 days) | 20,000 | 0.5 KB | 10 MB |
+| Audit events (90 days) | 20,000 | 0.5 KB | 10 MB |
+| Supplier metrics rollups (6 months) | 10,000 | 1 KB | 10 MB |
+| Forecasts/alert rollups | 2,000 | 1 KB | 2 MB |
+| Indexes/overhead | — | — | ~10 MB |
+| **Total** | | | **~65 MB** |
 
 ## Budget guards
 
-- `DB_BUDGET_WARN_PCT=70` (warn at 350 MB)
-- `DB_BUDGET_BLOCK_PCT=85` (stop writes at 425 MB)
+- Target: ≤ 250 MB.
+- Warn: at ~300 MB.
+- Supabase Free limit: 500 MB.
 - Demo seed must refuse to run in `production`.
-- `pnpm db:dump` before risky migrations and before demos.
+- Use native `pg_dump` (if installed) before risky operations.
 
 ## Status
 
 - **VERIFIED**: Supabase Free is 500 MB.
-- **ESTIMATED**: projection is a rough order-of-magnitude; actual sizes depend on row width and index choices to be measured in Phase 3–5.
+- **ESTIMATED**: projection is a rough order-of-magnitude; actual sizes depend on row width and index choices.

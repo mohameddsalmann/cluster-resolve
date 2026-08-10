@@ -40,7 +40,7 @@ jobs:
         run: pnpm build
 
       - name: Secret scan
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        # GITLEAKS_LICENSE is only required for GitHub Organizations; revisit if the repo moves to an org.

@@ -2,26 +2,56 @@
 
 ## Status
 
-- **NOT EXTRACTED**: No official Cluster brand guidelines, color palette, typography, spacing, gradients, shadows, or logo assets have been obtained.
-- **HOLD**: All Cluster-specific brand tokens remain unverified until Phase 0/brand extraction is completed with official source material.
+- `PUBLIC_SITE_DERIVED` — YES (in progress)
+- `OFFICIAL_INTERNAL_GUIDELINES` — NO
+- Exact color/spacing/shadow/radii values from CSS assets — NEEDS_VERIFICATION
 
-## What is known from public sources
+## Provenance
 
-- Company name: Cluster / Cluster Intelligence Hub
-- Website: https://clusterapp.net/
-- Dev preview: https://dev.clusterapp.net/
-- LinkedIn: https://www.linkedin.com/company/clusterintelligencehub
-- Location: Giza, Egypt
-- Industry: B2B pharmaceutical procurement marketplace, AI-driven supply chain.
-- Brand narrative: AI automation, pharmacy-supplier matching, cost reduction, emerging markets.
+- Public website: https://clusterapp.net
+- Public dev site: https://dev.clusterapp.net
+- A1 Gallery design analysis: https://www.a1.gallery/website/cluster
+- Public descriptions: MIT Solve profile, LinkedIn, App Store
 
-## What is NOT known
+## Two-state model
 
-- Official brand colors (primary, secondary, neutral, semantic).
-- Typography scale and font family.
-- Spacing, border-radius, shadow, and gradient specifications.
-- Logo files, mark, usage rules.
-- Official tone-of-voice and content style guide.
+| State | Source | Use in this prototype |
+|---|---|---|
+| `PUBLIC_SITE_DERIVED` | clusterapp.net markup, public screenshots, third-party design analysis | Allowed for candidate UI work |
+| `OFFICIAL_INTERNAL_GUIDELINES` | Cluster design system / brand book | Not required before Phase UI work |
+
+## Public-site-derived tokens
+
+### Typography
+
+- **Display / heading font**: `Season Serif` (source: A1 Gallery)
+- **Body / UI font**: `Inter` (source: A1 Gallery)
+
+### Visual style
+
+From A1 Gallery style tags:
+
+- Serif
+- Elegant
+- Animated / scroll animation
+- Pattern
+- Gradients
+- Dark
+- Isometric
+
+### Logo / text mark
+
+- Site text mark: `Cluster Intelligence Hub.`
+- App store badges for Play Store and App Store
+- No logo SVG/PNG asset extracted from public site
+
+### Colors (NEEDS_CSS_VERIFICATION)
+
+The public site uses a dark page style with animated gradients and patterns, but exact hex values, gradient stops, and accent colors have not been extracted from CSS assets. The candidate UI should use a neutral Tailwind `slate` base with a dark mode gradient until exact values are captured via browser dev tools on `https://clusterapp.net`.
+
+### Spacing, radii, shadows (NEEDS_CSS_VERIFICATION)
+
+No CSS asset has been downloaded. These tokens remain unverified.
 
 ## Current design tokens
 
@@ -34,15 +64,15 @@ Only semantic status colors are present in `packages/design-tokens/src/index.ts`
 - `neutral: #64748b`
 - `unknown: #94a3b8`
 
-These are generic semantic colors, not Cluster-derived.
+No invented brand colors are added. Brand color extraction is documented above as `PUBLIC_SITE_DERIVED` and incomplete for color values.
 
 ## Implications
 
-- UI will use a neutral Tailwind slate palette until official brand extraction.
-- `packages/design-tokens` currently exports `statusTokens` only.
-- `brandTokens` will be added only after official source is reviewed.
-- No invented colors should be presented as Cluster brand.
+- UI may use `PUBLIC_SITE_DERIVED` fonts and style direction (`Season Serif` + `Inter`, dark + gradients).
+- Brand colors must not be invented. Use Tailwind slate/emerald/amber default palette until CSS extraction is completed.
+- The product must continue to display `Unofficial candidate prototype`.
+- `packages/design-tokens` still exports `statusTokens` only. Brand tokens will be added only after exact color extraction.
 
 ## Next step
 
-Obtain official brand guidelines from Cluster (design system, style guide, or at minimum the website's CSS/custom properties) before Phase 3–6 UI work.
+Extract exact color/gradient/shadow/radii values from `https://clusterapp.net` CSS using browser dev tools when network access is convenient.
