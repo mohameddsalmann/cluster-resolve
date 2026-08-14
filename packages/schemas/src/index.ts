@@ -11,3 +11,4 @@ export * from './datasets.js';
 export * from './data-sources.js';
 export * from './money.js';
 export * from './imports.js';
+export * from './operations.js';

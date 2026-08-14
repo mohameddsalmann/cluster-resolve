@@ -11,9 +11,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --exclude 'tests/integration/**' --exclude 'tests/benchmarks/**'",
     "test:watch": "vitest",
-    "test:db": "vitest run tests/integration",
+    "test:db": "vitest run tests/integration --no-file-parallelism",
     "test:e2e": "playwright test",
-    "benchmark:imports": "vitest run tests/benchmarks/imports.benchmark.test.ts"
+    "benchmark:imports": "vitest run tests/benchmarks/imports.benchmark.test.ts",
+    "benchmark:operations": "vitest run tests/benchmarks/operations.benchmark.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

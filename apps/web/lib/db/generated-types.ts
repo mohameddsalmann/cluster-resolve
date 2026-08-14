@@ -1,4 +1,4 @@
-﻿export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -11,31 +11,6 @@ export type Database = {
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.15"
-  }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
   }
   public: {
     Tables: {
@@ -354,6 +329,77 @@ export type Database = {
             columns: ["dataset_id", "source_id"]
             isOneToOne: false
             referencedRelation: "data_sources"
+            referencedColumns: ["dataset_id", "id"]
+          },
+        ]
+      }
+      order_exceptions: {
+        Row: {
+          created_at: string
+          dataset_id: string
+          detected_at: string
+          engine_version: string
+          evidence_json: Json
+          id: string
+          order_id: string
+          product_id: string | null
+          severity: string
+          supplier_id: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          dataset_id: string
+          detected_at: string
+          engine_version: string
+          evidence_json: Json
+          id?: string
+          order_id: string
+          product_id?: string | null
+          severity: string
+          supplier_id?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          dataset_id?: string
+          detected_at?: string
+          engine_version?: string
+          evidence_json?: Json
+          id?: string
+          order_id?: string
+          product_id?: string | null
+          severity?: string
+          supplier_id?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_exceptions_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_exceptions_dataset_id_order_id_fkey"
+            columns: ["dataset_id", "order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["dataset_id", "id"]
+          },
+          {
+            foreignKeyName: "order_exceptions_dataset_id_product_id_fkey"
+            columns: ["dataset_id", "product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["dataset_id", "id"]
+          },
+          {
+            foreignKeyName: "order_exceptions_dataset_id_supplier_id_fkey"
+            columns: ["dataset_id", "supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
             referencedColumns: ["dataset_id", "id"]
           },
         ]
@@ -745,6 +791,102 @@ export type Database = {
           },
         ]
       }
+      supplier_reliability_snapshots: {
+        Row: {
+          as_of_date: string
+          baseline_cancellation_rate_bps: number | null
+          baseline_evaluated_orders: number
+          baseline_fill_rate_bps: number | null
+          baseline_lead_time_p95_minutes: number | null
+          baseline_otif_rate_bps: number | null
+          baseline_partial_fill_rate_bps: number | null
+          baseline_window_days: number
+          computed_at: string
+          created_at: string
+          dataset_id: string
+          engine_version: string
+          id: string
+          recent_cancellation_rate_bps: number | null
+          recent_evaluated_orders: number
+          recent_fill_rate_bps: number | null
+          recent_lead_time_p50_minutes: number | null
+          recent_lead_time_p95_minutes: number | null
+          recent_otif_rate_bps: number | null
+          recent_partial_fill_rate_bps: number | null
+          recent_window_days: number
+          status: string
+          supplier_id: string
+          triggers_json: Json
+        }
+        Insert: {
+          as_of_date: string
+          baseline_cancellation_rate_bps?: number | null
+          baseline_evaluated_orders: number
+          baseline_fill_rate_bps?: number | null
+          baseline_lead_time_p95_minutes?: number | null
+          baseline_otif_rate_bps?: number | null
+          baseline_partial_fill_rate_bps?: number | null
+          baseline_window_days: number
+          computed_at: string
+          created_at?: string
+          dataset_id: string
+          engine_version: string
+          id?: string
+          recent_cancellation_rate_bps?: number | null
+          recent_evaluated_orders: number
+          recent_fill_rate_bps?: number | null
+          recent_lead_time_p50_minutes?: number | null
+          recent_lead_time_p95_minutes?: number | null
+          recent_otif_rate_bps?: number | null
+          recent_partial_fill_rate_bps?: number | null
+          recent_window_days: number
+          status: string
+          supplier_id: string
+          triggers_json?: Json
+        }
+        Update: {
+          as_of_date?: string
+          baseline_cancellation_rate_bps?: number | null
+          baseline_evaluated_orders?: number
+          baseline_fill_rate_bps?: number | null
+          baseline_lead_time_p95_minutes?: number | null
+          baseline_otif_rate_bps?: number | null
+          baseline_partial_fill_rate_bps?: number | null
+          baseline_window_days?: number
+          computed_at?: string
+          created_at?: string
+          dataset_id?: string
+          engine_version?: string
+          id?: string
+          recent_cancellation_rate_bps?: number | null
+          recent_evaluated_orders?: number
+          recent_fill_rate_bps?: number | null
+          recent_lead_time_p50_minutes?: number | null
+          recent_lead_time_p95_minutes?: number | null
+          recent_otif_rate_bps?: number | null
+          recent_partial_fill_rate_bps?: number | null
+          recent_window_days?: number
+          status?: string
+          supplier_id?: string
+          triggers_json?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_reliability_snapshots_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_reliability_snapshots_dataset_id_supplier_id_fkey"
+            columns: ["dataset_id", "supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["dataset_id", "id"]
+          },
+        ]
+      }
       suppliers: {
         Row: {
           city: string | null
@@ -930,9 +1072,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },

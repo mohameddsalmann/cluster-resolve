@@ -16,6 +16,8 @@ export type OrderItemRow = PublicTables['order_items']['Row'];
 export type OrderOutcomeRow = PublicTables['order_outcomes']['Row'];
 export type AiDecisionRow = PublicTables['ai_decisions']['Row'];
 export type AiDecisionCandidateRow = PublicTables['ai_decision_candidates']['Row'];
+export type OrderExceptionRow = PublicTables['order_exceptions']['Row'];
+export type SupplierReliabilitySnapshotRow = PublicTables['supplier_reliability_snapshots']['Row'];
 
 // Generated PostgREST types represent int8 as number. The offer repository selects the
 // column as text and validates it before converting to native JavaScript bigint.
