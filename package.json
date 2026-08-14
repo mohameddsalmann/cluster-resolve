@@ -13,6 +13,7 @@
     "start": "pnpm --filter web start",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
+    "test:db": "pnpm --filter web test:db",
     "test:e2e": "pnpm --filter web test:e2e",
     "typecheck": "pnpm -r typecheck",
     "ci:local": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",

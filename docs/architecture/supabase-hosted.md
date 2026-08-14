@@ -58,28 +58,20 @@ part of the normal workflow because migrations are the source of truth.
 ## Environment variables (`.env.local`)
 
 ```text
-NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable-anon-key>
-SUPABASE_SERVICE_ROLE_KEY=<server-only-service-role>
-SUPABASE_PROJECT_REF=<project-ref>
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SECRET_KEY=<server-only-sb-secret-key>
 
-# Serverless runtime / Shared Pooler (Supavisor TRANSACTION mode)
-DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true
-
-# Migrations and native PostgreSQL tools (direct IPv6 endpoint, may not work from all serverless runtimes)
-DIRECT_URL=postgresql://postgres:<password>@db.<project-ref>.supabase.co:5432/postgres
-
-SUPABASE_DEVELOPMENT_MODE=HOSTED_DEV
-LOCAL_SUPABASE_DISABLED=true
-DOCKER_REQUIRED=false
+# Legacy fallback only when an sb_secret key is unavailable:
+# SUPABASE_SERVICE_ROLE_KEY=<server-only-service-role>
 ```
 
 Never commit `.env.local`.
 
-## Connection notes
+## Runtime connection notes
 
-- **DATABASE_URL** must use the Supabase Shared Pooler / Supavisor `TRANSACTION` mode endpoint on port 6543. Copy the exact `DATABASE_URL` from Supabase Dashboard > Connect > Node.js/Postgres. Do not invent region/hostname.
-- **DIRECT_URL** is the direct Postgres endpoint on port 5432. Free-tier direct endpoints are IPv6 by default. They may not be reachable from Vercel/serverless runtimes or older network stacks. Use `DATABASE_URL` for the application.
+- Local Next.js and Vercel use the server-only Supabase JavaScript client and hosted Data API.
+- The application does not require a PostgreSQL connection string, local PostgreSQL, or a database password.
+- `SUPABASE_SECRET_KEY` must never be exposed through a `NEXT_PUBLIC_` variable or browser client.
 
 ## Phase 1 verification
 
@@ -94,7 +86,6 @@ Never commit `.env.local`.
 
 - `supabase db dump` is NOT used because it requires a Docker container.
 - Production backup automation is deferred.
-- Manual logical dumps, when needed, use a native locally installed `pg_dump` binary against `DIRECT_URL`.
 - Never commit dumps.
 - Do not install Docker.
 
@@ -103,7 +94,7 @@ Never commit `.env.local`.
 - Free projects may pause after 7 days of inactivity.
 - No external keep-alive service is added.
 - Use the founder/demo readiness procedure to wake and verify the project before a demo.
-- `pg_cron` watchdog is a LATER recovery feature, not Phase 2.
+- No keep-alive watchdog is part of the application architecture.
 
 ## Phase 2 workflow
 
