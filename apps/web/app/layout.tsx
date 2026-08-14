@@ -1,8 +1,17 @@
 import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
 import './globals.css';
+import { DatasetProvider } from '@/lib/context/dataset-context';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Cluster Control Tower',
+  title: 'Cluster Resolve',
   description:
     'Unofficial candidate prototype — reliability/observability layer for pharmaceutical AI procurement decisions.',
 };
@@ -13,13 +22,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-white text-slate-900 antialiased">
-        {children}
-        <footer className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-white/95 px-4 py-2 text-center text-xs text-slate-500 backdrop-blur">
-          Unofficial candidate prototype. Not affiliated with, endorsed by, or connected to
-          Cluster&apos;s production systems.
-        </footer>
+    <html lang="en" className={poppins.variable}>
+      <body className="min-h-screen bg-white text-ink antialiased">
+        <DatasetProvider>{children}</DatasetProvider>
       </body>
     </html>
   );

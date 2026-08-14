@@ -23,6 +23,7 @@
     "supabase:db:push:check": "supabase db push --dry-run",
     "supabase:db:push": "supabase db push",
     "supabase:types": "supabase gen types typescript --project-id ${SUPABASE_PROJECT_REF:-YOUR_DEV_PROJECT_REF} > apps/web/lib/db/generated-types.ts",
+    "demo:seed": "pnpm --filter web demo:seed",
     "demo:preflight": "echo 'TODO: Phase 31 preflight script'"
   },
   "devDependencies": {

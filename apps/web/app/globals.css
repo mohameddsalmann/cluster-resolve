@@ -1,6 +1,27 @@
 @import 'tailwindcss';
 
 @theme {
+  --radius-sm: 8px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
+
+  --color-cluster-nav: #2d66eb;
+  --color-cluster-deep: #0e4da4;
+  --color-cluster-bright: #0f6eff;
+  --color-ink: #1c1b2e;
+  --color-body: #6d859e;
+  --color-surface: #f6f9fc;
+  --color-line: #dce5f0;
+
+  /* semantic status */
+  --color-danger: #d92d20;
+  --color-warning: #b54708;
+  --color-caution: #f79009;
+  --color-success: #067647;
+
+  /* status tokens from design-tokens */
   --color-status-critical: #dc2626;
   --color-status-high: #ea580c;
   --color-status-medium: #d97706;
@@ -8,4 +29,189 @@
   --color-status-ok: #16a34a;
   --color-status-neutral: #64748b;
   --color-status-unknown: #94a3b8;
+
+  --shadow-cluster: 0 20px 60px rgba(14, 77, 164, 0.12);
+  --shadow-cluster-hover: 0 20px 50px rgba(15, 110, 255, 0.2);
+  --shadow-cluster-sm: 0 6px 18px rgba(14, 77, 164, 0.07);
+}
+
+:root {
+  --cluster-nav: #2d66eb;
+  --cluster-deep: #0e4da4;
+  --cluster-bright: #0f6eff;
+  --ink: #1c1b2e;
+  --body-text: #6d859e;
+  --surface: #f6f9fc;
+  --line: #dce5f0;
+
+  --danger: #d92d20;
+  --warning: #b54708;
+  --caution: #f79009;
+  --success: #067647;
+
+  --background: #ffffff;
+  --foreground: #1c1b2e;
+  --card: #ffffff;
+  --card-foreground: #1c1b2e;
+  --border: #dce5f0;
+  --input: #dce5f0;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--ink);
+    font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cluster-bright);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgba(15, 110, 255, 0.2);
+  }
+}
+
+/* Typography scale */
+@utility cl-page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  @media (max-width: 640px) {
+    font-size: 1.75rem;
+  }
+}
+
+@utility cl-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+@utility cl-card-title {
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+@utility cl-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@utility cl-meta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--body-text);
+}
+
+/* Surfaces */
+@utility cl-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+@utility cl-panel-raised {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(14, 77, 164, 0.07);
+}
+
+/* Form language */
+@utility cl-field {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  transition: all 180ms ease;
+
+  &::placeholder {
+    color: var(--body-text);
+  }
+
+  &:hover {
+    border-color: #0f6eff;
+  }
+
+  &:focus {
+    background: #fff;
+    border-color: #0f6eff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 110, 255, 0.1);
+  }
+}
+
+/* Signature Cluster button wipe */
+@utility cl-wipe {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: translateX(-101%);
+    background: rgba(255, 255, 255, 0.14);
+    transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover::after {
+    transform: translateX(0);
+  }
+}
+
+@utility cl-skeleton {
+  background: var(--surface);
+  border-radius: 8px;
+  animation: cl-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cl-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
