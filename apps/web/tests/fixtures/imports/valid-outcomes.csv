@@ -1,0 +1,4 @@
+order_id,supplier_id,product_id,filled_qty,delivered_at,cancelled,cancellation_reason,outcome_final
+ORD-1001,SUP-RELIABLE-01,MED-PARACETAMOL-500,10,2026-08-14T14:05:00+03:00,false,,true
+ORD-1001,SUP-RELIABLE-01,MED-AMOXICILLIN-500,3,2026-08-14T16:30:00+03:00,false,,false
+ORD-1002,SUP-RISK-02,MED-PARACETAMOL-500,0,,true,Supplier stockout,true

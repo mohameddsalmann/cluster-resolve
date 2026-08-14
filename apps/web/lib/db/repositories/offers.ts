@@ -88,3 +88,17 @@ export async function getSupplierOfferById(
   }
   return data ? toSupplierOfferRow(data as SupplierOfferApiRow) : null;
 }
+
+export async function getSupplierOfferByExternalId(
+  datasetId: string,
+  externalId: string
+): Promise<SupplierOfferRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('supplier_offers')
+    .select(SUPPLIER_OFFER_SELECT)
+    .eq('dataset_id', datasetId)
+    .eq('external_offer_id', externalId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get supplier offer by external ID');
+  return data ? toSupplierOfferRow(data as SupplierOfferApiRow) : null;
+}

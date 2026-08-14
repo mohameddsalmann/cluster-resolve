@@ -17,6 +17,7 @@ export interface CreateOrderItemParams {
   product_id: string;
   requested_qty: number;
   unit?: string;
+  source_ingestion_job_id?: string | null;
 }
 
 export async function createOrder(params: CreateOrderParams): Promise<OrderRow> {
@@ -45,11 +46,42 @@ export async function createOrderItem(params: CreateOrderItemParams): Promise<Or
       product_id: params.product_id,
       requested_qty: params.requested_qty,
       unit: params.unit ?? 'pack',
+      source_ingestion_job_id: params.source_ingestion_job_id ?? null,
     })
     .select('*')
     .single();
 
   return requireData(data, error, 'Create order item');
+}
+
+export async function getOrderByExternalId(
+  datasetId: string,
+  externalId: string
+): Promise<OrderRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('orders')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('external_order_id', externalId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get order by external ID');
+  return data;
+}
+
+export async function getOrderItem(
+  datasetId: string,
+  orderId: string,
+  productId: string
+): Promise<OrderItemRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('order_items')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('order_id', orderId)
+    .eq('product_id', productId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get order item');
+  return data;
 }
 
 export async function getOrderById(

@@ -6,6 +6,8 @@ export type DatasetMode = 'LIVE' | 'IMPORTED_REAL' | 'SAMPLE';
 export type DatasetRow = Omit<PublicTables['datasets']['Row'], 'mode'> & {
   mode: DatasetMode;
 };
+export type DataSourceRow = PublicTables['data_sources']['Row'];
+export type IngestionJobRow = PublicTables['ingestion_jobs']['Row'];
 export type ProductRow = PublicTables['products']['Row'];
 export type PharmacyRow = PublicTables['pharmacies']['Row'];
 export type SupplierRow = PublicTables['suppliers']['Row'];
@@ -23,3 +25,14 @@ export type SupplierOfferRow = Omit<
 > & {
   unit_price_minor: bigint;
 };
+
+export interface IngestionErrorRow {
+  id: string;
+  job_id: string;
+  row_number: number;
+  field: string | null;
+  code: string;
+  message: string;
+  raw_value: string | null;
+  created_at: string;
+}

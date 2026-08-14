@@ -1,0 +1,4 @@
+order_id,pharmacy_id,pharmacy_name,placed_at,product_id,product_name,manufacturer,requested_qty,unit
+ORD-1001,PH-CAIRO-001,Cairo Central Pharmacy,2026-08-14T08:00:00+03:00,MED-PARACETAMOL-500,Paracetamol 500mg,Resolve Pharma,10,pack
+ORD-1001,PH-CAIRO-001,Cairo Central Pharmacy,2026-08-14T08:00:00+03:00,MED-AMOXICILLIN-500,Amoxicillin 500mg,Resolve Pharma,6,box
+ORD-1002,PH-CAIRO-001,Cairo Central Pharmacy,2026-08-14T09:00:00+03:00,MED-PARACETAMOL-500,Paracetamol 500mg,Resolve Pharma,4,pack

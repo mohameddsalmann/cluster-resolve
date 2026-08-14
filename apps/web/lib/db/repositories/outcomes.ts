@@ -54,3 +54,42 @@ export async function getOrderOutcomeById(
   }
   return data;
 }
+
+export async function getOrderOutcomeByReferences(
+  datasetId: string,
+  orderId: string,
+  supplierId: string,
+  productId: string
+): Promise<OrderOutcomeRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('order_outcomes')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('order_id', orderId)
+    .eq('supplier_id', supplierId)
+    .eq('product_id', productId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get order outcome by references');
+  return data;
+}
+
+export async function advanceOrderOutcome(
+  id: string,
+  params: Omit<CreateOrderOutcomeParams, 'dataset_id' | 'order_id' | 'supplier_id' | 'product_id'>
+): Promise<OrderOutcomeRow> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('order_outcomes')
+    .update({
+      filled_qty: params.filled_qty,
+      delivered_at: params.delivered_at ?? null,
+      cancelled: params.cancelled ?? false,
+      cancellation_reason: params.cancellation_reason ?? null,
+      outcome_final: params.outcome_final ?? false,
+      source_ingestion_job_id: params.source_ingestion_job_id ?? null,
+    })
+    .eq('id', id)
+    .eq('outcome_final', false)
+    .select('*')
+    .single();
+  return requireData(data, error, 'Advance order outcome');
+}

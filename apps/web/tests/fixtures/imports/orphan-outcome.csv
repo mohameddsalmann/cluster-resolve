@@ -1,0 +1,2 @@
+order_id,supplier_id,product_id,filled_qty,delivered_at,cancelled,cancellation_reason,outcome_final
+ORD-DOES-NOT-EXIST,SUP-RELIABLE-01,MED-PARACETAMOL-500,1,2026-08-14T14:05:00+03:00,false,,true

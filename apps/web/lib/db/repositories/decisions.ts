@@ -11,7 +11,7 @@ export interface CreateAiDecisionParams {
   decided_at: string;
   agent_name?: string | null;
   agent_version?: string | null;
-  confidence?: number | null;
+  confidence?: number | string | null;
   selection_reason?: string | null;
   input_snapshot_json?: Record<string, unknown> | null;
   source_ingestion_job_id?: string | null;
@@ -45,11 +45,25 @@ export async function createAiDecision(
       selection_reason: params.selection_reason ?? null,
       input_snapshot_json: (params.input_snapshot_json as Json | null | undefined) ?? null,
       source_ingestion_job_id: params.source_ingestion_job_id ?? null,
-    })
+    } as never)
     .select('*')
     .single();
 
   return requireData(data, error, 'Create AI decision');
+}
+
+export async function getAiDecisionByExternalId(
+  datasetId: string,
+  externalId: string
+): Promise<AiDecisionRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('ai_decisions')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('external_decision_id', externalId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get AI decision by external ID');
+  return data;
 }
 
 export async function createAiDecisionCandidate(

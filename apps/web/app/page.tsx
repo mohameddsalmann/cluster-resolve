@@ -13,6 +13,9 @@ export default function HomePage() {
       <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-sm text-slate-500">
         Phase 1 — Repository foundation. Dashboard coming soon.
       </div>
+      <a className="rounded bg-slate-900 px-4 py-2 text-sm text-white" href="/imports">
+        Import procurement data
+      </a>
     </main>
   );
 }

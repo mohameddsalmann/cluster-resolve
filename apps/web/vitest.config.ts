@@ -11,11 +11,13 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      '@': resolve(__dirname, '.'),
-      '@cluster/core': resolve(__dirname, '../../packages/core/src/index.ts'),
-      '@cluster/schemas': resolve(__dirname, '../../packages/schemas/src/index.ts'),
-      '@cluster/design-tokens': resolve(__dirname, '../../packages/design-tokens/src/index.ts'),
-    },
+    alias: [
+      { find: /^@cluster\/core\/(.+)$/, replacement: `${resolve(__dirname, '../../packages/core/src')}/$1` },
+      { find: /^@cluster\/schemas\/(.+)$/, replacement: `${resolve(__dirname, '../../packages/schemas/src')}/$1` },
+      { find: '@cluster/core', replacement: resolve(__dirname, '../../packages/core/src/index.ts') },
+      { find: '@cluster/schemas', replacement: resolve(__dirname, '../../packages/schemas/src/index.ts') },
+      { find: '@cluster/design-tokens', replacement: resolve(__dirname, '../../packages/design-tokens/src/index.ts') },
+      { find: '@', replacement: resolve(__dirname, '.') },
+    ],
   },
 });

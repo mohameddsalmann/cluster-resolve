@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -245,6 +245,47 @@ export type Database = {
         }
         Relationships: []
       }
+      ingestion_errors: {
+        Row: {
+          code: string
+          created_at: string
+          field: string | null
+          id: string
+          job_id: string
+          message: string
+          raw_value: string | null
+          row_number: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          field?: string | null
+          id?: string
+          job_id: string
+          message: string
+          raw_value?: string | null
+          row_number: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          field?: string | null
+          id?: string
+          job_id?: string
+          message?: string
+          raw_value?: string | null
+          row_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingestion_errors_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ingestion_jobs: {
         Row: {
           created_at: string
@@ -325,6 +366,7 @@ export type Database = {
           order_id: string
           product_id: string
           requested_qty: number
+          source_ingestion_job_id: string | null
           unit: string
         }
         Insert: {
@@ -334,6 +376,7 @@ export type Database = {
           order_id: string
           product_id: string
           requested_qty: number
+          source_ingestion_job_id?: string | null
           unit?: string
         }
         Update: {
@@ -343,6 +386,7 @@ export type Database = {
           order_id?: string
           product_id?: string
           requested_qty?: number
+          source_ingestion_job_id?: string | null
           unit?: string
         }
         Relationships: [
@@ -365,6 +409,13 @@ export type Database = {
             columns: ["dataset_id", "product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["dataset_id", "id"]
+          },
+          {
+            foreignKeyName: "order_items_dataset_source_job_fkey"
+            columns: ["dataset_id", "source_ingestion_job_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_jobs"
             referencedColumns: ["dataset_id", "id"]
           },
         ]
@@ -514,6 +565,7 @@ export type Database = {
           governorate: string | null
           id: string
           name: string | null
+          source_ingestion_job_id: string | null
         }
         Insert: {
           city?: string | null
@@ -523,6 +575,7 @@ export type Database = {
           governorate?: string | null
           id?: string
           name?: string | null
+          source_ingestion_job_id?: string | null
         }
         Update: {
           city?: string | null
@@ -532,6 +585,7 @@ export type Database = {
           governorate?: string | null
           id?: string
           name?: string | null
+          source_ingestion_job_id?: string | null
         }
         Relationships: [
           {
@@ -540,6 +594,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "datasets"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pharmacies_dataset_source_job_fkey"
+            columns: ["dataset_id", "source_ingestion_job_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_jobs"
+            referencedColumns: ["dataset_id", "id"]
           },
         ]
       }
@@ -555,6 +616,7 @@ export type Database = {
           name: string
           name_normalized: string
           sku: string | null
+          source_ingestion_job_id: string | null
         }
         Insert: {
           created_at?: string
@@ -567,6 +629,7 @@ export type Database = {
           name: string
           name_normalized: string
           sku?: string | null
+          source_ingestion_job_id?: string | null
         }
         Update: {
           created_at?: string
@@ -579,6 +642,7 @@ export type Database = {
           name?: string
           name_normalized?: string
           sku?: string | null
+          source_ingestion_job_id?: string | null
         }
         Relationships: [
           {
@@ -587,6 +651,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "datasets"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_dataset_source_job_fkey"
+            columns: ["dataset_id", "source_ingestion_job_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_jobs"
+            referencedColumns: ["dataset_id", "id"]
           },
         ]
       }
@@ -684,6 +755,7 @@ export type Database = {
           id: string
           name: string
           name_normalized: string
+          source_ingestion_job_id: string | null
         }
         Insert: {
           city?: string | null
@@ -694,6 +766,7 @@ export type Database = {
           id?: string
           name: string
           name_normalized: string
+          source_ingestion_job_id?: string | null
         }
         Update: {
           city?: string | null
@@ -704,6 +777,7 @@ export type Database = {
           id?: string
           name?: string
           name_normalized?: string
+          source_ingestion_job_id?: string | null
         }
         Relationships: [
           {
@@ -712,6 +786,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "datasets"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "suppliers_dataset_source_job_fkey"
+            columns: ["dataset_id", "source_ingestion_job_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_jobs"
+            referencedColumns: ["dataset_id", "id"]
           },
         ]
       }

@@ -8,6 +8,7 @@ export interface CreatePharmacyParams {
   name?: string | null;
   governorate?: string | null;
   city?: string | null;
+  source_ingestion_job_id?: string | null;
 }
 
 export async function createPharmacy(params: CreatePharmacyParams): Promise<PharmacyRow> {
@@ -19,11 +20,26 @@ export async function createPharmacy(params: CreatePharmacyParams): Promise<Phar
       name: params.name ?? null,
       governorate: params.governorate ?? null,
       city: params.city ?? null,
+      source_ingestion_job_id: params.source_ingestion_job_id ?? null,
     })
     .select('*')
     .single();
 
   return requireData(data, error, 'Create pharmacy');
+}
+
+export async function getPharmacyByExternalId(
+  datasetId: string,
+  externalId: string
+): Promise<PharmacyRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('pharmacies')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('external_pharmacy_id', externalId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get pharmacy by external ID');
+  return data;
 }
 
 export async function getPharmacyById(

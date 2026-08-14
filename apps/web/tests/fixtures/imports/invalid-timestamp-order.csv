@@ -1,0 +1,2 @@
+order_id,pharmacy_id,pharmacy_name,placed_at,product_id,product_name,manufacturer,requested_qty,unit
+ORD-BAD-DATE,PH-CAIRO-001,Cairo Central Pharmacy,2026-02-30T10:00:00Z,MED-PARACETAMOL-500,Paracetamol 500mg,Resolve Pharma,1,pack

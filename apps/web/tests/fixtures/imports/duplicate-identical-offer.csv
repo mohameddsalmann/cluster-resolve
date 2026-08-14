@@ -1,0 +1,3 @@
+offer_id,order_id,supplier_id,supplier_name,product_id,available_qty,unit_price_egp,discount_percent,promised_delivery_at,offered_at
+OFF-DUPLICATE,ORD-1001,SUP-RELIABLE-01,Reliable Medical Supply,MED-PARACETAMOL-500,10,125.50,5,2026-08-14T14:00:00+03:00,2026-08-14T08:20:00+03:00
+OFF-DUPLICATE,ORD-1001,SUP-RELIABLE-01,Reliable Medical Supply,MED-PARACETAMOL-500,10,125.50,5,2026-08-14T14:00:00+03:00,2026-08-14T08:20:00+03:00

@@ -1,4 +1,4 @@
-import { normalizeName } from '@cluster/core';
+import { normalizeName } from '@cluster/core/util/normalize';
 import { getSupabaseServerClient } from '../../supabase/server';
 import type { SupplierRow } from '../row-types';
 import { requireData } from './result';
@@ -9,6 +9,7 @@ export interface CreateSupplierParams {
   name: string;
   governorate?: string | null;
   city?: string | null;
+  source_ingestion_job_id?: string | null;
 }
 
 export async function createSupplier(params: CreateSupplierParams): Promise<SupplierRow> {
@@ -21,11 +22,26 @@ export async function createSupplier(params: CreateSupplierParams): Promise<Supp
       name_normalized: normalizeName(params.name),
       governorate: params.governorate ?? null,
       city: params.city ?? null,
+      source_ingestion_job_id: params.source_ingestion_job_id ?? null,
     })
     .select('*')
     .single();
 
   return requireData(data, error, 'Create supplier');
+}
+
+export async function getSupplierByExternalId(
+  datasetId: string,
+  externalId: string
+): Promise<SupplierRow | null> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('suppliers')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('external_supplier_id', externalId)
+    .maybeSingle();
+  if (error) requireData(data, error, 'Get supplier by external ID');
+  return data;
 }
 
 export async function getSupplierById(
