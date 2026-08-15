@@ -9,7 +9,6 @@ import type { PostgrestError } from '@supabase/supabase-js';
 import { getDatasetById } from '../db/repositories/datasets';
 import {
   replaceOrderExceptions,
-  upsertSupplierReliabilitySnapshots,
   upsertSupplierReliabilitySnapshotsWithPromiseRisk,
 } from '../db/repositories/operations';
 import { upsertSupplierProductSnapshots } from '../db/repositories/product-reliability';
@@ -149,12 +148,12 @@ export async function evaluateDatasetOperations(
 async function loadOperationalSource(datasetId: string): Promise<SourceRows> {
   const supabase = getSupabaseServerClient();
   const [orders, items, outcomes, offers, decisions, suppliers] = await Promise.all([
-    fetchPaged((from, to) => supabase.from('orders').select('id, dataset_id, placed_at').eq('dataset_id', datasetId).range(from, to)),
-    fetchPaged((from, to) => supabase.from('order_items').select('id, order_id, product_id, requested_qty').eq('dataset_id', datasetId).range(from, to)),
-    fetchPaged((from, to) => supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, outcome_final').eq('dataset_id', datasetId).range(from, to)),
-    fetchPaged((from, to) => supabase.from('supplier_offers').select('id, order_id, supplier_id, product_id, promised_delivery_at, offered_at').eq('dataset_id', datasetId).range(from, to)),
-    fetchPaged((from, to) => supabase.from('ai_decisions').select('id, order_id, selected_supplier_id, decided_at').eq('dataset_id', datasetId).range(from, to)),
-    fetchPaged((from, to) => supabase.from('suppliers').select('id').eq('dataset_id', datasetId).range(from, to)),
+    fetchPaged((from, to) => supabase.from('orders').select('id, dataset_id, placed_at').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged((from, to) => supabase.from('order_items').select('id, order_id, product_id, requested_qty').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged((from, to) => supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, outcome_final').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged((from, to) => supabase.from('supplier_offers').select('id, order_id, supplier_id, product_id, promised_delivery_at, offered_at').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged((from, to) => supabase.from('ai_decisions').select('id, order_id, selected_supplier_id, decided_at').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged((from, to) => supabase.from('suppliers').select('id').eq('dataset_id', datasetId).order('id').range(from, to)),
   ]);
   return {
     orders: orders.map((value) => ({ id: value.id, datasetId: value.dataset_id, placedAt: value.placed_at })),

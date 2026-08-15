@@ -388,6 +388,7 @@ export default function DecisionDetailPage({ params }: { params: Promise<{ id: s
                     <th className="py-3 px-4">Feasibility</th>
                     <th className="py-3 px-4">Total Quoted Price</th>
                     <th className="py-3 px-4">Promised Delivery</th>
+                    <th className="py-3 px-4">Promise Risk</th>
                     <th className="py-3 px-4">Dominates Selected?</th>
                     <th className="py-3 px-4">Quote Evidence</th>
                   </tr>
@@ -396,6 +397,7 @@ export default function DecisionDetailPage({ params }: { params: Promise<{ id: s
                   {candidates.map((cand) => {
                     const isSelected = cand.isSelected;
                     const isDom = cand.dominatesSelected;
+                    const pr = cand.promiseRisk;
 
                     return (
                       <tr
@@ -443,6 +445,32 @@ export default function DecisionDetailPage({ params }: { params: Promise<{ id: s
                           {cand.maxPromisedDeliveryAt
                             ? new Date(cand.maxPromisedDeliveryAt).toLocaleString()
                             : 'Unstated'}
+                        </td>
+
+                        <td className="py-3 px-4">
+                          {pr ? (
+                            <div>
+                              <StatusChip
+                                label={pr.level}
+                                tone={
+                                  pr.level === 'HIGH'
+                                    ? 'danger'
+                                    : pr.level === 'WATCH'
+                                      ? 'caution'
+                                      : pr.level === 'LOW'
+                                        ? 'success'
+                                        : 'neutral'
+                                }
+                              />
+                              {pr.triggers && pr.triggers.length > 0 && (
+                                <p className="text-[0.6875rem] text-body mt-1">
+                                  {pr.triggers.map((t) => t.code).join(', ')}
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-xs text-body">—</span>
+                          )}
                         </td>
 
                         <td className="py-3 px-4">

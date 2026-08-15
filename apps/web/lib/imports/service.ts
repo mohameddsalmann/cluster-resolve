@@ -76,6 +76,11 @@ import {
   sanitizeFilename,
 } from './storage';
 import { importOrderRowsBatched } from './orders-batch';
+import {
+  importDecisionRowsBatched,
+  importOfferRowsBatched,
+  importOutcomeRowsBatched,
+} from './batch-importers';
 
 export interface InitializeImportInput {
   datasetId: string;
@@ -183,7 +188,11 @@ export async function initializeImport(
     };
   } catch (error) {
     const safe = jobErrorResponse(error);
-    await failImportJob(job.id, safe.code, safe.message);
+    try {
+      await failImportJob(job.id, safe.code, safe.message);
+    } catch (recordingError) {
+      console.error('[imports] Could not record initialization failure:', recordingError);
+    }
     throw error;
   }
 }
@@ -300,7 +309,12 @@ export async function processStoredImport(
     };
   } catch (error) {
     const safe = jobErrorResponse(error);
-    await failImportJob(job.id, safe.code, safe.message);
+    console.error('[imports] Processing failed:', error);
+    try {
+      await failImportJob(job.id, safe.code, safe.message);
+    } catch (recordingError) {
+      console.error('[imports] Could not record failure; original processing error is preserved:', recordingError);
+    }
     return {
       jobId: job.id,
       state: 'FAILED',
@@ -345,6 +359,9 @@ async function importRows(
   persistenceMs: number;
 }> {
   if (kind === 'ORDERS') return importOrderRowsBatched(datasetId, jobId, rows);
+  if (kind === 'OFFERS') return importOfferRowsBatched(datasetId, jobId, rows);
+  if (kind === 'DECISIONS') return importDecisionRowsBatched(datasetId, jobId, rows);
+  if (kind === 'OUTCOMES') return importOutcomeRowsBatched(datasetId, jobId, rows);
 
   const persistenceStarted = performance.now();
   const caches: ReferenceCaches = {

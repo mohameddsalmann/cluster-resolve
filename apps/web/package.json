@@ -15,7 +15,11 @@
     "test:e2e": "playwright test",
     "benchmark:imports": "vitest run tests/benchmarks/imports.benchmark.test.ts",
     "benchmark:operations": "vitest run tests/benchmarks/operations.benchmark.test.ts",
-    "demo:seed": "tsx scripts/demo-seed.ts"
+    "demo:seed": "tsx scripts/demo-seed.ts",
+    "demo:reference:download": "tsx scripts/download-public-reference.ts",
+    "demo:data:generate": "tsx scripts/generate-founder-demo-data.ts",
+    "demo:data:validate": "tsx scripts/validate-founder-demo-data.ts",
+    "demo:data:import": "tsx scripts/import-founder-demo.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

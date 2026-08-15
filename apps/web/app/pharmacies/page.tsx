@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Building2 } from 'lucide-react';
 import { AppShell, PageBody, TopContextBar } from '@/components/cluster/AppShell';
 import { DataTable, type Column } from '@/components/cluster/DataTable';
@@ -47,7 +46,6 @@ const riskLabel: Record<PharmacyServiceRiskLevel, string> = {
 };
 
 export default function PharmaciesPage() {
-  const router = useRouter();
   const { activeDatasetId, activeDataset } = useDataset();
   const [pharmacies, setPharmacies] = useState<PharmacyListItem[]>([]);
   const [loading, setLoading] = useState(true);

@@ -39,6 +39,8 @@ export interface DecisionReplayOutcomeInput {
   outcomeFinal: boolean;
 }
 
+import type { CurrentOfferPromiseRiskEvidence } from '../supplier/types';
+
 export interface ReplaySupplierCandidate {
   supplierId: string;
   externalSupplierId: string;
@@ -59,7 +61,9 @@ export interface ReplaySupplierCandidate {
     effectiveItemPriceMinor: bigint;
     promisedDeliveryAt: string | null;
     offeredAt: string;
+    promiseRisk?: CurrentOfferPromiseRiskEvidence | null;
   }>;
+  promiseRisk?: CurrentOfferPromiseRiskEvidence | null;
   dominatesSelected: boolean;
   dominationReasons: string[];
 }

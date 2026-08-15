@@ -13,6 +13,13 @@ import { getProductById } from '../db/repositories/products';
 import { getSupplierById } from '../db/repositories/suppliers';
 import { listSupplierOffersByOrder } from '../db/repositories/offers';
 import { listOrderOutcomesByOrder } from '../db/repositories/outcomes';
+import { getSupabaseServerClient } from '../supabase/server';
+import { evaluateCurrentOfferPromiseRisk } from '@cluster/core/supplier/promise-risk';
+import type { CurrentOfferPromiseRiskEvidence } from '@cluster/core/supplier/types';
+import type { Database } from '../db/generated-types';
+
+type SupplierSnapshot = Database['public']['Tables']['supplier_reliability_snapshots']['Row'];
+type ProductSnapshot = Database['public']['Tables']['supplier_product_reliability_snapshots']['Row'];
 
 export async function getDecisionReplay(
   datasetId: string,
@@ -119,5 +126,98 @@ export async function getDecisionReplay(
     selectedOutcome,
   };
 
-  return evaluateDecisionReplay(evaluationInput);
+  const result = evaluateDecisionReplay(evaluationInput);
+
+  // Enrich candidate offers with Current Offer Promise Risk
+  try {
+    const supabase = getSupabaseServerClient();
+    const candidateSupplierIds = result.candidates.map((c) => c.supplierId);
+    if (candidateSupplierIds.length > 0) {
+      const [supplierSnaps, productSnaps] = await Promise.all([
+        supabase
+          .from('supplier_reliability_snapshots')
+          .select('*')
+          .eq('dataset_id', datasetId)
+          .in('supplier_id', candidateSupplierIds)
+          .lte('as_of_date', decision.decided_at.slice(0, 10))
+          .order('as_of_date', { ascending: false }),
+        supabase
+          .from('supplier_product_reliability_snapshots')
+          .select('*')
+          .eq('dataset_id', datasetId)
+          .in('supplier_id', candidateSupplierIds)
+          .lte('as_of_date', decision.decided_at.slice(0, 10))
+          .order('as_of_date', { ascending: false }),
+      ]);
+
+      const latestSuppSnap = new Map<string, SupplierSnapshot>();
+      for (const row of supplierSnaps.data ?? []) {
+        if (!latestSuppSnap.has(row.supplier_id)) latestSuppSnap.set(row.supplier_id, row);
+      }
+
+      const latestProdSnap = new Map<string, ProductSnapshot>();
+      for (const row of productSnaps.data ?? []) {
+        const key = `${row.supplier_id}\u0000${row.product_id}`;
+        if (!latestProdSnap.has(key)) latestProdSnap.set(key, row);
+      }
+
+      for (const cand of result.candidates) {
+        const sSnap = latestSuppSnap.get(cand.supplierId);
+        const supplierMetrics = sSnap
+          ? {
+              evaluatedOrders: sSnap.recent_evaluated_orders ?? 0,
+              fillRateBps: sSnap.recent_fill_rate_bps ?? null,
+              otifRateBps: sSnap.recent_otif_rate_bps ?? null,
+              cancellationRateBps: sSnap.recent_cancellation_rate_bps ?? null,
+              partialFillRateBps: sSnap.recent_partial_fill_rate_bps ?? null,
+              leadTimeP50Minutes: sSnap.recent_lead_time_p50_minutes ?? null,
+              leadTimeP95Minutes: sSnap.recent_lead_time_p95_minutes ?? null,
+            }
+          : {
+              evaluatedOrders: 0,
+              fillRateBps: null,
+              otifRateBps: null,
+              cancellationRateBps: null,
+              partialFillRateBps: null,
+              leadTimeP50Minutes: null,
+              leadTimeP95Minutes: null,
+            };
+
+        let worstCandidateRisk: CurrentOfferPromiseRiskEvidence | null = null;
+
+        for (const off of cand.offers) {
+          const pSnap = latestProdSnap.get(`${cand.supplierId}\u0000${off.productId}`);
+          const productMetrics = pSnap
+            ? {
+                evaluatedOrders: pSnap.recent_evaluated_orders ?? 0,
+                fillRateBps: pSnap.recent_fill_rate_bps ?? null,
+                otifRateBps: pSnap.recent_otif_rate_bps ?? null,
+                cancellationRateBps: pSnap.recent_cancellation_rate_bps ?? null,
+                partialFillRateBps: pSnap.recent_partial_fill_rate_bps ?? null,
+                leadTimeP50Minutes: pSnap.recent_lead_time_p50_minutes ?? null,
+                leadTimeP95Minutes: pSnap.recent_lead_time_p95_minutes ?? null,
+              }
+            : null;
+
+          const risk = evaluateCurrentOfferPromiseRisk({
+            requestedQty: off.requestedQty,
+            availableQty: off.availableQty,
+            promisedDeliveryAt: off.promisedDeliveryAt,
+            orderPlacedAt: result.orderPlacedAt,
+            productMetrics,
+            supplierMetrics,
+          });
+          off.promiseRisk = risk;
+          if (!worstCandidateRisk || (risk.level === 'HIGH' && worstCandidateRisk.level !== 'HIGH')) {
+            worstCandidateRisk = risk;
+          }
+        }
+        cand.promiseRisk = worstCandidateRisk;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to attach promise risk to replay candidates:', err);
+  }
+
+  return result;
 }

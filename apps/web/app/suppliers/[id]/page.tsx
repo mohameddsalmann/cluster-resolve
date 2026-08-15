@@ -17,7 +17,6 @@ import {
 } from '@/components/cluster/primitives';
 import { useDataset } from '@/lib/context/dataset-context';
 import { generateCoachingInsights } from '@cluster/core/supplier/coach';
-import { calculatePromiseRiskMetrics } from '@cluster/core/supplier/promise-risk';
 import type {
   CoachingInsight,
   PromiseRiskMetrics,
@@ -52,6 +51,12 @@ interface SupplierDetailData {
   } | null;
   productSnapshots: Array<{
     product_id: string;
+    product?: {
+      id: string;
+      external_product_id: string;
+      name: string;
+      manufacturer: string | null;
+    } | null;
     status: string;
     recent_evaluated_orders: number;
     recent_fill_rate_bps: number | null;
@@ -59,6 +64,25 @@ interface SupplierDetailData {
     recent_cancellation_rate_bps: number | null;
     triggers_json: unknown;
   }>;
+  monthlyTrends?: Array<{
+    month: string;
+    evaluatedOrders: number;
+    cancellationRateBps: number;
+    medianLeadTimeHours: number | null;
+  }>;
+  driverAnalysis?: {
+    deterioratingProducts: Array<{
+      product_id: string;
+      product?: { id: string; external_product_id: string; name: string } | null;
+      status: string;
+      recent_fill_rate_bps: number | null;
+      baseline_fill_rate_bps?: number | null;
+    }>;
+    topPharmaciesWithExceptions: Array<{
+      pharmacy: { id: string; external_pharmacy_id: string; name: string | null };
+      exceptionCount: number;
+    }>;
+  };
   snapshots: Array<Record<string, unknown>>;
   exceptions: Array<{
     id: string;
@@ -399,9 +423,14 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
                   <tbody className="divide-y divide-line">
                     {productSnapshots.map((ps) => {
                       const productStatus = (ps.status ?? 'INSUFFICIENT_DATA') as string;
+                      const prodName = ps.product?.name ?? String(ps.product_id).slice(0, 8);
+                      const prodExt = ps.product?.external_product_id;
                       return (
                         <tr key={String(ps.product_id)} className="hover:bg-[rgba(15,110,255,0.02)]">
-                          <td className="py-3 pr-4 font-mono text-xs text-ink">{String(ps.product_id).slice(0, 8)}…</td>
+                          <td className="py-3 pr-4 text-ink">
+                            <div className="font-semibold text-ink truncate max-w-xs">{prodName}</div>
+                            {prodExt && <span className="cl-meta">{prodExt}</span>}
+                          </td>
                           <td className="py-3 pr-4 text-right">
                             <StatusChip
                               label={statusLabel[productStatus] ?? productStatus}
@@ -415,6 +444,43 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
                         </tr>
                       );
                     })}
+                  </tbody>
+                </table>
+              </div>
+            </Panel>
+          )}
+
+          {/* Historical Trends — NEW in Chunk 3 */}
+          {data?.monthlyTrends && data.monthlyTrends.length > 0 && (
+            <Panel
+              title="Historical Monthly Performance Trends"
+              description="Aggregated order execution movement across the historical operational timeline."
+            >
+              <div className="overflow-x-auto">
+                <table className="w-full text-[0.875rem]" aria-label="Monthly performance trends">
+                  <thead>
+                    <tr className="border-b border-line text-left text-body">
+                      <th className="pb-2 pr-4 font-medium">Month</th>
+                      <th className="pb-2 pr-4 font-medium text-right">Orders</th>
+                      <th className="pb-2 pr-4 font-medium text-right">Cancellation Rate</th>
+                      <th className="pb-2 font-medium text-right">Median Lead Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-line">
+                    {data.monthlyTrends.map((t) => (
+                      <tr key={t.month} className="hover:bg-[rgba(15,110,255,0.02)]">
+                        <td className="py-3 pr-4 font-mono font-semibold text-ink">{t.month}</td>
+                        <td className="py-3 pr-4 text-right text-ink">{t.evaluatedOrders}</td>
+                        <td className="py-3 pr-4 text-right">
+                          <span className={t.cancellationRateBps > 1000 ? 'text-danger font-semibold' : 'text-ink'}>
+                            {bpsToPercent(t.cancellationRateBps)}
+                          </span>
+                        </td>
+                        <td className="py-3 text-right font-mono text-ink">
+                          {t.medianLeadTimeHours !== null ? `${t.medianLeadTimeHours}h` : '—'}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

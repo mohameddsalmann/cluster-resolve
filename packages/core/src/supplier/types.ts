@@ -113,4 +113,51 @@ export interface PharmacyServiceRisk {
   serviceRiskLevel: PharmacyServiceRiskLevel;
 }
 
+/** Current Offer Promise Risk states — deterministic assessment of recorded offer vs fulfillment history. */
+export type CurrentOfferPromiseRiskState = 'LOW' | 'WATCH' | 'HIGH' | 'INSUFFICIENT_DATA';
+
+export interface CurrentOfferPromiseRiskTrigger {
+  code:
+    | 'LEAD_TIME_BELOW_P95'
+    | 'LEAD_TIME_BELOW_P50'
+    | 'POOR_FILL_RATE_HISTORY'
+    | 'ELEVATED_CANCELLATIONS'
+    | 'FREQUENT_PARTIAL_FILLS';
+  severity: 'WARN' | 'CRITICAL';
+  message: string;
+  evidenceKey: string;
+}
+
+export interface CurrentOfferPromiseRiskEvidence {
+  level: CurrentOfferPromiseRiskState;
+  evidenceSource: 'PRODUCT' | 'SUPPLIER' | 'NONE';
+  currentOffer: {
+    requestedQty: number;
+    availableQty: number;
+    promisedDeliveryAt: string | null;
+    orderPlacedAt: string;
+    promisedLeadTimeMinutes: number | null;
+  };
+  historicalEvidence: {
+    evaluatedOrders: number;
+    fillRateBps: number | null;
+    otifRateBps: number | null;
+    cancellationRateBps: number | null;
+    partialFillRateBps: number | null;
+    leadTimeP50Minutes: number | null;
+    leadTimeP95Minutes: number | null;
+  };
+  triggers: CurrentOfferPromiseRiskTrigger[];
+  summary: string;
+}
+
+export interface CurrentOfferPromiseRiskInput {
+  requestedQty: number;
+  availableQty: number;
+  promisedDeliveryAt: string | null;
+  orderPlacedAt: string;
+  productMetrics?: ReliabilityMetrics | null;
+  supplierMetrics: ReliabilityMetrics;
+}
+
 export type SupplierObservationInput = OperationalEvaluationInput;

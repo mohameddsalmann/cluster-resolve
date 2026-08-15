@@ -23,10 +23,6 @@ export interface BatchedOrderImportResult {
   persistenceMs: number;
 }
 
-// Keep UUID `.in(...)` filters comfortably below the Data API/Undici header limit.
-const QUERY_BATCH_SIZE = 150;
-const WRITE_BATCH_SIZE = 400;
-
 export async function importOrderRowsBatched(
   datasetId: string,
   jobId: string,
@@ -353,28 +349,67 @@ async function fetchCrossDatasetIds(
   return new Set(found);
 }
 
+const QUERY_BATCH_SIZE = 300;
+const WRITE_BATCH_SIZE = 300;
+const CONCURRENCY = 4;
+
 async function upsertBatches<T extends 'pharmacies' | 'products' | 'orders' | 'order_items'>(
   table: T,
   values: Inserts[T]['Insert'][],
   onConflict: string
 ): Promise<void> {
   const supabase = getSupabaseServerClient();
-  for (const batch of chunks(values, WRITE_BATCH_SIZE)) {
-    if (batch.length === 0) continue;
-    const { error } = await supabase
-      .from(table)
-      .upsert(batch as never, { onConflict, ignoreDuplicates: true });
-    if (error) throw error;
-  }
+  const chunkList = chunks(values, WRITE_BATCH_SIZE).filter((b) => b.length > 0);
+  await mapConcurrent(chunkList, CONCURRENCY, async (batch) => {
+    await withRetry(async () => {
+      const { error } = await supabase
+        .from(table)
+        .upsert(batch as never, { onConflict, ignoreDuplicates: true });
+      if (error) throw error;
+    });
+  });
 }
 
 async function fetchInBatches<T>(
   values: string[],
   load: (batch: string[]) => Promise<T[]>
 ): Promise<T[]> {
-  const output: T[] = [];
-  for (const batch of chunks(values, QUERY_BATCH_SIZE)) output.push(...await load(batch));
-  return output;
+  const chunkList = chunks(values, QUERY_BATCH_SIZE).filter((b) => b.length > 0);
+  const results = await mapConcurrent(chunkList, CONCURRENCY, (batch) => withRetry(() => load(batch)));
+  return results.flat();
+}
+
+async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 400): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (i < attempts - 1) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs * (i + 1)));
+      }
+    }
+  }
+  throw lastErr;
+}
+
+async function mapConcurrent<T, R>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T) => Promise<R>
+): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let index = 0;
+  async function worker() {
+    while (index < items.length) {
+      const i = index++;
+      results[i] = await fn(items[i]);
+    }
+  }
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => worker());
+  await Promise.all(workers);
+  return results;
 }
 
 function chunks<T>(values: T[], size: number): T[][] {

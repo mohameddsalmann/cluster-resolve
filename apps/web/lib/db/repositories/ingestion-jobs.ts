@@ -71,6 +71,15 @@ export async function findActiveIdenticalImport(
     .limit(1)
     .maybeSingle();
   if (error) requireData(data, error, 'Find identical ingestion job');
+  if (!data) return null;
+  if (data.status === 'PROCESSING') {
+    const started = data.started_at ? Date.parse(data.started_at) : 0;
+    const isStale = Date.now() - started > 5 * 60 * 1000;
+    if (isStale) {
+      await failImportJob(data.id, 'JOB_TIMEOUT', 'The previous import attempt timed out.');
+      return null;
+    }
+  }
   return data;
 }
 
@@ -90,6 +99,22 @@ export async function startImportJob(jobId: string, hash: string, totalRows: num
     })
     .eq('id', jobId);
   if (error) requireData(null, error, 'Start ingestion job');
+}
+
+export async function updateImportJobProgress(
+  jobId: string,
+  counts: { processed: number; valid: number; errors: number }
+): Promise<void> {
+  const { error } = await getSupabaseServerClient()
+    .from('ingestion_jobs')
+    .update({
+      processed_rows: counts.processed,
+      valid_rows: counts.valid,
+      error_rows: counts.errors,
+    })
+    .eq('id', jobId)
+    .eq('status', 'PROCESSING');
+  if (error) requireData(null, error, 'Update ingestion job progress');
 }
 
 export async function completeImportJob(
