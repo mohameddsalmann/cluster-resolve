@@ -98,6 +98,17 @@ export function buildSupplierOrderObservations(
       else leadTimeMinutes = difference;
     }
 
+    // Resolve promise delivery date for the observation: use the earliest promised_delivery_at
+    // from any offer matching this order+supplier combination.
+    const supplierOfferPromises = input.offers
+      .filter((offer) => offer.orderId === order.id && offer.supplierId === first.supplierId)
+      .map((offer) => offer.promisedDeliveryAt)
+      .filter((value): value is string => value !== null);
+    const promisedDeliveryAt: string | null =
+      supplierOfferPromises.length > 0
+        ? supplierOfferPromises.sort((a, b) => timestamp(a) - timestamp(b))[0]
+        : null;
+
     observations.push({
       datasetId: order.datasetId,
       supplierId: first.supplierId,
@@ -114,6 +125,7 @@ export function buildSupplierOrderObservations(
       leadTimeMinutes,
       outcomeIds: validLines.map((line) => line.outcome.id).sort(),
       productIds: validLines.map((line) => line.outcome.productId).sort(),
+      promisedDeliveryAt,
     });
   }
   return { observations, diagnostics };

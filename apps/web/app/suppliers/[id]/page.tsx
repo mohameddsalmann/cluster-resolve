@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Truck } from 'lucide-react';
 import { AppShell, PageBody, TopContextBar } from '@/components/cluster/AppShell';
@@ -16,6 +16,13 @@ import {
   type ChipTone,
 } from '@/components/cluster/primitives';
 import { useDataset } from '@/lib/context/dataset-context';
+import { generateCoachingInsights } from '@cluster/core/supplier/coach';
+import { calculatePromiseRiskMetrics } from '@cluster/core/supplier/promise-risk';
+import type {
+  CoachingInsight,
+  PromiseRiskMetrics,
+  SupplierReliabilityEvaluation,
+} from '@cluster/core/supplier/types';
 
 interface SupplierDetailData {
   supplier: {
@@ -41,7 +48,17 @@ interface SupplierDetailData {
     recent_lead_time_p95_minutes: number | null;
     baseline_lead_time_p95_minutes: number | null;
     triggers_json: unknown;
+    promise_risk_json: unknown;
   } | null;
+  productSnapshots: Array<{
+    product_id: string;
+    status: string;
+    recent_evaluated_orders: number;
+    recent_fill_rate_bps: number | null;
+    recent_otif_rate_bps: number | null;
+    recent_cancellation_rate_bps: number | null;
+    triggers_json: unknown;
+  }>;
   snapshots: Array<Record<string, unknown>>;
   exceptions: Array<{
     id: string;
@@ -70,6 +87,31 @@ const statusTone: Record<string, ChipTone> = {
   HIGH: 'danger',
   INSUFFICIENT_DATA: 'neutral',
 };
+
+const statusLabel: Record<string, string> = {
+  HEALTHY: 'Healthy',
+  WATCH: 'Watch',
+  HIGH: 'High Risk',
+  INSUFFICIENT_DATA: 'Insufficient Data',
+};
+
+const coachingSeverityTone: Record<CoachingInsight['severity'], ChipTone> = {
+  CRITICAL: 'danger',
+  WARN: 'caution',
+  INFO: 'neutral',
+};
+
+const promiseRiskTone: Record<string, ChipTone> = {
+  LOW: 'success',
+  MEDIUM: 'caution',
+  HIGH: 'danger',
+  INSUFFICIENT_DATA: 'neutral',
+};
+
+function bpsToPercent(bps: number | null | undefined): string {
+  if (bps === null || bps === undefined) return '—';
+  return `${(bps / 100).toFixed(0)}%`;
+}
 
 export default function SupplierDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: supplierId } = use(params);
@@ -109,6 +151,66 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
     };
   }, [activeDatasetId, supplierId]);
 
+  // Derive coaching insights and promise risk from the loaded snapshot data
+  const { coachingInsights, promiseRisk } = useMemo<{
+    coachingInsights: CoachingInsight[];
+    promiseRisk: PromiseRiskMetrics | null;
+  }>(() => {
+    if (!data?.latestReliability) return { coachingInsights: [], promiseRisk: null };
+    const rel = data.latestReliability;
+
+    // Reconstruct SupplierReliabilityEvaluation from snapshot
+    const triggers = Array.isArray(rel.triggers_json) ? rel.triggers_json : [];
+    const evaluation: SupplierReliabilityEvaluation = {
+      datasetId: activeDatasetId ?? '',
+      supplierId,
+      asOf: rel.as_of_date,
+      recentWindowDays: 14,
+      baselineWindowDays: 30,
+      recent: {
+        evaluatedOrders: rel.recent_evaluated_orders,
+        fillRateBps: rel.recent_fill_rate_bps,
+        otifRateBps: rel.recent_otif_rate_bps,
+        cancellationRateBps: rel.recent_cancellation_rate_bps,
+        partialFillRateBps: rel.recent_partial_fill_rate_bps,
+        leadTimeP50Minutes: rel.recent_lead_time_p50_minutes,
+        leadTimeP95Minutes: rel.recent_lead_time_p95_minutes,
+      },
+      baseline: {
+        evaluatedOrders: rel.baseline_evaluated_orders,
+        fillRateBps: rel.baseline_fill_rate_bps,
+        otifRateBps: rel.baseline_otif_rate_bps,
+        cancellationRateBps: rel.baseline_cancellation_rate_bps,
+        partialFillRateBps: rel.baseline_partial_fill_rate_bps,
+        leadTimeP50Minutes: null,
+        leadTimeP95Minutes: rel.baseline_lead_time_p95_minutes,
+      },
+      status: rel.status,
+      triggers: triggers as SupplierReliabilityEvaluation['triggers'],
+      recentOrderIds: [],
+      baselineOrderIds: [],
+    };
+
+    // Promise risk from the persisted promise_risk_json field
+    let computedPromiseRisk: PromiseRiskMetrics | null = null;
+    if (rel.promise_risk_json && typeof rel.promise_risk_json === 'object') {
+      const pr = rel.promise_risk_json as Record<string, unknown>;
+      if (typeof pr['promiseRiskLevel'] === 'string') {
+        computedPromiseRisk = {
+          promiseGivenCount: typeof pr['promiseGivenCount'] === 'number' ? pr['promiseGivenCount'] : 0,
+          promiseHonouredCount: typeof pr['promiseHonouredCount'] === 'number' ? pr['promiseHonouredCount'] : 0,
+          promiseHonouredBps: typeof pr['promiseHonouredBps'] === 'number' ? pr['promiseHonouredBps'] : null,
+          promiseRiskLevel: pr['promiseRiskLevel'] as PromiseRiskMetrics['promiseRiskLevel'],
+        };
+      }
+    }
+
+    return {
+      coachingInsights: generateCoachingInsights(evaluation, computedPromiseRisk),
+      promiseRisk: computedPromiseRisk,
+    };
+  }, [data, activeDatasetId, supplierId]);
+
   if (loading) {
     return (
       <AppShell>
@@ -136,39 +238,16 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
     );
   }
 
-  const { supplier, latestReliability, affectedOrders, decisions } = data;
+  const { supplier, latestReliability, affectedOrders, decisions, productSnapshots } = data;
   const status = latestReliability?.status ?? 'INSUFFICIENT_DATA';
   const label = status === 'INSUFFICIENT_DATA' ? 'INSUFFICIENT DATA' : status;
 
-  const fillRateRecent =
-    latestReliability?.recent_fill_rate_bps !== null && latestReliability?.recent_fill_rate_bps !== undefined
-      ? `${(latestReliability.recent_fill_rate_bps / 100).toFixed(0)}%`
-      : '—';
-  const fillRateBaseline =
-    latestReliability?.baseline_fill_rate_bps !== null && latestReliability?.baseline_fill_rate_bps !== undefined
-      ? `${(latestReliability.baseline_fill_rate_bps / 100).toFixed(0)}%`
-      : '—';
-
-  const otifRecent =
-    latestReliability?.recent_otif_rate_bps !== null && latestReliability?.recent_otif_rate_bps !== undefined
-      ? `${(latestReliability.recent_otif_rate_bps / 100).toFixed(0)}%`
-      : '—';
-  const otifBaseline =
-    latestReliability?.baseline_otif_rate_bps !== null && latestReliability?.baseline_otif_rate_bps !== undefined
-      ? `${(latestReliability.baseline_otif_rate_bps / 100).toFixed(0)}%`
-      : '—';
-
-  const cancelRecent =
-    latestReliability?.recent_cancellation_rate_bps !== null &&
-    latestReliability?.recent_cancellation_rate_bps !== undefined
-      ? `${(latestReliability.recent_cancellation_rate_bps / 100).toFixed(0)}%`
-      : '—';
-  const cancelBaseline =
-    latestReliability?.baseline_cancellation_rate_bps !== null &&
-    latestReliability?.baseline_cancellation_rate_bps !== undefined
-      ? `${(latestReliability.baseline_cancellation_rate_bps / 100).toFixed(0)}%`
-      : '—';
-
+  const fillRateRecent = bpsToPercent(latestReliability?.recent_fill_rate_bps);
+  const fillRateBaseline = bpsToPercent(latestReliability?.baseline_fill_rate_bps);
+  const otifRecent = bpsToPercent(latestReliability?.recent_otif_rate_bps);
+  const otifBaseline = bpsToPercent(latestReliability?.baseline_otif_rate_bps);
+  const cancelRecent = bpsToPercent(latestReliability?.recent_cancellation_rate_bps);
+  const cancelBaseline = bpsToPercent(latestReliability?.baseline_cancellation_rate_bps);
   const p95LeadRecent =
     latestReliability?.recent_lead_time_p95_minutes !== null &&
     latestReliability?.recent_lead_time_p95_minutes !== undefined
@@ -209,6 +288,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
         />
 
         <div className="space-y-6">
+          {/* Reliability overview */}
           <section aria-label="Reliability overview">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <Metric label="Fill rate" value={fillRateRecent} coverage="Recent window" />
@@ -218,6 +298,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
             </div>
           </section>
 
+          {/* Baseline comparison */}
           {status !== 'INSUFFICIENT_DATA' ? (
             <Panel
               title="Recent vs baseline"
@@ -242,6 +323,105 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
             </Panel>
           )}
 
+          {/* Performance Coach — NEW in Chunk 3 */}
+          <Panel
+            title="Performance Coach"
+            description="Deterministic evidence-backed insights derived from evaluation data."
+          >
+            {coachingInsights.length === 0 ? (
+              <p className="text-[0.9375rem] text-body">No coaching insights available — insufficient evaluation data.</p>
+            ) : (
+              <ul className="space-y-4">
+                {coachingInsights.map((insight, idx) => (
+                  <li key={idx} className="flex gap-3">
+                    <StatusChip
+                      label={insight.severity}
+                      tone={coachingSeverityTone[insight.severity]}
+                    />
+                    <p className="text-[0.9375rem] text-ink leading-relaxed">{insight.message}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Panel>
+
+          {/* Promise Fidelity — NEW in Chunk 3 */}
+          <Panel
+            title="Promise fidelity"
+            description="How reliably this supplier honours promised delivery dates."
+          >
+            {promiseRisk === null ? (
+              <p className="text-[0.9375rem] text-body">Promise risk data not yet computed. Re-run evaluation to generate.</p>
+            ) : promiseRisk.promiseRiskLevel === 'INSUFFICIENT_DATA' ? (
+              <p className="text-[0.9375rem] text-body">
+                Fewer than 5 orders had a promised delivery date. More data is needed to evaluate promise fidelity.
+              </p>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Metric
+                  label="Promise risk"
+                  value={promiseRisk.promiseRiskLevel}
+                  coverage="Based on honoured vs given promises"
+                  state={{ label: promiseRisk.promiseRiskLevel, tone: promiseRiskTone[promiseRisk.promiseRiskLevel] ?? 'neutral' }}
+                />
+                <Metric
+                  label="Promises given"
+                  value={String(promiseRisk.promiseGivenCount)}
+                  coverage="Orders with a promised delivery date"
+                />
+                <Metric
+                  label="Promises honoured"
+                  value={`${promiseRisk.promiseHonouredCount} (${bpsToPercent(promiseRisk.promiseHonouredBps)})`}
+                  coverage="Delivered on or before promised date"
+                />
+              </div>
+            )}
+          </Panel>
+
+          {/* Product Breakdown — NEW in Chunk 3 */}
+          {productSnapshots && productSnapshots.length > 0 && (
+            <Panel
+              title="Product breakdown"
+              description="Per-product reliability evaluated independently against the same baseline policy."
+            >
+              <div className="overflow-x-auto">
+                <table className="w-full text-[0.875rem]" aria-label="Product reliability breakdown">
+                  <thead>
+                    <tr className="border-b border-line text-left text-body">
+                      <th className="pb-2 pr-4 font-medium">Product</th>
+                      <th className="pb-2 pr-4 font-medium text-right">Status</th>
+                      <th className="pb-2 pr-4 font-medium text-right">Orders</th>
+                      <th className="pb-2 pr-4 font-medium text-right">Fill Rate</th>
+                      <th className="pb-2 pr-4 font-medium text-right">OTIF</th>
+                      <th className="pb-2 font-medium text-right">Cancellation</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-line">
+                    {productSnapshots.map((ps) => {
+                      const productStatus = (ps.status ?? 'INSUFFICIENT_DATA') as string;
+                      return (
+                        <tr key={String(ps.product_id)} className="hover:bg-[rgba(15,110,255,0.02)]">
+                          <td className="py-3 pr-4 font-mono text-xs text-ink">{String(ps.product_id).slice(0, 8)}…</td>
+                          <td className="py-3 pr-4 text-right">
+                            <StatusChip
+                              label={statusLabel[productStatus] ?? productStatus}
+                              tone={statusTone[productStatus] ?? 'neutral'}
+                            />
+                          </td>
+                          <td className="py-3 pr-4 text-right text-ink">{ps.recent_evaluated_orders ?? 0}</td>
+                          <td className="py-3 pr-4 text-right text-ink">{bpsToPercent(ps.recent_fill_rate_bps)}</td>
+                          <td className="py-3 pr-4 text-right text-ink">{bpsToPercent(ps.recent_otif_rate_bps)}</td>
+                          <td className="py-3 text-right text-ink">{bpsToPercent(ps.recent_cancellation_rate_bps)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Panel>
+          )}
+
+          {/* Deterioration triggers */}
           <Panel title="Why flagged / Deterioration triggers">
             {triggers.length === 0 ? (
               <p className="text-[0.9375rem] text-body">

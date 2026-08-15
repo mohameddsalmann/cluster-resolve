@@ -1,4 +1,5 @@
 import type { PostgrestError } from '@supabase/supabase-js';
+import { evaluatePharmacyServiceRisk } from '@cluster/core/supplier/pharmacy-risk';
 import { getSupabaseServerClient } from '../supabase/server';
 
 interface OrderBase { id: string; external_order_id: string; pharmacy_id: string; status: string; placed_at: string }
@@ -23,6 +24,8 @@ interface SnapshotBase {
   recent_partial_fill_rate_bps: number | null; baseline_partial_fill_rate_bps: number | null;
   recent_lead_time_p50_minutes: number | null; recent_lead_time_p95_minutes: number | null;
   baseline_lead_time_p95_minutes: number | null; triggers_json: unknown; engine_version: string;
+  /** Added in Chunk 3 migration — optional until remote schema is updated. */
+  promise_risk_json?: unknown;
 }
 
 export async function listOrderReadModels(datasetId: string) {
@@ -105,22 +108,65 @@ export async function getSupplierReadModel(datasetId: string, supplierId: string
   const supplierResult = await supabase.from('suppliers').select('id, external_supplier_id, name').eq('dataset_id', datasetId).eq('id', supplierId).maybeSingle();
   if (supplierResult.error) throw supplierResult.error;
   if (!supplierResult.data) return null;
-  const [snapshots, exceptions, outcomes, decisions, orders] = await Promise.all([
+  const [snapshots, productSnapshots, exceptions, outcomes, decisions, orders] = await Promise.all([
     fetchPaged<SnapshotBase>((from, to) => supabase.from('supplier_reliability_snapshots').select('*').eq('dataset_id', datasetId).eq('supplier_id', supplierId).order('as_of_date', { ascending: false }).range(from, to)),
+    fetchProductSnapshots(supabase, datasetId, supplierId),
     fetchPaged<ExceptionBase>((from, to) => supabase.from('order_exceptions').select('id, order_id, supplier_id, product_id, type, severity, evidence_json, detected_at, engine_version').eq('dataset_id', datasetId).eq('supplier_id', supplierId).range(from, to)),
     fetchPaged<OutcomeBase>((from, to) => supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, cancellation_reason, outcome_final').eq('dataset_id', datasetId).eq('supplier_id', supplierId).range(from, to)),
     fetchPaged<DecisionBase>((from, to) => supabase.from('ai_decisions').select('id, external_decision_id, order_id, selected_supplier_id, decided_at').eq('dataset_id', datasetId).eq('selected_supplier_id', supplierId).range(from, to)),
     fetchPaged<OrderBase>((from, to) => supabase.from('orders').select('id, external_order_id, pharmacy_id, status, placed_at').eq('dataset_id', datasetId).range(from, to)),
   ]);
   const affectedIds = new Set([...exceptions.map((value) => value.order_id), ...outcomes.map((value) => value.order_id)]);
+
+  // Get latest product snapshot per product
+  const latestProductSnapshots = firstBy(productSnapshots, (s) => String(s['product_id']));
+  const productSnapshotList = [...latestProductSnapshots.values()];
+
   return {
     supplier: supplierResult.data,
     latestReliability: snapshots[0] ?? null,
     snapshots,
+    productSnapshots: productSnapshotList,
     exceptions,
     affectedOrders: orders.filter((value) => affectedIds.has(value.id)),
     decisions,
   };
+}
+
+export async function listPharmacyReadModels(datasetId: string) {
+  const supabase = getSupabaseServerClient();
+  interface PharmacyRow { id: string; external_pharmacy_id: string; name: string | null }
+  interface OrderForPharmacy { id: string; pharmacy_id: string }
+  interface ExceptionForPharmacy { id: string; order_id: string; type: string; severity: string }
+
+  const [pharmacies, orders, exceptions] = await Promise.all([
+    fetchPaged<PharmacyRow>((from, to) => supabase.from('pharmacies').select('id, external_pharmacy_id, name').eq('dataset_id', datasetId).range(from, to)),
+    fetchPaged<OrderForPharmacy>((from, to) => supabase.from('orders').select('id, pharmacy_id').eq('dataset_id', datasetId).range(from, to)),
+    fetchPaged<ExceptionForPharmacy>((from, to) => supabase.from('order_exceptions').select('id, order_id, type, severity').eq('dataset_id', datasetId).range(from, to)),
+  ]);
+
+  // Re-map exceptions by orderId for efficient lookup
+  const exceptionsByOrderId = new Map<string, ExceptionForPharmacy[]>();
+  for (const exc of exceptions) {
+    const list = exceptionsByOrderId.get(exc.order_id) ?? [];
+    list.push(exc);
+    exceptionsByOrderId.set(exc.order_id, list);
+  }
+
+  return pharmacies.map((pharmacy) => {
+    const pharmacyOrders = orders
+      .filter((o) => o.pharmacy_id === pharmacy.id)
+      .map((o) => ({ orderId: o.id }));
+    const pharmacyExceptions = pharmacyOrders.flatMap((o) =>
+      (exceptionsByOrderId.get(o.orderId) ?? []).map((exc) => ({
+        orderId: exc.order_id,
+        type: exc.type,
+        severity: exc.severity,
+      }))
+    );
+    const risk = evaluatePharmacyServiceRisk(pharmacy.id, pharmacyOrders, pharmacyExceptions);
+    return { pharmacy, risk };
+  });
 }
 
 async function loadOrderReadSource(datasetId: string) {
@@ -178,4 +224,24 @@ function firstBy<T>(values: T[], key: (value: T) => string): Map<string, T> {
   const result = new Map<string, T>();
   for (const value of values) if (!result.has(key(value))) result.set(key(value), value);
   return result;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function fetchProductSnapshots(supabase: any, datasetId: string, supplierId: string): Promise<Record<string, unknown>[]> {
+  const rows: Record<string, unknown>[] = [];
+  const PAGE_SIZE_LOCAL = 1_000;
+  for (let from = 0; ; from += PAGE_SIZE_LOCAL) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    const { data, error } = await supabase
+      .from('supplier_product_reliability_snapshots')
+      .select('*')
+      .eq('dataset_id', datasetId)
+      .eq('supplier_id', supplierId)
+      .order('as_of_date', { ascending: false })
+      .range(from, from + PAGE_SIZE_LOCAL - 1);
+    if (error) throw error;
+    const page = (data as Record<string, unknown>[] | null) ?? [];
+    rows.push(...page);
+    if (page.length < PAGE_SIZE_LOCAL) return rows;
+  }
 }

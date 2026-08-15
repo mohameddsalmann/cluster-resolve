@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Building2,
   FileStack,
   Menu,
   PackageSearch,
@@ -24,6 +25,7 @@ const nav = [
   { label: 'Resolve', href: '/', icon: Target, exact: true },
   { label: 'Orders', href: '/orders', icon: PackageSearch },
   { label: 'Suppliers', href: '/suppliers', icon: Truck },
+  { label: 'Pharmacies', href: '/pharmacies', icon: Building2 },
   { label: 'Regulatory', href: '/regulatory', icon: ScrollText },
   { label: 'Traceability', href: '/traceability', icon: ShieldCheck },
   { label: 'Imports', href: '/imports', icon: FileStack },

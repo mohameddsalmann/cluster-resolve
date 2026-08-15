@@ -2,13 +2,17 @@ import { evaluateOrderExceptions } from '@cluster/core/exceptions/evaluate';
 import type { OperationalEvaluationInput } from '@cluster/core/exceptions/types';
 import { evaluateSupplierReliability } from '@cluster/core/supplier/deterioration';
 import { buildSupplierOrderObservations } from '@cluster/core/supplier/observations';
+import { evaluateSupplierProductReliability } from '@cluster/core/supplier/product-reliability';
+import { calculatePromiseRiskMetrics } from '@cluster/core/supplier/promise-risk';
 import { PHASE4_ENGINE_VERSION } from '@cluster/core/supplier/policy-v1';
 import type { PostgrestError } from '@supabase/supabase-js';
 import { getDatasetById } from '../db/repositories/datasets';
 import {
   replaceOrderExceptions,
   upsertSupplierReliabilitySnapshots,
+  upsertSupplierReliabilitySnapshotsWithPromiseRisk,
 } from '../db/repositories/operations';
+import { upsertSupplierProductSnapshots } from '../db/repositories/product-reliability';
 import { getSupabaseServerClient } from '../supabase/server';
 
 interface SourceRows extends OperationalEvaluationInput {
@@ -65,6 +69,36 @@ export async function evaluateDatasetOperations(
       normalizedAsOf
     )
   );
+
+  // Per-supplier promise risk metrics (uses same observations)
+  const promiseRiskBySupplier = new Map(
+    source.supplierIds.map((supplierId) => [
+      supplierId,
+      calculatePromiseRiskMetrics(
+        observationResult.observations.filter((obs) => obs.supplierId === supplierId)
+      ),
+    ])
+  );
+
+  // Per-supplier × per-product reliability evaluations
+  const productPairs = [...new Set(
+    observationResult.observations.flatMap((obs) =>
+      obs.productIds.map((productId) => `${obs.supplierId}\x00${productId}`)
+    )
+  )].map((key) => {
+    const [supplierId, productId] = key.split('\x00') as [string, string];
+    return { supplierId, productId };
+  });
+
+  const productEvaluations = productPairs.map(({ supplierId, productId }) =>
+    evaluateSupplierProductReliability(
+      datasetId,
+      supplierId,
+      productId,
+      observationResult.observations,
+      normalizedAsOf
+    )
+  );
   const supplierCalculations = elapsed(supplierStarted);
 
   const persistenceStarted = performance.now();
@@ -75,11 +109,13 @@ export async function evaluateDatasetOperations(
       normalizedAsOf,
       exceptionResult.exceptions
     ),
-    upsertSupplierReliabilitySnapshots(
+    upsertSupplierReliabilitySnapshotsWithPromiseRisk(
       supplierEvaluations,
+      promiseRiskBySupplier,
       PHASE4_ENGINE_VERSION,
       normalizedAsOf
     ),
+    upsertSupplierProductSnapshots(productEvaluations, normalizedAsOf),
   ]);
   const persistence = elapsed(persistenceStarted);
   const allDiagnostics = [...exceptionResult.diagnostics, ...observationResult.diagnostics];

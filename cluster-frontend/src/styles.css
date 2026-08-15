@@ -1,0 +1,270 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Cluster Resolve design system.
+ * Base identity taken from the Cluster public brand:
+ * flat colour, white-dominant canvas, blue navigation chrome,
+ * blue interaction accents, no gradients.
+ */
+
+@theme inline {
+  --radius-sm: 8px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 16px;
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Tajawal", "Poppins", sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Cluster brand */
+  --color-cluster-nav: var(--cluster-nav);
+  --color-cluster-deep: var(--cluster-deep);
+  --color-cluster-bright: var(--cluster-bright);
+  --color-ink: var(--ink);
+  --color-body: var(--body-text);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+
+  /* semantic status */
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-caution: var(--caution);
+  --color-success: var(--success);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --shadow-cluster: 0 20px 60px rgba(14, 77, 164, 0.12);
+  --shadow-cluster-hover: 0 20px 50px rgba(15, 110, 255, 0.2);
+  --shadow-cluster-sm: 0 6px 18px rgba(14, 77, 164, 0.07);
+}
+
+:root {
+  --radius: 12px;
+
+  --cluster-nav: oklch(0.5542 0.2101 263.52); /* #2d66eb */
+  --cluster-deep: oklch(0.4375 0.1534 258.57); /* #0e4da4 */
+  --cluster-bright: oklch(0.58 0.2306 260.29); /* #0f6eff */
+  --ink: oklch(0.2331 0.0363 285.62); /* #1c1b2e */
+  --body-text: oklch(0.6071 0.0473 249.7); /* #6d859e */
+  --surface: oklch(0.9807 0.0052 248.37); /* #f6f9fc */
+  --line: oklch(0.9183 0.0179 253.45); /* #dce5f0 */
+
+  --danger: oklch(0.5758 0.2088 29.47);
+  --warning: oklch(0.5394 0.1561 42.98);
+  --caution: oklch(0.7686 0.1646 70.08);
+  --success: oklch(0.4988 0.1168 157.1);
+
+  --background: oklch(1 0 0);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--cluster-deep);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface);
+  --muted-foreground: var(--body-text);
+  --accent: var(--surface);
+  --accent-foreground: var(--cluster-deep);
+  --destructive: var(--danger);
+  --destructive-foreground: oklch(1 0 0);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--cluster-bright);
+
+  --chart-1: var(--cluster-bright);
+  --chart-2: var(--cluster-deep);
+  --chart-3: oklch(0.72 0.09 250);
+  --chart-4: var(--caution);
+  --chart-5: var(--body-text);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cluster-bright);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-cluster-bright) 20%, white);
+  }
+}
+
+/* Typography scale */
+@utility cl-page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  @media (max-width: 640px) {
+    font-size: 1.75rem;
+  }
+}
+
+@utility cl-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+@utility cl-card-title {
+  font-size: 1.125rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+@utility cl-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+@utility cl-meta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-body);
+}
+
+/* Surfaces */
+@utility cl-panel {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+}
+
+@utility cl-panel-raised {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-cluster-sm);
+}
+
+/* Form language */
+@utility cl-field {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  transition: all 180ms ease;
+
+  &::placeholder {
+    color: var(--color-body);
+  }
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--color-cluster-bright) 35%, var(--color-line));
+  }
+
+  &:focus {
+    background: #fff;
+    border-color: var(--color-cluster-bright);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 110, 255, 0.1);
+  }
+}
+
+/* Signature Cluster button wipe */
+@utility cl-wipe {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: translateX(-101%);
+    background: rgba(255, 255, 255, 0.14);
+    transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover::after {
+    transform: translateX(0);
+  }
+}
+
+@utility cl-skeleton {
+  background: var(--color-surface);
+  border-radius: 8px;
+  animation: cl-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cl-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
