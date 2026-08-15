@@ -19,7 +19,8 @@
     "demo:reference:download": "tsx scripts/download-public-reference.ts",
     "demo:data:generate": "tsx scripts/generate-founder-demo-data.ts",
     "demo:data:validate": "tsx scripts/validate-founder-demo-data.ts",
-    "demo:data:import": "tsx scripts/import-founder-demo.ts"
+    "demo:data:import": "tsx scripts/import-founder-demo.ts",
+    "regulatory:sync:eda": "tsx scripts/sync-eda-notices.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

@@ -28,7 +28,8 @@
     "demo:data:generate": "pnpm --filter web demo:data:generate",
     "demo:data:validate": "pnpm --filter web demo:data:validate",
     "demo:data:import": "pnpm --filter web demo:data:import",
-    "demo:preflight": "echo 'TODO: Phase 31 preflight script'"
+    "demo:preflight": "echo 'TODO: Phase 31 preflight script'",
+    "regulatory:sync:eda": "pnpm --filter web regulatory:sync:eda"
   },
   "devDependencies": {
     "eslint": "^9.39.5",

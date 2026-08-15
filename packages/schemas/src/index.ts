@@ -7,9 +7,13 @@ export const healthResponseSchema = z.object({
 
 export type HealthResponse = z.infer<typeof healthResponseSchema>;
 
-export * from './datasets.js';
-export * from './data-sources.js';
-export * from './money.js';
-export * from './imports.js';
-export * from './mapping.js';
-export * from './operations.js';
+export * from './datasets';
+export * from './data-sources';
+export * from './money';
+export * from './imports';
+export * from './mapping';
+export * from './operations';
+export * from './regulatory';
+export * from './eptts';
+export * from './traceability';
+
