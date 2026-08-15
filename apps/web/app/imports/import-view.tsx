@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useTransition } from 'react';
+import { useState, useRef, useEffect, useTransition, useMemo } from 'react';
 import {
   CheckCircle2,
   ClipboardList,
@@ -10,6 +10,10 @@ import {
   UploadCloud,
   Download,
   AlertCircle,
+  ArrowRight,
+  RefreshCw,
+  Check,
+  AlertTriangle,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { AppShell, PageBody, TopContextBar } from '@/components/cluster/AppShell';
@@ -26,8 +30,15 @@ import {
 } from '@/components/cluster/primitives';
 import { useDataset } from '@/lib/context/dataset-context';
 import { cn } from '@/lib/utils';
-
-type ImportKind = 'ORDERS' | 'OFFERS' | 'OUTCOMES' | 'DECISIONS';
+import {
+  CANONICAL_FIELD_METADATA,
+  generateMappedPreview,
+  inferColumnMappings,
+  validateColumnMapping,
+  type ImportKind,
+  type MappingConfidence,
+  type SourceColumnMapping,
+} from '@cluster/core/mapping';
 
 interface ProcessResult {
   jobId: string;
@@ -61,11 +72,54 @@ const errorColumns: Column<ErrorRow>[] = [
   { key: 'raw', header: 'Raw Value', cell: (r) => <code className="text-[0.8125rem]">{r.raw_value ?? '—'}</code> },
 ];
 
+function parseCsvClient(text: string): { headers: string[]; sampleRows: Array<{ rowNumber: number; values: Record<string, string> }> } {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  if (lines.length === 0) throw new Error('File is empty.');
+
+  function splitLine(line: string): string[] {
+    const res: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        res.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    res.push(current.trim());
+    return res;
+  }
+
+  const headers = splitLine(lines[0]);
+  const sampleRows: Array<{ rowNumber: number; values: Record<string, string> }> = [];
+
+  for (let i = 1; i < Math.min(lines.length, 11); i++) {
+    const cols = splitLine(lines[i]);
+    const values: Record<string, string> = {};
+    headers.forEach((h, idx) => {
+      values[h] = cols[idx] ?? '';
+    });
+    sampleRows.push({ rowNumber: i + 1, values });
+  }
+
+  return { headers, sampleRows };
+}
+
 export function ImportView() {
   const { datasets, activeDatasetId, setActiveDatasetId, activeDataset } = useDataset();
   const [kind, setKind] = useState<ImportKind>('ORDERS');
   const [file, setFile] = useState<File | null>(null);
-  const [phase, setPhase] = useState<string>('idle');
+  const [phase, setPhase] = useState<'idle' | 'mapping' | 'uploading' | 'processing' | 'complete' | 'error'>('idle');
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [result, setResult] = useState<ProcessResult | null>(null);
@@ -74,6 +128,12 @@ export function ImportView() {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [, startTransition] = useTransition();
+
+  // Mapping state
+  const [rawHeaders, setRawHeaders] = useState<string[]>([]);
+  const [sampleRows, setSampleRows] = useState<Array<{ rowNumber: number; values: Record<string, string> }>>([]);
+  const [inferredMappings, setInferredMappings] = useState<SourceColumnMapping[]>([]);
+  const [userMapping, setUserMapping] = useState<Record<string, string | null>>({});
 
   // Load quality on dataset change
   useEffect(() => {
@@ -94,12 +154,63 @@ export function ImportView() {
     };
   }, [activeDatasetId]);
 
-  async function handleUploadAndProcess(selectedFile: File) {
+  // Handle file selection and prepare mapping step
+  async function handleFileSelected(selectedFile: File) {
     if (!activeDatasetId) return;
     setFile(selectedFile);
     setResult(null);
     setErrors([]);
     setUploadProgress(0);
+
+    try {
+      const text = await selectedFile.text();
+      const { headers, sampleRows: samples } = parseCsvClient(text);
+
+      const sampleValuesByHeader: Record<string, string[]> = {};
+      headers.forEach((h) => {
+        sampleValuesByHeader[h] = samples.map((s) => s.values[h]).filter(Boolean).slice(0, 3);
+      });
+
+      const inferred = inferColumnMappings(headers, kind, sampleValuesByHeader);
+      const initialSpec: Record<string, string | null> = {};
+      inferred.forEach((m) => {
+        initialSpec[m.sourceHeader] = m.targetField;
+      });
+
+      setRawHeaders(headers);
+      setSampleRows(samples);
+      setInferredMappings(inferred);
+      setUserMapping(initialSpec);
+      setPhase('mapping');
+      setStatusMessage('Review column mapping before ingestion.');
+    } catch (err) {
+      setPhase('error');
+      setStatusMessage(err instanceof Error ? err.message : 'Failed to parse CSV headers.');
+    }
+  }
+
+  // Update a single column mapping
+  function updateMapping(sourceHeader: string, targetField: string | null) {
+    setUserMapping((prev) => ({
+      ...prev,
+      [sourceHeader]: targetField,
+    }));
+  }
+
+  // Mapping validation and preview
+  const mappingValidation = useMemo(() => {
+    return validateColumnMapping(userMapping, kind);
+  }, [userMapping, kind]);
+
+  const mappedPreview = useMemo(() => {
+    if (sampleRows.length === 0) return null;
+    return generateMappedPreview(sampleRows, userMapping, kind);
+  }, [sampleRows, userMapping, kind]);
+
+  // Execute upload and ingestion with confirmed mapping
+  async function handleConfirmAndIngest() {
+    if (!file || !activeDatasetId || !mappingValidation.isValid) return;
+
     setPhase('uploading');
     setStatusMessage('Initializing private signed upload...');
 
@@ -111,9 +222,9 @@ export function ImportView() {
         body: JSON.stringify({
           datasetId: activeDatasetId,
           kind,
-          filename: selectedFile.name,
-          size: selectedFile.size,
-          contentType: selectedFile.type || 'text/csv',
+          filename: file.name,
+          size: file.size,
+          contentType: file.type || 'text/csv',
         }),
       });
 
@@ -124,13 +235,15 @@ export function ImportView() {
 
       // 2. Direct PUT to Supabase Storage signed URL
       setStatusMessage('Uploading directly to private Supabase Storage...');
-      await uploadSignedFile(initData.signedUrl, selectedFile, setUploadProgress);
+      await uploadSignedFile(initData.signedUrl, file, setUploadProgress);
 
-      // 3. Process
+      // 3. Process with mapping payload
       setPhase('processing');
       setStatusMessage('Validating records and persisting canonical rows...');
       const processRes = await fetch(`/api/imports/${initData.jobId}/process`, {
         method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ mapping: userMapping }),
       });
       const processed: ProcessResult = await processRes.json();
       setResult(processed);
@@ -155,16 +268,37 @@ export function ImportView() {
     }
   }
 
+  function resetImport() {
+    setFile(null);
+    setPhase('idle');
+    setResult(null);
+    setErrors([]);
+    setRawHeaders([]);
+    setSampleRows([]);
+    setUserMapping({});
+    setStatusMessage('');
+  }
+
+  const canonicalOptions = Object.entries(CANONICAL_FIELD_METADATA[kind]).map(([field, meta]) => {
+    const m = meta as { required: boolean; description: string };
+    return {
+      field,
+      label: `${field} ${m.required ? '*' : '(optional)'}`,
+      required: m.required,
+      description: m.description,
+    };
+  });
+
   return (
     <AppShell>
       <TopContextBar
         title="Imports"
-        subtitle={`Dataset, import type, file, processing, result · ${activeDataset?.name ?? ''}`}
+        subtitle={`Dataset, flexible mapping, processing, verification · ${activeDataset?.name ?? ''}`}
       />
       <PageBody wide>
         <PageHeader
           title="Imports"
-          subtitle="Bring procurement records in through real signed Supabase storage uploads, then see exactly what became evaluable."
+          subtitle="Bring procurement records in through flexible column mapping and real signed Supabase storage uploads."
         />
 
         <div className="space-y-6">
@@ -226,7 +360,13 @@ export function ImportView() {
                     type="button"
                     role="radio"
                     aria-checked={active}
-                    onClick={() => setKind(t.key)}
+                    disabled={phase === 'uploading' || phase === 'processing'}
+                    onClick={() => {
+                      setKind(t.key);
+                      if (phase === 'mapping' && file) {
+                        void handleFileSelected(file);
+                      }
+                    }}
                     className={cn(
                       'flex min-h-11 flex-col items-start gap-3 rounded-[12px] border p-4 text-left transition-colors duration-200 cursor-pointer',
                       active
@@ -246,56 +386,252 @@ export function ImportView() {
           </Panel>
 
           {/* File Upload Dropzone */}
-          <Panel title="File" description="CSV file matching the canonical schema specification.">
-            <div
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragging(true);
-              }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setDragging(false);
-                const f = e.dataTransfer.files?.[0];
-                if (f) handleUploadAndProcess(f);
-              }}
-              className={cn(
-                'flex flex-col items-center gap-4 rounded-[12px] border-[1.5px] border-line bg-surface px-6 py-14 text-center transition-colors duration-200',
-                dragging && 'border-cluster-bright bg-white'
-              )}
-            >
-              <ClusterIconChip icon={UploadCloud} size="large" />
-              <div>
-                <p className="text-[1.125rem] font-semibold text-ink">
-                  Drop your {kind.toLowerCase()} CSV file here
-                </p>
-                <p className="mt-1 text-[0.9375rem] text-body">
-                  or choose a CSV file from your device for direct signed upload
-                </p>
-              </div>
-              <ClusterButton
-                size="sm"
-                type="button"
-                onClick={() => inputRef.current?.click()}
-                disabled={phase === 'uploading' || phase === 'processing'}
-              >
-                Choose CSV file
-              </ClusterButton>
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".csv,text/csv"
-                className="sr-only"
-                aria-label="Choose import file"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) handleUploadAndProcess(f);
+          {phase === 'idle' || phase === 'error' ? (
+            <Panel title="File" description="CSV file with canonical or non-canonical column headers.">
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragging(true);
                 }}
-              />
-            </div>
+                onDragLeave={() => setDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragging(false);
+                  const f = e.dataTransfer.files?.[0];
+                  if (f) void handleFileSelected(f);
+                }}
+                className={cn(
+                  'flex flex-col items-center gap-4 rounded-[12px] border-[1.5px] border-line bg-surface px-6 py-14 text-center transition-colors duration-200',
+                  dragging && 'border-cluster-bright bg-white'
+                )}
+              >
+                <ClusterIconChip icon={UploadCloud} size="large" />
+                <div>
+                  <p className="text-[1.125rem] font-semibold text-ink">
+                    Drop your {kind.toLowerCase()} CSV file here
+                  </p>
+                  <p className="mt-1 text-[0.9375rem] text-body">
+                    or choose a CSV file from your device to map columns and ingest
+                  </p>
+                </div>
+                <ClusterButton
+                  size="sm"
+                  type="button"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  Choose CSV file
+                </ClusterButton>
+                <input
+                  ref={inputRef}
+                  type="file"
+                  accept=".csv,text/csv"
+                  className="sr-only"
+                  aria-label="Choose import file"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) void handleFileSelected(f);
+                  }}
+                />
+              </div>
 
-            {file ? (
-              <div className="mt-4 rounded-[12px] border border-line p-4">
+              {phase === 'error' && (
+                <div className="mt-4">
+                  <ErrorState
+                    title="Import operation failed"
+                    detail={statusMessage}
+                  />
+                </div>
+              )}
+            </Panel>
+          ) : null}
+
+          {/* Interactive Column Mapping Step */}
+          {phase === 'mapping' && (
+            <div className="space-y-6">
+              <Panel
+                title="Flexible Column Mapping"
+                description={`Map your file's columns into Resolve's canonical ${kind} schema before ingestion.`}
+                action={
+                  <div className="flex items-center gap-2">
+                    <StatusChip
+                      label={`${mappingValidation.requiredMapped} / ${mappingValidation.requiredTotal} Required Fields`}
+                      tone={mappingValidation.isValid ? 'success' : 'caution'}
+                    />
+                    <ClusterButton size="sm" variant="secondary" onClick={resetImport}>
+                      Choose different file
+                    </ClusterButton>
+                  </div>
+                }
+              >
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-4 rounded-[8px] bg-surface p-4 border border-line">
+                  <div className="flex items-center gap-3">
+                    <ClusterIconChip icon={FileSpreadsheet} size="compact" tone="soft" />
+                    <div>
+                      <p className="text-sm font-semibold text-ink">{file?.name}</p>
+                      <p className="cl-meta">{rawHeaders.length} columns detected · {sampleRows.length} sample rows inspected</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs font-semibold">
+                    <span className="text-body">
+                      Mapped: <strong className="text-ink">{mappingValidation.mappedFieldsCount}</strong>
+                    </span>
+                    <span className="text-body">
+                      Ignored: <strong className="text-ink">{mappingValidation.ignoredFieldsCount}</strong>
+                    </span>
+                    <span className="text-body">
+                      Unmapped: <strong className="text-ink">{mappingValidation.unmappedFieldsCount}</strong>
+                    </span>
+                  </div>
+                </div>
+
+                {!mappingValidation.isValid && (
+                  <div className="mb-4 rounded-[8px] border border-amber-200 bg-amber-50 p-4 text-amber-900 flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-semibold">Mapping requires attention before ingestion:</p>
+                      {mappingValidation.missingRequiredFields.length > 0 && (
+                        <p className="mt-1">
+                          Missing required canonical fields: <strong>{mappingValidation.missingRequiredFields.join(', ')}</strong>
+                        </p>
+                      )}
+                      {mappingValidation.duplicateTargetFields.length > 0 && (
+                        <p className="mt-1">
+                          Duplicate mapped targets: <strong>{mappingValidation.duplicateTargetFields.join(', ')}</strong>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Mapping Table */}
+                <div className="overflow-x-auto rounded-[8px] border border-line">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-surface border-b border-line text-xs font-semibold text-ink">
+                      <tr>
+                        <th className="py-3 px-4">Your Column</th>
+                        <th className="py-3 px-2 text-center w-8"></th>
+                        <th className="py-3 px-4">Resolve Canonical Field</th>
+                        <th className="py-3 px-4">Confidence</th>
+                        <th className="py-3 px-4">Sample Values</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line bg-white">
+                      {rawHeaders.map((header) => {
+                        const inferred = inferredMappings.find((m) => m.sourceHeader === header);
+                        const currentTarget = userMapping[header] ?? '';
+                        const confidence: MappingConfidence = inferred?.confidence ?? 'UNMAPPED';
+                        const sampleVals = inferred?.sampleValues ?? [];
+
+                        return (
+                          <tr key={header} className="hover:bg-surface/50">
+                            <td className="py-3 px-4 font-mono font-medium text-ink">
+                              {header}
+                            </td>
+                            <td className="py-3 px-2 text-center text-body">
+                              <ArrowRight className="h-4 w-4 inline" />
+                            </td>
+                            <td className="py-3 px-4">
+                              <select
+                                className="cl-field py-1 text-xs max-w-xs"
+                                value={currentTarget}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  updateMapping(header, val === '__IGNORE__' ? null : val || null);
+                                }}
+                              >
+                                <option value="">— Select Resolve field —</option>
+                                <option value="__IGNORE__">❌ Ignore column (do not import)</option>
+                                <optgroup label="Canonical Fields">
+                                  {canonicalOptions.map((opt) => (
+                                    <option key={opt.field} value={opt.field}>
+                                      {opt.label}
+                                    </option>
+                                  ))}
+                                </optgroup>
+                              </select>
+                            </td>
+                            <td className="py-3 px-4">
+                              <ConfidenceChip confidence={currentTarget === null ? 'HIGH' : confidence} />
+                            </td>
+                            <td className="py-3 px-4 text-xs text-body font-mono truncate max-w-xs">
+                              {sampleVals.length > 0 ? sampleVals.join(', ') : '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Normalized Live Preview */}
+                {mappedPreview && (
+                  <div className="mt-6">
+                    <h3 className="text-sm font-semibold text-ink mb-2">Live Normalized Preview</h3>
+                    <p className="cl-meta mb-3">
+                      Sample rows translated into Resolve schema using the selected mapping.
+                    </p>
+                    <div className="overflow-x-auto rounded-[8px] border border-line">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-surface border-b border-line font-semibold text-ink">
+                          <tr>
+                            <th className="py-2.5 px-3">Row</th>
+                            <th className="py-2.5 px-3">Validation</th>
+                            {Object.keys(CANONICAL_FIELD_METADATA[kind]).map((field) => (
+                              <th key={field} className="py-2.5 px-3 whitespace-nowrap">
+                                {field}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-line bg-white font-mono">
+                          {mappedPreview.previewRows.map((r) => (
+                            <tr key={r.rowNumber} className={r.isValid ? '' : 'bg-red-50/50'}>
+                              <td className="py-2 px-3 text-body">{r.rowNumber}</td>
+                              <td className="py-2 px-3">
+                                {r.isValid ? (
+                                  <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold">
+                                    <Check className="h-3.5 w-3.5" /> Valid
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 text-danger font-semibold" title={r.errors?.map((e) => e.message).join('; ')}>
+                                    <AlertCircle className="h-3.5 w-3.5" /> Error
+                                  </span>
+                                )}
+                              </td>
+                              {Object.keys(CANONICAL_FIELD_METADATA[kind]).map((field) => (
+                                <td key={field} className="py-2 px-3 text-ink truncate max-w-[160px]">
+                                  {r.canonicalValues[field] ?? <span className="text-slate-300">—</span>}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Final Action Bar */}
+                <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-line">
+                  <ClusterButton size="sm" variant="secondary" onClick={resetImport}>
+                    Cancel
+                  </ClusterButton>
+                  <ClusterButton
+                    size="sm"
+                    onClick={() => void handleConfirmAndIngest()}
+                    disabled={!mappingValidation.isValid}
+                  >
+                    Confirm Mapping & Ingest
+                  </ClusterButton>
+                </div>
+              </Panel>
+            </div>
+          )}
+
+          {/* Upload Progress & Active File Card */}
+          {(phase === 'uploading' || phase === 'processing' || phase === 'complete') && file ? (
+            <Panel title="Ingestion Status">
+              <div className="rounded-[12px] border border-line p-4">
                 <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4">
                   <ClusterIconChip icon={FileSpreadsheet} size="compact" tone="soft" />
                   <div className="min-w-0">
@@ -305,8 +641,8 @@ export function ImportView() {
                     </p>
                   </div>
                   <StatusChip
-                    label={phase === 'complete' ? 'COMPLETE' : phase === 'error' ? 'ERROR' : phase.toUpperCase()}
-                    tone={phase === 'complete' ? 'success' : phase === 'error' ? 'danger' : 'brand'}
+                    label={phase === 'complete' ? 'COMPLETE' : phase === 'processing' ? 'PROCESSING' : 'UPLOADING'}
+                    tone={phase === 'complete' ? 'success' : 'brand'}
                   />
                 </div>
                 {uploadProgress > 0 && uploadProgress < 100 && (
@@ -325,8 +661,16 @@ export function ImportView() {
                   </div>
                 )}
               </div>
-            ) : null}
-          </Panel>
+
+              {phase === 'complete' && (
+                <div className="mt-4 flex justify-end">
+                  <ClusterButton size="sm" variant="secondary" onClick={resetImport}>
+                    <RefreshCw className="h-3.5 w-3.5 mr-1" /> Import another file
+                  </ClusterButton>
+                </div>
+              )}
+            </Panel>
+          ) : null}
 
           {/* Processing Result */}
           {result ? (
@@ -337,7 +681,7 @@ export function ImportView() {
                   <StatusChip
                     label={result.state}
                     tone={
-                      result.state === 'COMPLETED'
+                      result.state === 'COMPLETED' || result.state === 'SUCCESS'
                         ? 'success'
                         : result.state === 'PARTIAL_SUCCESS'
                           ? 'caution'
@@ -383,11 +727,6 @@ export function ImportView() {
                 </>
               ) : null}
             </>
-          ) : phase === 'error' ? (
-            <ErrorState
-              title="Import operation failed"
-              detail={statusMessage}
-            />
           ) : null}
 
           {/* Real Data Quality Summary */}
@@ -454,6 +793,19 @@ export function ImportView() {
       </PageBody>
     </AppShell>
   );
+}
+
+function ConfidenceChip({ confidence }: { confidence: MappingConfidence }) {
+  if (confidence === 'HIGH') {
+    return <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold bg-emerald-100 text-emerald-800">HIGH</span>;
+  }
+  if (confidence === 'MEDIUM') {
+    return <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold bg-blue-100 text-blue-800">MEDIUM</span>;
+  }
+  if (confidence === 'NEEDS_REVIEW') {
+    return <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold bg-amber-100 text-amber-800">NEEDS REVIEW</span>;
+  }
+  return <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold bg-slate-100 text-slate-600">UNMAPPED</span>;
 }
 
 function uploadSignedFile(

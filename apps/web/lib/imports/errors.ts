@@ -24,6 +24,7 @@ export type JobErrorCode =
   | 'INVALID_ENCODING'
   | 'INVALID_CSV'
   | 'INVALID_HEADER'
+  | 'INVALID_MAPPING'
   | 'STORAGE_FAILED'
   | 'NO_VALID_ROWS'
   | 'IMPORT_FAILED';

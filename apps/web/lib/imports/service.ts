@@ -57,7 +57,7 @@ import type {
   ProductRow,
   SupplierRow,
 } from '../db/row-types';
-import { decodeUtf8, parseCanonicalCsv, type ParsedCsvRow } from './csv';
+import { decodeUtf8, parseMappedCsv, type ParsedCsvRow } from './csv';
 import {
   ImportJobError,
   jobErrorResponse,
@@ -188,7 +188,10 @@ export async function initializeImport(
   }
 }
 
-export async function processStoredImport(jobId: string): Promise<ProcessImportResult> {
+export async function processStoredImport(
+  jobId: string,
+  mapping?: Record<string, string | null> | null
+): Promise<ProcessImportResult> {
   const totalStarted = performance.now();
   const job = await getImportJob(jobId);
   if (!job) throw new ImportJobError('IMPORT_FAILED', 'The ingestion job does not exist.');
@@ -226,7 +229,11 @@ export async function processStoredImport(jobId: string): Promise<ProcessImportR
     }
 
     const parseStarted = performance.now();
-    const rows = parseCanonicalCsv(decodeUtf8(bytes), importKindSchema.parse(job.kind));
+    const rows = parseMappedCsv(
+      decodeUtf8(bytes),
+      importKindSchema.parse(job.kind),
+      mapping
+    );
     const parseDuration = elapsed(parseStarted);
     try {
       await startImportJob(job.id, hash, rows.length);

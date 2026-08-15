@@ -93,3 +93,15 @@ export async function advanceOrderOutcome(
     .single();
   return requireData(data, error, 'Advance order outcome');
 }
+
+export async function listOrderOutcomesByOrder(
+  datasetId: string,
+  orderId: string
+): Promise<OrderOutcomeRow[]> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('order_outcomes')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('order_id', orderId);
+  return requireData(data, error, 'List order outcomes by order');
+}

@@ -102,3 +102,16 @@ export async function getSupplierOfferByExternalId(
   if (error) requireData(data, error, 'Get supplier offer by external ID');
   return data ? toSupplierOfferRow(data as SupplierOfferApiRow) : null;
 }
+
+export async function listSupplierOffersByOrder(
+  datasetId: string,
+  orderId: string
+): Promise<SupplierOfferRow[]> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('supplier_offers')
+    .select(SUPPLIER_OFFER_SELECT)
+    .eq('dataset_id', datasetId)
+    .eq('order_id', orderId);
+  const rows = requireData(data, error, 'List supplier offers by order') as SupplierOfferApiRow[];
+  return rows.map(toSupplierOfferRow);
+}

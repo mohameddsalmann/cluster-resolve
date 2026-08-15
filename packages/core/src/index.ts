@@ -12,3 +12,5 @@ export * from './supplier/percentiles.js';
 export * from './supplier/metrics.js';
 export * from './supplier/observations.js';
 export * from './supplier/deterioration.js';
+export * from './mapping/index.js';
+export * from './decisions/index.js';

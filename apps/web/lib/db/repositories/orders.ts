@@ -100,3 +100,15 @@ export async function getOrderById(
   }
   return data;
 }
+
+export async function listOrderItemsByOrder(
+  datasetId: string,
+  orderId: string
+): Promise<OrderItemRow[]> {
+  const { data, error } = await getSupabaseServerClient()
+    .from('order_items')
+    .select('*')
+    .eq('dataset_id', datasetId)
+    .eq('order_id', orderId);
+  return requireData(data, error, 'List order items by order');
+}

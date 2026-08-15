@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { decodeUtf8, parseCanonicalCsv } from '../lib/imports/csv';
+import { decodeUtf8, parseCanonicalCsv, parseMappedCsv, inspectCsvHeadersAndSample } from '../lib/imports/csv';
 import { safeDatabaseError } from '../lib/imports/errors';
 import { sha256Hex } from '../lib/imports/hash';
 import { importStoragePath, sanitizeFilename } from '../lib/imports/storage';
@@ -17,7 +17,7 @@ describe('CSV ingestion boundary', () => {
     expect(rows[0].values.pharmacy_name).toBe('Cairo, Main');
   });
 
-  it('rejects reordered and extra headers', () => {
+  it('rejects reordered and extra headers in parseCanonicalCsv', () => {
     expect(() => parseCanonicalCsv(orders.replace('order_id,pharmacy_id', 'pharmacy_id,order_id'), 'ORDERS')).toThrow();
     expect(() => parseCanonicalCsv(orders.replace('order_id,', 'extra,order_id,'), 'ORDERS')).toThrow();
   });
@@ -44,6 +44,59 @@ describe('CSV ingestion boundary', () => {
     expect(safeDatabaseError({ code: '23503', message: 'raw internal detail' })).toEqual({
       code: 'CROSS_DATASET_REFERENCE',
       message: 'A referenced record does not exist in this dataset.',
+    });
+  });
+
+  describe('Flexible Mapping Parser', () => {
+    const nonCanonicalCsv = [
+      'order_number,branch_code,branch_name,order_timestamp,sku,medicine_name,producer,quantity,extra_notes',
+      'ORD-99,PH-42,Main Branch,2026-08-14T10:00:00Z,SKU-100,Panadol Extra,GSK,5,Urgent',
+    ].join('\r\n');
+
+    const mapping = {
+      order_number: 'order_id',
+      branch_code: 'pharmacy_id',
+      branch_name: 'pharmacy_name',
+      order_timestamp: 'placed_at',
+      sku: 'product_id',
+      medicine_name: 'product_name',
+      producer: 'manufacturer',
+      quantity: 'requested_qty',
+      extra_notes: null, // ignored
+    };
+
+    it('inspects headers and sample rows correctly', () => {
+      const inspected = inspectCsvHeadersAndSample(nonCanonicalCsv);
+      expect(inspected.headers).toContain('order_number');
+      expect(inspected.headers).toContain('branch_code');
+      expect(inspected.sampleRows).toHaveLength(1);
+      expect(inspected.sampleRows[0].values.order_number).toBe('ORD-99');
+    });
+
+    it('parses non-canonical CSV into canonical schema using mapping', () => {
+      const rows = parseMappedCsv(nonCanonicalCsv, 'ORDERS', mapping);
+      expect(rows).toHaveLength(1);
+      expect(rows[0].rowNumber).toBe(2);
+      expect(rows[0].values).toEqual({
+        order_id: 'ORD-99',
+        pharmacy_id: 'PH-42',
+        pharmacy_name: 'Main Branch',
+        placed_at: '2026-08-14T10:00:00Z',
+        product_id: 'SKU-100',
+        product_name: 'Panadol Extra',
+        manufacturer: 'GSK',
+        requested_qty: '5',
+      });
+      expect(rows[0].values.extra_notes).toBeUndefined();
+    });
+
+    it('rejects invalid mapping with missing required fields', () => {
+      const invalidMapping = {
+        order_number: 'order_id',
+        branch_code: 'pharmacy_id',
+        // missing: placed_at, product_id, product_name, requested_qty
+      };
+      expect(() => parseMappedCsv(nonCanonicalCsv, 'ORDERS', invalidMapping)).toThrow();
     });
   });
 });
