@@ -34,24 +34,22 @@ const nav = [
 export function ClusterLogoMark({ className, compact = false }: { className?: string; compact?: boolean }) {
   if (compact) {
     return (
-      <div className={cn('flex items-center justify-center h-9 w-9 rounded-[10px] bg-white text-cluster-deep font-black text-xl tracking-tight shadow-sm', className)}>
-        C
+      <div className={cn('flex items-center justify-center', className)}>
+        <img
+          src="/logo.png"
+          alt="Cluster"
+          className="h-8 w-auto object-contain"
+        />
       </div>
     );
   }
   return (
-    <div className={cn('flex items-center gap-2 select-none', className)}>
-      <div className="flex items-center justify-center h-8 w-8 rounded-[8px] bg-white text-cluster-deep font-extrabold text-lg shadow-sm">
-        C
-      </div>
-      <div className="flex flex-col">
-        <span className="text-xl font-bold tracking-tight text-white leading-none">
-          cluster
-        </span>
-        <span className="text-[0.625rem] font-semibold tracking-[0.18em] text-white/70 uppercase leading-tight mt-0.5">
-          resolve
-        </span>
-      </div>
+    <div className={cn('flex items-center select-none', className)}>
+      <img
+        src="/logo.png"
+        alt="Cluster"
+        className="h-8 w-auto object-contain"
+      />
     </div>
   );
 }
