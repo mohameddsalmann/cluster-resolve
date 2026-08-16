@@ -80,5 +80,19 @@ export async function listDatasets(): Promise<DatasetRow[]> {
       .order('created_at', { ascending: false })
   );
 
-  return requireData(data, error, 'List datasets') as DatasetRow[];
+  const rawList = requireData(data, error, 'List datasets') as DatasetRow[];
+
+  // Filter out transient test datasets created by automated integration test suites
+  const filtered = rawList.filter((d) => {
+    return !/^(Integration Test|Chunk 4 Integration|Constraint Test|Phase 3 Cross Dataset|Test chunk2 debug)/i.test(d.name);
+  });
+
+  // Pin the full 10,000-order Founder Demo dataset to the top
+  filtered.sort((a, b) => {
+    if (a.name === 'Cluster Resolve · Founder Demo') return -1;
+    if (b.name === 'Cluster Resolve · Founder Demo') return 1;
+    return 0;
+  });
+
+  return filtered;
 }
