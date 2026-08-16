@@ -78,10 +78,19 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({
-      notices: notices.map((n) => ({
-        ...n,
-        exposure: exposureByNoticeId.get(n.id) || null,
-      })),
+      notices: notices.map((n) => {
+        const rawExp = exposureByNoticeId.get(n.id);
+        const exp = rawExp
+          ? {
+              ...rawExp,
+              historical_value_minor: rawExp.historical_value_minor?.toString() ?? '0',
+            }
+          : null;
+        return {
+          ...n,
+          exposure: exp,
+        };
+      }),
       totalCount,
       page,
       pageSize: limit,
