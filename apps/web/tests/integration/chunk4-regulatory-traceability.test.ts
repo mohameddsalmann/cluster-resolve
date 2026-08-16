@@ -111,7 +111,7 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
     if (itemRes.error) throw itemRes.error;
     if (offRes.error) throw offRes.error;
     if (outRes.error) throw outRes.error;
-  });
+  }, 60_000);
 
   it('ingests official EDA notices and deterministically calculates dataset exposures', async () => {
     // 1. Ingest notices

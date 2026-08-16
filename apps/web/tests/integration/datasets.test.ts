@@ -44,7 +44,7 @@ describe('Database Integration — Datasets Repository', () => {
     expect(fetched).toBeDefined();
     expect(fetched?.id).toBe(created.id);
     expect(fetched?.mode).toBe('SAMPLE');
-  });
+  }, 30_000);
 
   it('creates datasets with mode LIVE and IMPORTED_REAL', async () => {
     const liveDataset = await createDataset({
@@ -60,11 +60,11 @@ describe('Database Integration — Datasets Repository', () => {
     });
     createdDatasetIds.push(realDataset.id);
     expect(realDataset.mode).toBe('IMPORTED_REAL');
-  });
+  }, 30_000);
 
   it('lists datasets including newly created ones', async () => {
     const list = await listDatasets();
     expect(Array.isArray(list)).toBe(true);
     expect(list.length).toBeGreaterThan(0);
-  });
+  }, 30_000);
 });

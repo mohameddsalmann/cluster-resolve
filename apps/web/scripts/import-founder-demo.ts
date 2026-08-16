@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
+import https from 'node:https';
+import { URL as NodeURL } from 'node:url';
 import { parse } from 'csv-parse/sync';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -72,28 +74,37 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
         'Large deterministic founder-demo dataset (10,000 orders, 200 public Egyptian medicines, 50 pharmacies, 30 suppliers, competing offers, AI decisions, execution outcomes).',
     });
   } else if (from === 'orders') {
+    const targetDatasetId = dataset!.id;
     console.log(`[founder:import] Resetting previous ingestion state for clean import...`);
-    await supabase.from('order_exceptions').delete().eq('dataset_id', dataset.id);
-    await supabase.from('supplier_product_reliability_snapshots').delete().eq('dataset_id', dataset.id);
-    await supabase.from('supplier_reliability_snapshots').delete().eq('dataset_id', dataset.id);
-    await supabase.from('order_outcomes').delete().eq('dataset_id', dataset.id);
-    await supabase.from('ai_decision_candidates').delete().eq('dataset_id', dataset.id);
-    await supabase.from('ai_decisions').delete().eq('dataset_id', dataset.id);
-    await supabase.from('supplier_offers').delete().eq('dataset_id', dataset.id);
-    await supabase.from('order_items').delete().eq('dataset_id', dataset.id);
-    await supabase.from('orders').delete().eq('dataset_id', dataset.id);
-    await supabase.from('products').delete().eq('dataset_id', dataset.id);
-    await supabase.from('suppliers').delete().eq('dataset_id', dataset.id);
-    await supabase.from('pharmacies').delete().eq('dataset_id', dataset.id);
-    const { data: existingJobs } = await supabase.from('ingestion_jobs').select('id').eq('dataset_id', dataset.id);
+    const deleteWithRetry = async (table: string, fn: () => PromiseLike<{ error: unknown }>) => {
+      for (let i = 1; i <= 3; i++) {
+        const { error } = await fn();
+        if (!error) return;
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+    };
+    await deleteWithRetry('regulatory_exposures', () => (supabase as any).from('regulatory_exposures').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('order_exceptions', () => supabase.from('order_exceptions').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('supplier_product_reliability_snapshots', () => supabase.from('supplier_product_reliability_snapshots').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('supplier_reliability_snapshots', () => supabase.from('supplier_reliability_snapshots').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('order_outcomes', () => supabase.from('order_outcomes').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('ai_decision_candidates', () => supabase.from('ai_decision_candidates').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('ai_decisions', () => supabase.from('ai_decisions').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('supplier_offers', () => supabase.from('supplier_offers').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('order_items', () => supabase.from('order_items').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('orders', () => supabase.from('orders').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('products', () => supabase.from('products').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('suppliers', () => supabase.from('suppliers').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('pharmacies', () => supabase.from('pharmacies').delete().eq('dataset_id', targetDatasetId));
+    const { data: existingJobs } = await supabase.from('ingestion_jobs').select('id').eq('dataset_id', targetDatasetId);
     const jobIds = (existingJobs ?? []).map((j) => j.id);
     if (jobIds.length > 0) {
-      await supabase.from('ingestion_errors').delete().in('job_id', jobIds);
+      await deleteWithRetry('ingestion_errors', () => supabase.from('ingestion_errors').delete().in('job_id', jobIds));
     }
-    await supabase.from('ingestion_jobs').delete().eq('dataset_id', dataset.id);
-    await supabase.from('data_sources').delete().eq('dataset_id', dataset.id);
+    await deleteWithRetry('ingestion_jobs', () => supabase.from('ingestion_jobs').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('data_sources', () => supabase.from('data_sources').delete().eq('dataset_id', targetDatasetId));
   }
-  const datasetId = dataset.id;
+  const datasetId = dataset!.id;
   console.log(`[founder:import] Using Dataset ID: ${datasetId}`);
 
   // 2. Read Generated CSV Files
@@ -124,7 +135,7 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
     size: ordersBuffer.byteLength,
     contentType: 'text/csv',
   });
-  await uploadToSignedUrl(ordersInit.signedUrl, ordersBuffer);
+  await uploadImportBuffer(ordersInit.signedUrl, ordersInit.storagePath, ordersBuffer);
   const ordersResult = await processStoredImport(ordersInit.jobId);
   importTimings.ordersMs = Math.round(performance.now() - ordersStart);
   console.log(`[founder:import] Orders complete: ${ordersResult.acceptedRows} accepted, state=${ordersResult.state} (${importTimings.ordersMs}ms)`);
@@ -147,7 +158,7 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
     size: offersBuffer.byteLength,
     contentType: 'text/csv',
   });
-  await uploadToSignedUrl(offersInit.signedUrl, offersBuffer);
+  await uploadImportBuffer(offersInit.signedUrl, offersInit.storagePath, offersBuffer);
   const offersResult = await processStoredImport(offersInit.jobId);
   importTimings.offersMs = Math.round(performance.now() - offersStart);
   console.log(`[founder:import] Offers complete: ${offersResult.acceptedRows} accepted, state=${offersResult.state} (${importTimings.offersMs}ms)`);
@@ -168,7 +179,7 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
     size: decisionsBuffer.byteLength,
     contentType: 'text/csv',
   });
-  await uploadToSignedUrl(decisionsInit.signedUrl, decisionsBuffer);
+  await uploadImportBuffer(decisionsInit.signedUrl, decisionsInit.storagePath, decisionsBuffer);
   const decisionsResult = await processStoredImport(decisionsInit.jobId);
   importTimings.decisionsMs = Math.round(performance.now() - decisionsStart);
   console.log(`[founder:import] Decisions complete: ${decisionsResult.acceptedRows} accepted, state=${decisionsResult.state} (${importTimings.decisionsMs}ms)`);
@@ -189,7 +200,7 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
     size: outcomesBuffer.byteLength,
     contentType: 'text/csv',
   });
-  await uploadToSignedUrl(outcomesInit.signedUrl, outcomesBuffer);
+  await uploadImportBuffer(outcomesInit.signedUrl, outcomesInit.storagePath, outcomesBuffer);
   const outcomesResult = await processStoredImport(outcomesInit.jobId);
   importTimings.outcomesMs = Math.round(performance.now() - outcomesStart);
   console.log(`[founder:import] Outcomes complete: ${outcomesResult.acceptedRows} accepted, state=${outcomesResult.state} (${importTimings.outcomesMs}ms)`);
@@ -238,6 +249,35 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
 
   console.log(`[founder:import] Persisted Counts:`, counts);
   console.log(`[founder:import] Manifest Counts:`, manifest.counts);
+
+  if (profile === 'full') {
+    const mismatches: string[] = [];
+    if (counts.persistedOrders !== manifest.counts.distinctOrders) {
+      mismatches.push(`Orders: expected ${manifest.counts.distinctOrders}, got ${counts.persistedOrders}`);
+    }
+    if (counts.persistedOffers !== manifest.counts.offersCsvRows) {
+      mismatches.push(`Offers: expected ${manifest.counts.offersCsvRows}, got ${counts.persistedOffers}`);
+    }
+    if (counts.persistedDecisions !== manifest.counts.decisionsCsvRows) {
+      mismatches.push(`Decisions: expected ${manifest.counts.decisionsCsvRows}, got ${counts.persistedDecisions}`);
+    }
+    if (counts.persistedOutcomes !== manifest.counts.outcomesCsvRows) {
+      mismatches.push(`Outcomes: expected ${manifest.counts.outcomesCsvRows}, got ${counts.persistedOutcomes}`);
+    }
+    if (counts.persistedSuppliers !== manifest.counts.supplierCount) {
+      mismatches.push(`Suppliers: expected ${manifest.counts.supplierCount}, got ${counts.persistedSuppliers}`);
+    }
+    if (counts.persistedPharmacies !== manifest.counts.pharmacyCount) {
+      mismatches.push(`Pharmacies: expected ${manifest.counts.pharmacyCount}, got ${counts.persistedPharmacies}`);
+    }
+    if (counts.persistedProducts !== manifest.counts.productCount) {
+      mismatches.push(`Products: expected ${manifest.counts.productCount}, got ${counts.persistedProducts}`);
+    }
+
+    if (mismatches.length > 0) {
+      throw new Error(`[founder:import] Persisted database counts do not match manifest:\n  - ${mismatches.join('\n  - ')}`);
+    }
+  }
 
   return {
     datasetId,
@@ -307,17 +347,72 @@ function csvBuffer(records: string[][]): Buffer {
   return Buffer.from(text, 'utf8');
 }
 
-async function uploadToSignedUrl(signedUrl: string, buffer: Buffer): Promise<void> {
-  const res = await fetch(signedUrl, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'text/csv',
-    },
-    body: new Uint8Array(buffer),
+function httpsPutChunked(urlStr: string, buffer: Buffer): Promise<{ statusCode?: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const parsed = new NodeURL(urlStr);
+    const req = https.request(
+      parsed,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'text/csv',
+          'Content-Length': buffer.byteLength,
+        },
+      },
+      (res) => {
+        let body = '';
+        res.on('data', (chunk) => (body += chunk));
+        res.on('end', () => resolve({ statusCode: res.statusCode, body }));
+      }
+    );
+    req.on('error', reject);
+
+    const CHUNK_SIZE = 64 * 1024;
+    let offset = 0;
+
+    function writeNext() {
+      while (offset < buffer.length) {
+        const chunk = buffer.subarray(offset, Math.min(offset + CHUNK_SIZE, buffer.length));
+        offset += chunk.length;
+        const canContinue = req.write(chunk);
+        if (!canContinue) {
+          req.once('drain', writeNext);
+          return;
+        }
+      }
+      req.end();
+    }
+
+    writeNext();
   });
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Failed to upload to signed storage URL: ${res.status} ${res.statusText} — ${errorText}`);
+}
+
+async function uploadImportBuffer(signedUrl: string, storagePath: string, buffer: Buffer, retries = 4): Promise<void> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await httpsPutChunked(signedUrl, buffer);
+      if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+        return;
+      }
+      throw new Error(`HTTP ${res.statusCode}: ${res.body}`);
+    } catch (err) {
+      if (attempt === retries) {
+        // Fall back to direct supabase storage client upload
+        console.log(`[upload] signed url upload failed after ${retries} attempts (${err instanceof Error ? err.message : String(err)}), trying storage client fallback...`);
+        const supabase = getSupabaseServerClient();
+        const { error } = await supabase.storage.from('procurement-imports').upload(storagePath, buffer, {
+          contentType: 'text/csv',
+          upsert: true,
+        });
+        if (error) {
+          throw new Error(`Failed to upload import to storage: ${error.message}`);
+        }
+        return;
+      }
+      const delay = Math.min(1000 * Math.pow(2, attempt - 1), 6000);
+      console.log(`[upload] attempt ${attempt}/${retries} failed (${err instanceof Error ? err.message : String(err)}), retrying in ${delay}ms...`);
+      await new Promise((r) => setTimeout(r, delay));
+    }
   }
 }
 
