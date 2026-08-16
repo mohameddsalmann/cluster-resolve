@@ -214,9 +214,9 @@ export default function SuppliersPage() {
         ) : suppliers.length === 0 ? (
           <EmptyState
             icon={Truck}
-            title="No suppliers found"
-            description="There are no suppliers in the active dataset yet."
-            action={{ label: 'Go to Imports', href: '/imports' }}
+            title="No supplier evidence yet"
+            description="Start with Orders, then upload Offers. Decisions and Outcomes unlock replay and supplier reliability."
+            action={{ label: 'Upload Procurement Data', href: '/imports' }}
           />
         ) : (
           <DataTable

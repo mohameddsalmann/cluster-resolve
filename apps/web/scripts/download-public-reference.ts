@@ -7,8 +7,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 // Save to workspace root data/reference/egyptian-drugs-200.json
 const REFERENCE_DIR = resolve(__dirname, '../../../data/reference');
 const OUTPUT_FILE = resolve(REFERENCE_DIR, 'egyptian-drugs-200.json');
+const SOURCE_REVISION = '82809ebb972adf976d5301689cdab68b00346f71';
 const SOURCE_URL =
-  'https://raw.githubusercontent.com/karem505/egyptian-drug-database/main/data/egyptian-drugs.csv';
+  `https://raw.githubusercontent.com/karem505/egyptian-drug-database/${SOURCE_REVISION}/data/egyptian-drugs.csv`;
 
 export interface PublicDrugReferenceRecord {
   resolveProductId: string; // e.g. PROD-0001

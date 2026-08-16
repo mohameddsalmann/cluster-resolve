@@ -5,6 +5,7 @@ import { getSupabaseServerClient } from '@/lib/supabase/server';
 import {
   createTraceabilityImport,
   evaluateAndPersistReconciliations,
+  getTraceabilityRepositoryStatus,
   persistCanonicalEvents,
 } from '@/lib/db/repositories/traceability';
 import { getDatasetById } from '@/lib/db/repositories/datasets';
@@ -12,11 +13,11 @@ import { getDatasetById } from '@/lib/db/repositories/datasets';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { datasetId, storagePath, filename, fileSizeBytes, rawContent, format } = body;
+    const { datasetId, storagePath, filename, fileSizeBytes, format } = body;
 
-    if (!datasetId || (!storagePath && !rawContent)) {
+    if (!datasetId || !storagePath) {
       return NextResponse.json(
-        { error: 'Missing required parameters: datasetId and either storagePath or rawContent' },
+        { error: 'Missing required parameters: datasetId and storagePath' },
         { status: 400 }
       );
     }
@@ -26,25 +27,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Dataset not found' }, { status: 404 });
     }
 
-    let fileText = '';
-    const actualStoragePath = storagePath || `inline/${Date.now()}_${filename || 'upload.txt'}`;
-
-    if (rawContent) {
-      fileText = rawContent;
-    } else {
-      const supabase = getSupabaseServerClient();
-      const { data, error } = await supabase.storage
-        .from('traceability-imports')
-        .download(storagePath);
-
-      if (error || !data) {
-        return NextResponse.json(
-          { error: `Failed to download file from storage: ${error?.message || 'Empty file'}` },
-          { status: 400 }
-        );
-      }
-      fileText = await data.text();
+    const repositoryStatus = await getTraceabilityRepositoryStatus();
+    if (!repositoryStatus.available) {
+      return NextResponse.json({ error: repositoryStatus.reason }, { status: 503 });
     }
+
+    const supabase = getSupabaseServerClient();
+    const { data, error } = await supabase.storage
+      .from('traceability-imports')
+      .download(storagePath);
+
+    if (error || !data) {
+      return NextResponse.json(
+        { error: `Failed to download file from storage: ${error?.message || 'Empty file'}` },
+        { status: 400 }
+      );
+    }
+    const fileText = await data.text();
 
     const fileSha256 = createHash('sha256').update(fileText, 'utf8').digest('hex');
     const bytes = fileSizeBytes || Buffer.byteLength(fileText, 'utf8');
@@ -57,7 +56,7 @@ export async function POST(request: Request) {
       datasetId,
       filename: filename || 'eptts_data.csv',
       format: result.format,
-      storagePath: actualStoragePath,
+      storagePath,
       fileSha256,
       fileSizeBytes: bytes,
       result,

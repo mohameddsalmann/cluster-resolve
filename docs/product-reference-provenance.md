@@ -4,11 +4,14 @@
 
 - **Public Reference Source**: Egyptian Drug Database (`karem505/egyptian-drug-database`)
 - **Source Repository URL**: https://github.com/karem505/egyptian-drug-database
-- **Source Data File**: `data/egyptian-drugs.csv`
-- **Source Revision / Commit**: `main` (June 2026 update snapshot)
+- **Source Data File**: [`data/egyptian-drugs.csv`](https://github.com/karem505/egyptian-drug-database/blob/82809ebb972adf976d5301689cdab68b00346f71/data/egyptian-drugs.csv)
+- **Source Revision / Commit**: `82809ebb972adf976d5301689cdab68b00346f71`
 - **Retrieval Date**: 2026-08-15
 - **License**: **CC0-1.0 (Creative Commons Zero / Public Domain)**
   - CC0 dedication explicitly permits copying, modification, distribution, and commercial/non-commercial operational use without restriction or attribution requirements.
+- **Upstream record count**: 25,070 rows at the pinned revision.
+- **Selected local snapshot**: 200 records in `data/reference/egyptian-drugs-200.json`.
+- **Selected snapshot SHA-256**: `93827a4f4b8faffc2102401e9efb16172fe71dc2ec1e1a868eedbe6ca7c33829`.
 
 ---
 
@@ -16,7 +19,7 @@
 
 | Category | Real Public Data vs Synthetic Procurement History |
 |---|---|
-| **Product Metadata** | **Real Public Reference**: Trade names (English + Arabic), scientific active ingredients, manufacturers, therapeutic drug classes, routes of administration, and published Egyptian retail prices in EGP. |
+| **Product Metadata** | **Public Medicine Reference**: Source-provided trade names (English + Arabic alias), scientific composition, manufacturers, drug classes, routes, and EGP prices. It is not customer procurement or an official EDA registry. |
 | **Procurement History** | **Synthetic**: All order transactions, buyer pharmacies, distributor entities, quoted offers, AI decision logs, delivery timestamps, and fulfillment outcomes are deterministically generated for operational intelligence and demonstration purposes. |
 | **Entity Names** | Neutral synthetic identifiers (`SUP-001` .. `SUP-030`, `PHARM-001` .. `PHARM-050`). No real pharmacy or commercial distributor operational performance is claimed. |
 
@@ -24,21 +27,13 @@
 
 ## 3. Product Selection Methodology
 
-- Filtered from 25,070 registered medicines in Egypt to select **200 pristine, diverse medicine records**.
+- Deterministically filtered from 25,070 upstream rows to select **200 reference records**.
 - Criteria applied:
   1. Complete, non-corrupted Latin scientific composition (`scientific_name`).
   2. Complete commercial name (`commercial_name_en`) and Arabic alias (`commercial_name_ar`).
-  3. Verified manufacturer name (`manufacturer`).
+  3. Non-empty source-provided manufacturer name (`manufacturer`).
   4. Validated retail price between 5 EGP and 3,000 EGP.
-  5. Broad coverage across essential therapeutic classes:
-     - Antibiotics & Antimicrobials
-     - Analgesics & Antipyretics
-     - Cardiovascular & Antihypertensives
-     - Antidiabetic agents
-     - Gastrointestinal & Antacids
-     - Respiratory & Antihistamines
-     - Dermatological & Topical
-     - Vitamins & Nutritional supplements
+  5. Stable sorting by scientific and commercial name, deduplication by commercial name, then evenly spaced selection across the result.
 - Mapped into stable Resolve Product IDs: `PROD-0001` through `PROD-0200`.
 
 ---

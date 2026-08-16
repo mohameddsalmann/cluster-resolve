@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import {
+  getRegulatoryLastSync,
+  getRegulatoryRepositoryStatus,
   listRegulatoryExposures,
   listRegulatoryNotices,
 } from '@/lib/db/repositories/regulatory';
@@ -13,14 +15,46 @@ export async function GET(request: Request) {
     const noticeType = url.searchParams.get('noticeType') || undefined;
     const recallClass = url.searchParams.get('recallClass') || undefined;
     const search = url.searchParams.get('search') || undefined;
+    const requestedPage = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const requestedLimit = Number.parseInt(url.searchParams.get('limit') || '25', 10);
+    const page = Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(100, Math.max(1, requestedLimit))
+      : 25;
+
+    const repositoryStatus = await getRegulatoryRepositoryStatus();
+    if (!repositoryStatus.available) {
+      return NextResponse.json({
+        notices: [],
+        totalCount: 0,
+        page,
+        pageSize: limit,
+        sourceStatus: 'PERSISTENCE_UNAVAILABLE',
+        sourceAuthority: 'Egyptian Drug Authority',
+        lastSync: null,
+        statusMessage: repositoryStatus.reason,
+        summary: {
+          totalMonitoredNotices: 0,
+          exactMatchesCount: 0,
+          possibleMatchesCount: 0,
+          totalAffectedOrders: 0,
+          totalExposedValueMinor: '0',
+        },
+      });
+    }
 
     // 1. Fetch global notices
-    const { notices, totalCount } = await listRegulatoryNotices({
-      year,
-      noticeType,
-      recallClass,
-      search,
-    });
+    const [{ notices, totalCount }, lastSync] = await Promise.all([
+      listRegulatoryNotices({
+        year,
+        noticeType,
+        recallClass,
+        search,
+        limit,
+        offset: (page - 1) * limit,
+      }),
+      getRegulatoryLastSync(),
+    ]);
 
     // 2. Fetch dataset exposures if datasetId provided
     let exposures: Array<RegulatoryExposureRow & { notice: RegulatoryNoticeRow }> = [];
@@ -49,6 +83,14 @@ export async function GET(request: Request) {
         exposure: exposureByNoticeId.get(n.id) || null,
       })),
       totalCount,
+      page,
+      pageSize: limit,
+      sourceStatus: totalCount > 0 ? 'PERSISTED_OFFICIAL' : 'NOT_SYNCED',
+      sourceAuthority: 'Egyptian Drug Authority',
+      lastSync,
+      statusMessage: totalCount > 0
+        ? 'Official public notices persisted from the EDA source.'
+        : 'No official EDA notices have been persisted yet.',
       summary: {
         totalMonitoredNotices: totalCount,
         exactMatchesCount: exactCount,

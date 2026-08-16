@@ -17,7 +17,7 @@ export function proxy(request: NextRequest) {
   // Generate or propagate request-id
   const requestId =
     requestHeaders.get('x-request-id') ??
-    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    `${Date.now().toString(36)}-${crypto.randomUUID()}`;
   requestHeaders.set('x-request-id', requestId);
 
   const response = NextResponse.next({

@@ -8,7 +8,7 @@ const ROOT_DIR = resolve(__dirname, '../../..');
 const REFERENCE_FILE = resolve(ROOT_DIR, 'data/reference/egyptian-drugs-200.json');
 const OUTPUT_DIR = resolve(ROOT_DIR, 'data/founder-demo');
 
-export const GENERATOR_VERSION = '1.0.0';
+export const GENERATOR_VERSION = '1.1.0';
 export const GENERATOR_SEED = 'CLUSTER_FOUNDER_DEMO_2026';
 export const FIXED_DATE_START = '2025-10-01T00:00:00.000Z';
 export const FIXED_DATE_END = '2026-08-14T00:00:00.000Z';
@@ -40,6 +40,13 @@ export function generateFounderDemoData(): GeneratorOutput {
   const randInt = (min: number, max: number) => Math.floor(rand() * (max - min + 1)) + min;
   const randChoice = <T>(arr: readonly T[]): T => arr[Math.floor(rand() * arr.length)];
   const randFloat = (min: number, max: number) => min + rand() * (max - min);
+  const serviceRand = createPrng(`${GENERATOR_SEED}_SERVICE_CALIBRATION_V1`);
+  const serviceRandInt = (min: number, max: number) =>
+    Math.floor(serviceRand() * (max - min + 1)) + min;
+  const serviceRandChoice = <T>(arr: readonly T[]): T =>
+    arr[Math.floor(serviceRand() * arr.length)];
+  const serviceRandFloat = (min: number, max: number) =>
+    min + serviceRand() * (max - min);
 
   // 1. Load Public Reference Products
   if (!existsSync(REFERENCE_FILE)) {
@@ -97,10 +104,22 @@ export function generateFounderDemoData(): GeneratorOutput {
 
   const pharmacies = Array.from({ length: 50 }, (_, i) => {
     const id = `PHARM-${String(i + 1).padStart(3, '0')}`;
-    const name = pharmacyNames[i] || `Egypt Pharmacy ${i + 1}`;
+    const name = pharmacyNames[i]
+      ? `Founder Demo Pharmacy ${String(i + 1).padStart(3, '0')}`
+      : `Founder Demo Pharmacy ${i + 1}`;
     const loc = egyptianCities[i % egyptianCities.length];
     return { id, name: `${name} · ${loc.city}`, city: loc.city, gov: loc.gov };
   });
+
+  // These cohorts only modify deterministic fulfillment evidence. The
+  // production service-risk policy derives every displayed status after import.
+  const highServiceRiskPharmacyIds = new Set([
+    'PHARM-005', 'PHARM-022', 'PHARM-041', 'PHARM-047',
+  ]);
+  const watchServiceRiskPharmacyIds = new Set([
+    'PHARM-003', 'PHARM-009', 'PHARM-012', 'PHARM-018', 'PHARM-025',
+    'PHARM-028', 'PHARM-033', 'PHARM-036', 'PHARM-043', 'PHARM-049',
+  ]);
 
   // 3. Define 30 Suppliers with purposeful behavioral profiles
   const supplierNames = [
@@ -143,10 +162,10 @@ export function generateFounderDemoData(): GeneratorOutput {
   const suppliers: SupplierProfile[] = supplierNames.map((name, i) => {
     const id = `SUP-${String(i + 1).padStart(3, '0')}`;
     let role: SupplierRole = 'STANDARD';
-    let baseFillBps = 9600;
-    let recentFillBps = 9600;
-    let baseCancelBps = 150;
-    let recentCancelBps = 150;
+    let baseFillBps = 9800;
+    let recentFillBps = 9800;
+    let baseCancelBps = 0;
+    let recentCancelBps = 0;
     let baseLeadHours = 18;
     let recentLeadHours = 18;
     let promisedHoursOffset = 0;
@@ -158,8 +177,8 @@ export function generateFounderDemoData(): GeneratorOutput {
       role = 'STABLE_STRONG';
       baseFillBps = 9850;
       recentFillBps = 9800;
-      baseCancelBps = 50;
-      recentCancelBps = 80;
+      baseCancelBps = 0;
+      recentCancelBps = 0;
       baseLeadHours = 14;
       recentLeadHours = 14;
       priceMultiplier = 1.0;
@@ -168,7 +187,7 @@ export function generateFounderDemoData(): GeneratorOutput {
       role = 'DETERIORATING';
       baseFillBps = 9700;
       recentFillBps = 6200; // Drops 35 pts
-      baseCancelBps = 100;
+      baseCancelBps = 0;
       recentCancelBps = 1800; // Jumps 17 pts
       baseLeadHours = 16;
       recentLeadHours = 48; // Lead time triples
@@ -176,20 +195,20 @@ export function generateFounderDemoData(): GeneratorOutput {
     } else if (i === 12 || i === 13) {
       // SUP-013, SUP-014: Cheap But Slow
       role = 'CHEAP_SLOW';
-      baseFillBps = 9200;
-      recentFillBps = 9200;
-      baseCancelBps = 300;
-      recentCancelBps = 300;
+      baseFillBps = 9700;
+      recentFillBps = 9700;
+      baseCancelBps = 0;
+      recentCancelBps = 0;
       baseLeadHours = 48;
       recentLeadHours = 48;
       priceMultiplier = 0.88; // 12% cheaper
     } else if (i === 14) {
       // SUP-015: Product-Specific Weakness (fails on products PROD-0010..PROD-0025)
       role = 'PRODUCT_WEAK';
-      baseFillBps = 9500;
-      recentFillBps = 9500;
-      baseCancelBps = 100;
-      recentCancelBps = 100;
+      baseFillBps = 9800;
+      recentFillBps = 9800;
+      baseCancelBps = 0;
+      recentCancelBps = 0;
       baseLeadHours = 16;
       recentLeadHours = 16;
       weakProductIds = new Set(products.slice(10, 25).map((p) => p.resolveProductId));
@@ -197,10 +216,10 @@ export function generateFounderDemoData(): GeneratorOutput {
     } else if (i === 15) {
       // SUP-016: Overpromising (promises 4h delivery, actual lead time is 26h)
       role = 'OVERPROMISING';
-      baseFillBps = 9100;
-      recentFillBps = 9000;
-      baseCancelBps = 400;
-      recentCancelBps = 500;
+      baseFillBps = 9700;
+      recentFillBps = 9700;
+      baseCancelBps = 0;
+      recentCancelBps = 0;
       baseLeadHours = 26;
       recentLeadHours = 28;
       promisedHoursOffset = -22; // promises 4h, takes 26h
@@ -302,6 +321,7 @@ export function generateFounderDemoData(): GeneratorOutput {
   let dominatedDecisionCount = 0;
   let nonDominatedDecisionCount = 0;
   let selectedNotFeasibleCount = 0;
+  let insufficientDataDecisionCount = 0;
   let futureOfferCount = 0;
 
   for (let oIdx = 0; oIdx < TOTAL_ORDERS; oIdx++) {
@@ -437,7 +457,22 @@ export function generateFounderDemoData(): GeneratorOutput {
     let selectionReason = `Selected ${selectedSupp.name} based on optimal unit cost and historical fill rate reliability.`;
     let confidence = 0.88;
 
-    if (decisionRoll < 0.08 && candidateSuppliers.length > 1) {
+    if (decisionRoll < 0.01) {
+      // No offer existed at decision time. The offers are retained with later
+      // timestamps so the production replay engine, rather than the generator,
+      // derives INSUFFICIENT_DATA and proves temporal exclusion.
+      // Keep the same selected supplier that this roll used in the previous
+      // deterministic sequence so downstream sample structure remains stable.
+      selectedSupp = candidateSuppliers[1] ?? candidateSuppliers[0];
+      for (let offerIndex = 0; offerIndex < orderOffers.length; offerIndex++) {
+        orderOffers[offerIndex].offeredAt = new Date(
+          decidedAtMs + (30 + offerIndex) * 60_000
+        ).toISOString();
+      }
+      selectionReason = `Selected ${selectedSupp.name} without a recorded decision-time offer; evidence arrived after allocation.`;
+      confidence = 0.5;
+      insufficientDataDecisionCount++;
+    } else if (decisionRoll < 0.08 && candidateSuppliers.length > 1) {
       // DOMINATED scenario: chosen supplier had higher price than a feasible competitor
       selectedSupp = candidateSuppliers[1];
       selectionReason = `Procurement override: selected ${selectedSupp.name} due to strategic volume contract despite higher per-unit quote.`;
@@ -469,7 +504,6 @@ export function generateFounderDemoData(): GeneratorOutput {
     for (const item of orderItems) {
       const fillRateBps = isRecent ? selectedSupp.recentFillBps : selectedSupp.baseFillBps;
       const cancelRateBps = isRecent ? selectedSupp.recentCancelBps : selectedSupp.baseCancelBps;
-      const leadHours = isRecent ? selectedSupp.recentLeadHours : selectedSupp.baseLeadHours;
 
       // Special case: Product-Specific Weakness for SUP-015 on weakProductIds
       let effectiveFillBps = fillRateBps;
@@ -481,14 +515,64 @@ export function generateFounderDemoData(): GeneratorOutput {
         }
       }
 
-      // Pharmacy cohort modifiers:
-      // PHARM-005 & PHARM-022 get high exception rates when served by deteriorating suppliers
-      if ((pharmacy.id === 'PHARM-005' || pharmacy.id === 'PHARM-022') && isRecent) {
-        effectiveFillBps = Math.min(effectiveFillBps, 4000);
-        effectiveCancelBps = Math.max(effectiveCancelBps, 3000);
+      // Pharmacy cohorts change the service outcomes, never the derived label.
+      if (highServiceRiskPharmacyIds.has(pharmacy.id)) {
+        effectiveFillBps = Math.min(effectiveFillBps, 6500);
+        effectiveCancelBps = Math.max(effectiveCancelBps, 500);
+      } else if (watchServiceRiskPharmacyIds.has(pharmacy.id)) {
+        effectiveFillBps = Math.min(effectiveFillBps, 9700);
+        effectiveCancelBps = 0;
+      } else {
+        effectiveCancelBps = 0;
       }
 
-      const outcomeRoll = rand() * 10000;
+      // Preserve the generator's original structural PRNG sequence so order,
+      // row, offer, and decision counts remain stable across this calibration.
+      let legacyFillBps = selectedSupp.role === 'STABLE_STRONG'
+        ? (isRecent ? 9800 : 9850)
+        : selectedSupp.role === 'DETERIORATING'
+          ? (isRecent ? 6200 : 9700)
+          : selectedSupp.role === 'CHEAP_SLOW'
+            ? 9200
+            : selectedSupp.role === 'PRODUCT_WEAK'
+              ? 9500
+              : selectedSupp.role === 'OVERPROMISING'
+                ? (isRecent ? 9000 : 9100)
+                : selectedSupp.role === 'LOW_SAMPLE'
+                  ? 8000
+                  : 9600;
+      let legacyCancelBps = selectedSupp.role === 'STABLE_STRONG'
+        ? (isRecent ? 80 : 50)
+        : selectedSupp.role === 'DETERIORATING'
+          ? (isRecent ? 1800 : 100)
+          : selectedSupp.role === 'CHEAP_SLOW'
+            ? 300
+            : selectedSupp.role === 'PRODUCT_WEAK'
+              ? 100
+              : selectedSupp.role === 'OVERPROMISING'
+                ? (isRecent ? 500 : 400)
+                : selectedSupp.role === 'LOW_SAMPLE'
+                  ? 0
+                  : 150;
+      if (selectedSupp.weakProductIds?.has(item.productId) && isRecent) {
+        legacyFillBps = 4500;
+        legacyCancelBps = 2500;
+      }
+      if ((pharmacy.id === 'PHARM-005' || pharmacy.id === 'PHARM-022') && isRecent) {
+        legacyFillBps = Math.min(legacyFillBps, 4000);
+        legacyCancelBps = Math.max(legacyCancelBps, 3000);
+      }
+      const legacyRoll = rand() * 10000;
+      if (legacyRoll < legacyCancelBps) {
+        randChoice(['cancel-a', 'cancel-b', 'cancel-c', 'cancel-d']);
+      } else if (legacyRoll < 10000 - legacyFillBps + legacyCancelBps) {
+        randFloat(0.3, 0.75);
+        randInt(-2, 8);
+      } else {
+        randInt(-4, 6);
+      }
+
+      const outcomeRoll = serviceRand() * 10000;
       let cancelled = false;
       let cancellationReason: string | null = null;
       let filledQty = item.requestedQty;
@@ -497,7 +581,7 @@ export function generateFounderDemoData(): GeneratorOutput {
       if (outcomeRoll < effectiveCancelBps) {
         // Cancelled
         cancelled = true;
-        cancellationReason = randChoice([
+        cancellationReason = serviceRandChoice([
           'Stock exhausted at regional depot.',
           'Logistics delay resulted in cancellation by pharmacy.',
           'Supplier cancelled due to regulatory recall hold.',
@@ -508,15 +592,38 @@ export function generateFounderDemoData(): GeneratorOutput {
       } else if (outcomeRoll < 10000 - effectiveFillBps + effectiveCancelBps) {
         // Partial fill
         cancelled = false;
-        filledQty = Math.max(1, Math.floor(item.requestedQty * randFloat(0.3, 0.75)));
-        const actualLeadHours = leadHours + randInt(-2, 8);
-        deliveredAt = new Date(decidedAtMs + actualLeadHours * 3_600_000).toISOString();
+        filledQty = Math.max(1, Math.floor(item.requestedQty * serviceRandFloat(0.3, 0.75)));
       } else {
         // Fully fulfilled
         cancelled = false;
         filledQty = item.requestedQty;
-        const actualLeadHours = Math.max(4, leadHours + randInt(-4, 6));
-        deliveredAt = new Date(decidedAtMs + actualLeadHours * 3_600_000).toISOString();
+      }
+
+      if (!cancelled) {
+        const selectedOffer = itemOffersMap
+          .get(item.productId)
+          ?.find((offer) => offer.supplierId === selectedSupp.id);
+        if (!selectedOffer) {
+          throw new Error(`Selected supplier ${selectedSupp.id} has no offer for ${orderId}/${item.productId}.`);
+        }
+
+        let lateProbability = 0.02;
+        if (selectedSupp.role === 'DETERIORATING') lateProbability = isRecent ? 0.55 : 0.04;
+        if (selectedSupp.role === 'CHEAP_SLOW') lateProbability = 0.05;
+        if (selectedSupp.role === 'OVERPROMISING') lateProbability = 0.65;
+        if (selectedSupp.role === 'PRODUCT_WEAK') lateProbability = isRecent ? 0.08 : 0.02;
+        if (highServiceRiskPharmacyIds.has(pharmacy.id)) lateProbability = Math.max(lateProbability, 0.45);
+        if (watchServiceRiskPharmacyIds.has(pharmacy.id)) lateProbability = Math.max(lateProbability, 0.08);
+
+        const promisedMs = Date.parse(selectedOffer.promisedDeliveryAt);
+        const deliveryDeltaHours = serviceRand() < lateProbability
+          ? serviceRandInt(2, 20)
+          : -serviceRandInt(1, 6);
+        const deliveredMs = Math.max(
+          promisedMs + deliveryDeltaHours * 3_600_000,
+          decidedAtMs + 3_600_000
+        );
+        deliveredAt = new Date(deliveredMs).toISOString();
       }
 
       outcomes.push({
@@ -533,7 +640,7 @@ export function generateFounderDemoData(): GeneratorOutput {
   }
 
   console.log(`[generator] Formatted ${orders.length} orders, ${offers.length} offers, ${decisions.length} decisions, ${outcomes.length} outcomes.`);
-  console.log(`[generator] Scenarios summary: Dominated decisions=${dominatedDecisionCount}, Future offers=${futureOfferCount}, Not-feasible decisions=${selectedNotFeasibleCount}`);
+  console.log(`[generator] Scenarios summary: Dominated decisions=${dominatedDecisionCount}, Future offers=${futureOfferCount}, Not-feasible decisions=${selectedNotFeasibleCount}, Insufficient-data decisions=${insufficientDataDecisionCount}`);
 
   // 5. Build CSV strings matching canonical import schema
   // orders.csv
@@ -632,7 +739,7 @@ export function generateFounderDemoData(): GeneratorOutput {
     datasetMode: 'SAMPLE',
     generatorVersion: GENERATOR_VERSION,
     seed: GENERATOR_SEED,
-    generationVersion: '2026-08-15',
+    generationVersion: '2026-08-16',
     fixedDateRange: {
       start: FIXED_DATE_START,
       end: FIXED_DATE_END,
@@ -653,9 +760,11 @@ export function generateFounderDemoData(): GeneratorOutput {
       repository: 'https://github.com/karem505/egyptian-drug-database',
       sourceFile: 'data/egyptian-drugs.csv',
       license: 'CC0-1.0 (Public Domain)',
-      sourceRevision: 'main (June 2026 snapshot)',
+      sourceRevision: '82809ebb972adf976d5301689cdab68b00346f71',
       retrievalDate: '2026-08-15',
+      upstreamRecordCount: 25070,
       productsUsed: products.length,
+      selectedSnapshotSha256: sha256(readFileSync(REFERENCE_FILE, 'utf-8')),
       sourceFieldsUsed: [
         'commercial_name_en',
         'commercial_name_ar',
@@ -675,12 +784,13 @@ export function generateFounderDemoData(): GeneratorOutput {
       productSpecificWeakSuppliers: ['SUP-015'],
       overpromisingSuppliers: ['SUP-016'],
       lowSampleSuppliers: ['SUP-029', 'SUP-030'],
-      pharmacyServiceRiskHigh: ['PHARM-005', 'PHARM-022'],
-      pharmacyServiceRiskAtRisk: ['PHARM-012', 'PHARM-018', 'PHARM-025', 'PHARM-033'],
+      pharmacyServiceRiskHigh: [...highServiceRiskPharmacyIds],
+      pharmacyServiceRiskAtRisk: [...watchServiceRiskPharmacyIds],
       decisionScenarios: {
         dominatedCount: dominatedDecisionCount,
         nonDominatedCount: nonDominatedDecisionCount,
         selectedNotFeasibleCount: selectedNotFeasibleCount,
+        insufficientDataCount: insufficientDataDecisionCount,
       },
       futureOffersExcludedCount: futureOfferCount,
     },

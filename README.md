@@ -2,11 +2,11 @@
 
 > **Unofficial candidate prototype.** Not affiliated with, endorsed by, or connected to Cluster's production systems.
 
-An unofficial, candidate-built reliability/observability layer around pharmaceutical AI procurement decisions, built as one Next.js + TypeScript app on Vercel Hobby with Supabase Postgres, where every displayed metric is traceable back to a persisted source record.
+An unofficial, candidate-built reliability and evidence layer around pharmaceutical procurement decisions, built as one Next.js + TypeScript app with Supabase Postgres.
 
 ## What this is
 
-A single full-stack Next.js (App Router, TypeScript) application that ingests real data from three explicitly labelled classes of source (live public EDA regulatory data, user-imported anonymized CSV/JSON, clearly-labelled synthetic demo data) and produces deterministic reliability metrics over pharmaceutical procurement:
+A single full-stack Next.js application that ingests explicitly labelled customer CSV uploads, public reference data, official public EDA notices, and deterministic sample data. It produces reproducible procurement evidence and reliability metrics from persisted source records:
 
 - AI decision observability and replay
 - Procurement regret
@@ -24,7 +24,6 @@ We do not rebuild Cluster's marketplace, Clara, procurement UX, forecasting mode
 - **Framework**: Next.js 16.3.0 (App Router, TypeScript strict)
 - **Database**: Supabase Postgres (Free tier) with RLS on every table
 - **Deployment**: Vercel Hobby (one project)
-- **Job orchestration**: Vercel Workflows (primary) + pg_cron recovery watchdog (15 min)
 - **Monorepo**: pnpm workspaces (no Turborepo)
 - **Tests**: Vitest (unit/integration), Playwright (E2E)
 
@@ -40,12 +39,17 @@ pnpm supabase:link
 # Review pending migrations
 pnpm supabase:db:push:check
 
+# Apply migrations to the linked project before starting the app
+pnpm supabase:db:push
+
 # Start dev server
 pnpm dev
 
 # Run CI locally
 pnpm ci:local
 ```
+
+The exact founder try flow, data provenance, required environment variable names, and deployment prerequisites are in [`docs/founder-readiness.md`](docs/founder-readiness.md).
 
 ## Architecture notes
 
@@ -68,7 +72,8 @@ docs/              — architecture, runbooks, API docs
 
 ## Honesty constraints
 
-- No fake data: every metric is traceable to persisted source rows
-- No EPTTS verdict claims an official EDA outcome — it is a prototype preflight
+- Founder Demo procurement is deterministic SAMPLE data and is labelled as such
+- Public medicine reference data is not customer data
+- Official EDA notices are persisted only after a successful bounded official-source fetch
+- No EPTTS verdict claims an official EDA outcome — it is a deterministic preflight
 - Unverified rules are displayed separately and never affect the verdict
-- Sample data is always bannered

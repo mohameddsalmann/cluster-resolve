@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" schemaVersion="1.2" creationDate="2026-08-01T08:00:00Z">
+  <EPCISBody>
+    <EventList>
+      <ObjectEvent>
+        <eventTime>2026-08-01T08:00:00Z</eventTime>
+        <eventTimeZoneOffset>+02:00</eventTimeZoneOffset>
+        <epcList><epc>(01)06221234567891(21)EPC001</epc></epcList>
+        <action>ADD</action>
+        <bizStep>urn:epcglobal:cbv:bizstep:commissioning</bizStep>
+        <readPoint><id>6221234567891</id></readPoint>
+        <bizLocation><id>6221234567891</id></bizLocation>
+        <ilmd>
+          <lotNumber>BATCH-2026-X</lotNumber>
+          <itemExpirationDate>2028-12-31</itemExpirationDate>
+        </ilmd>
+      </ObjectEvent>
+      <ObjectEvent>
+        <eventTime>2026-08-01T09:00:00Z</eventTime>
+        <eventTimeZoneOffset>+02:00</eventTimeZoneOffset>
+        <epcList><epc>(01)06221234567891(21)EPC001</epc></epcList>
+        <action>OBSERVE</action>
+        <bizStep>urn:epcglobal:cbv:bizstep:shipping</bizStep>
+        <readPoint><id>6221234567891</id></readPoint>
+        <bizLocation><id>6221234567891</id></bizLocation>
+        <sourceList><source>6221234567891</source></sourceList>
+        <destinationList><destination>6229876543210</destination></destinationList>
+        <bizTransactionList><bizTransaction>ORD-REFERENCE-001</bizTransaction></bizTransactionList>
+      </ObjectEvent>
+    </EventList>
+  </EPCISBody>
+</epcis:EPCISDocument>

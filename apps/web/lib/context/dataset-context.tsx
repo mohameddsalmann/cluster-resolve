@@ -47,9 +47,13 @@ export function DatasetProvider({ children }: { children: React.ReactNode }) {
         if (saved && list.some((d) => d.id === saved)) {
           return saved;
         }
-        // Prefer SAMPLE or first
+        // Fresh sessions should open the intentional full Founder Demo, not a
+        // transient SAMPLE integration-test dataset.
+        const founderDemo = list.find(
+          (d) => d.mode === 'SAMPLE' && d.name === 'Cluster Resolve · Founder Demo'
+        );
         const sample = list.find((d) => d.mode === 'SAMPLE');
-        const nextId = sample?.id ?? list[0]?.id ?? '';
+        const nextId = founderDemo?.id ?? sample?.id ?? list[0]?.id ?? '';
         if (typeof window !== 'undefined' && nextId) {
           localStorage.setItem(STORAGE_KEY, nextId);
         }

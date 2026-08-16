@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Building2 } from 'lucide-react';
 import { AppShell, PageBody, TopContextBar } from '@/components/cluster/AppShell';
 import { DataTable, type Column } from '@/components/cluster/DataTable';
@@ -13,7 +14,7 @@ import {
 } from '@/components/cluster/primitives';
 import { useDataset } from '@/lib/context/dataset-context';
 
-type PharmacyServiceRiskLevel = 'STABLE' | 'AT_RISK' | 'HIGH_RISK';
+type PharmacyServiceRiskLevel = 'STABLE' | 'AT_RISK' | 'HIGH_RISK' | 'INSUFFICIENT_DATA';
 
 interface PharmacyListItem {
   pharmacy: {
@@ -24,10 +25,12 @@ interface PharmacyListItem {
   risk: {
     pharmacyId: string;
     totalOrders: number;
+    evaluatedOrders: number;
     ordersWithExceptions: number;
     exceptionRateBps: number | null;
     cancellationAffected: number;
     partialFillAffected: number;
+    lateDeliveryAffected: number;
     highSeverityExceptions: number;
     serviceRiskLevel: PharmacyServiceRiskLevel;
   };
@@ -37,15 +40,18 @@ const riskTone: Record<PharmacyServiceRiskLevel, ChipTone> = {
   STABLE: 'success',
   AT_RISK: 'caution',
   HIGH_RISK: 'danger',
+  INSUFFICIENT_DATA: 'neutral',
 };
 
 const riskLabel: Record<PharmacyServiceRiskLevel, string> = {
   STABLE: 'Stable',
   AT_RISK: 'At Risk',
   HIGH_RISK: 'High Risk',
+  INSUFFICIENT_DATA: 'Insufficient Data',
 };
 
 export default function PharmaciesPage() {
+  const router = useRouter();
   const { activeDatasetId, activeDataset } = useDataset();
   const [pharmacies, setPharmacies] = useState<PharmacyListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,10 +73,15 @@ export default function PharmaciesPage() {
         const data = await res.json();
         if (isCancelled) return;
         if (data.error) throw new Error(data.error);
-        // Sort: HIGH_RISK first, then AT_RISK, then STABLE
+        // Sort: highest attention first, with insufficient evidence last.
         const sorted = (data.pharmacies ?? []).sort((a: PharmacyListItem, b: PharmacyListItem) => {
-          const order = { HIGH_RISK: 0, AT_RISK: 1, STABLE: 2 };
-          return (order[a.risk.serviceRiskLevel] ?? 2) - (order[b.risk.serviceRiskLevel] ?? 2);
+          const order: Record<PharmacyServiceRiskLevel, number> = {
+            HIGH_RISK: 0,
+            AT_RISK: 1,
+            STABLE: 2,
+            INSUFFICIENT_DATA: 3,
+          };
+          return order[a.risk.serviceRiskLevel] - order[b.risk.serviceRiskLevel];
         });
         setPharmacies(sorted);
       } catch (err) {
@@ -154,6 +165,16 @@ export default function PharmaciesPage() {
       ),
     },
     {
+      key: 'late',
+      header: 'Late Deliveries',
+      align: 'right',
+      cell: (r) => (
+        <span className={r.risk.lateDeliveryAffected > 0 ? 'text-caution' : 'text-body'}>
+          {r.risk.lateDeliveryAffected}
+        </span>
+      ),
+    },
+    {
       key: 'highSeverity',
       header: 'High-Sev. Exceptions',
       align: 'right',
@@ -174,7 +195,7 @@ export default function PharmaciesPage() {
       <PageBody wide>
         <PageHeader
           title="Pharmacies"
-          subtitle="Service risk is computed from exception history across all orders. HIGH_RISK: ≥50% exception rate or ≥2 high-severity exceptions. AT_RISK: ≥20% exception rate."
+          subtitle="Service Risk means supplier service experienced by this pharmacy—not pharmacy reliability. It is derived from cancelled, partial, unfulfilled, and late order evidence."
         />
 
         {loading ? (
@@ -187,9 +208,9 @@ export default function PharmaciesPage() {
         ) : pharmacies.length === 0 ? (
           <EmptyState
             icon={Building2}
-            title="No pharmacies found"
-            description="There are no pharmacies in the active dataset yet."
-            action={{ label: 'Go to Imports', href: '/imports' }}
+            title="No procurement data yet"
+            description="Upload Orders to create pharmacies from backend data. Outcomes then unlock supplier-service risk evidence."
+            action={{ label: 'Upload Orders', href: '/imports' }}
           />
         ) : (
           <DataTable
@@ -198,6 +219,7 @@ export default function PharmaciesPage() {
             rowKey={(r) => r.pharmacy.id}
             caption="Pharmacy service risk"
             emptyMessage="No pharmacies in this dataset."
+            onRowClick={(row) => router.push(`/pharmacies/${row.pharmacy.id}` as never)}
           />
         )}
       </PageBody>

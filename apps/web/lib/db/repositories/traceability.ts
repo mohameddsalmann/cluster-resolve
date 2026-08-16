@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { getSupabaseServerClient } from '../../supabase/server';
 import type {
   CanonicalTraceabilityEventRecord,
@@ -30,6 +31,26 @@ export interface CreateImportParams {
   result: PreflightResult;
 }
 
+export async function getTraceabilityRepositoryStatus(): Promise<{
+  available: boolean;
+  reason: string | null;
+}> {
+  const supabase = getSupabaseServerClient();
+  const { error } = await supabase
+    .from('traceability_imports' as never)
+    .select('id')
+    .limit(1);
+
+  if (!error) return { available: true, reason: null };
+  if (error.code === 'PGRST205' || error.message.includes('schema cache')) {
+    return {
+      available: false,
+      reason: 'The traceability persistence migration has not been applied to this Supabase project.',
+    };
+  }
+  throw error;
+}
+
 // In-memory fallback stores
 const memoryImports = new Map<string, TraceabilityImportRow>();
 const memoryFindings = new Map<string, TraceabilityFindingRow[]>();
@@ -41,7 +62,7 @@ export async function createTraceabilityImport(
   params: CreateImportParams
 ): Promise<{ importRow: TraceabilityImportRow; findings: TraceabilityFindingRow[] }> {
   const supabase = getSupabaseServerClient();
-  const importId = `imp_${params.datasetId}_${Date.now()}`;
+  const importId = randomUUID();
 
   const importPayload = {
     id: importId,
@@ -105,10 +126,15 @@ export async function createTraceabilityImport(
     const findingRows = createFindingRows(params.datasetId, importRow.id, params.result.findings);
 
     let persistedFindings: TraceabilityFindingRow[] = [];
+    const { error: deleteFindingsError } = await supabase
+      .from('traceability_findings' as never)
+      .delete()
+      .eq('import_id', importRow.id);
+    if (deleteFindingsError) throw deleteFindingsError;
     if (findingRows.length > 0) {
       const { data: fData, error: fErr } = await supabase
         .from('traceability_findings' as never)
-        .insert(findingRows as never)
+        .insert(findingRows.map(withoutId) as never)
         .select('*');
       if (fErr && fErr.code !== 'PGRST205') throw fErr;
       persistedFindings = (fData as unknown as TraceabilityFindingRow[]) || findingRows;
@@ -128,8 +154,8 @@ export async function createTraceabilityImport(
 }
 
 function createFindingRows(datasetId: string, importId: string, findings: PreflightResult['findings']): TraceabilityFindingRow[] {
-  return findings.map((f, i) => ({
-    id: `find_${importId}_${i}`,
+  return findings.map((f) => ({
+    id: randomUUID(),
     dataset_id: datasetId,
     import_id: importId,
     code: f.code,
@@ -213,7 +239,7 @@ export async function persistCanonicalEvents(
   if (events.length === 0) return [];
 
   const rows: TraceabilityEventRow[] = events.map((ev, idx) => ({
-    id: `ev_${datasetId}_${importId}_${idx + 1}`,
+    id: randomUUID(),
     dataset_id: datasetId,
     import_id: importId,
     event_type: ev.eventType,
@@ -240,7 +266,7 @@ export async function persistCanonicalEvents(
   try {
     const { data, error } = await supabase
       .from('traceability_events' as never)
-      .upsert(rows as never, {
+      .upsert(rows.map(withoutId) as never, {
         onConflict: 'dataset_id,import_id,source_index',
       })
       .select('*');
@@ -360,7 +386,7 @@ export async function upsertTraceabilityProductLink(
 ): Promise<TraceabilityProductLinkRow> {
   const supabase = getSupabaseServerClient();
   const row: TraceabilityProductLinkRow = {
-    id: `link_${datasetId}_${productId}_${gtin}`,
+    id: randomUUID(),
     dataset_id: datasetId,
     product_id: productId,
     gtin: gtin.trim(),
@@ -526,7 +552,7 @@ export async function evaluateAndPersistReconciliations(
   const records = reconcileOrdersWithTraceability(datasetId, ordersInput, canonicalEvents, productLinks, asOfDate);
 
   const dbRows: TraceabilityReconciliationRow[] = records.map((r) => ({
-    id: `recon_${datasetId}_${r.orderId}_${r.productId}`,
+    id: randomUUID(),
     dataset_id: datasetId,
     order_id: r.orderId,
     product_id: r.productId,
@@ -545,7 +571,7 @@ export async function evaluateAndPersistReconciliations(
     try {
       const { data, error } = await supabase
         .from('traceability_reconciliations' as never)
-        .upsert(dbRows as never, {
+        .upsert(dbRows.map(withoutId) as never, {
           onConflict: 'dataset_id,order_id,product_id',
         })
         .select('*');
@@ -616,6 +642,12 @@ function getMemoryReconciliations(datasetId: string, options: { status?: string 
     list = list.filter((r) => r.reconciliation_status === options.status);
   }
   return list;
+}
+
+function withoutId<T extends { id: string }>(row: T): Omit<T, 'id'> {
+  const { id, ...payload } = row;
+  void id;
+  return payload;
 }
 
 export async function getExpiryIntelligenceSummary(

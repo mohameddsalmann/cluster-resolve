@@ -1,9 +1,9 @@
 {
   "datasetName": "Cluster Resolve · Founder Demo",
   "datasetMode": "SAMPLE",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.1.0",
   "seed": "CLUSTER_FOUNDER_DEMO_2026",
-  "generationVersion": "2026-08-15",
+  "generationVersion": "2026-08-16",
   "fixedDateRange": {
     "start": "2025-10-01T00:00:00.000Z",
     "end": "2026-08-14T00:00:00.000Z",
@@ -24,9 +24,11 @@
     "repository": "https://github.com/karem505/egyptian-drug-database",
     "sourceFile": "data/egyptian-drugs.csv",
     "license": "CC0-1.0 (Public Domain)",
-    "sourceRevision": "main (June 2026 snapshot)",
+    "sourceRevision": "82809ebb972adf976d5301689cdab68b00346f71",
     "retrievalDate": "2026-08-15",
+    "upstreamRecordCount": 25070,
     "productsUsed": 200,
+    "selectedSnapshotSha256": "93827a4f4b8faffc2102401e9efb16172fe71dc2ec1e1a868eedbe6ca7c33829",
     "sourceFieldsUsed": [
       "commercial_name_en",
       "commercial_name_ar",
@@ -69,25 +71,34 @@
     ],
     "pharmacyServiceRiskHigh": [
       "PHARM-005",
-      "PHARM-022"
+      "PHARM-022",
+      "PHARM-041",
+      "PHARM-047"
     ],
     "pharmacyServiceRiskAtRisk": [
+      "PHARM-003",
+      "PHARM-009",
       "PHARM-012",
       "PHARM-018",
       "PHARM-025",
-      "PHARM-033"
+      "PHARM-028",
+      "PHARM-033",
+      "PHARM-036",
+      "PHARM-043",
+      "PHARM-049"
     ],
     "decisionScenarios": {
-      "dominatedCount": 795,
+      "dominatedCount": 685,
       "nonDominatedCount": 8876,
-      "selectedNotFeasibleCount": 329
+      "selectedNotFeasibleCount": 329,
+      "insufficientDataCount": 110
     },
     "futureOffersExcludedCount": 78
   },
   "checksums": {
-    "orders.csv": "5a4b731049773a844fccfd6262892101c6c24c50224974b28431546da9857b4f",
-    "offers.csv": "573a3b99093a5e2723f246cd6304752e8ec4ca7807f21264a30c4b74d8fae205",
-    "decisions.csv": "8047b6aa1d0a502396278827eef101c7984bda306121893abda08316b84fa441",
-    "outcomes.csv": "98f6dbc1897de414e4ef576bd5022ea10059d160e228d9a4a72b3ede0b9e4020"
+    "orders.csv": "bcd8d9fc0a7e48899f3e1658e13408e884b6e24e3f5d689e18c142f20c67ffbd",
+    "offers.csv": "1732b39768d4cd6bc2648e28fe431991ece3d82c8d0b1e28b280de6946b930cd",
+    "decisions.csv": "c17b5705dbaa1b60e020b80d9dfe0be111d07c01881faed1c0deee0758aeed51",
+    "outcomes.csv": "50787adf1058099cd2a91ad2c7acd0976350c6571a5a10811490d725eddf683b"
   }
 }

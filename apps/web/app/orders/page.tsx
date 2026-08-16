@@ -35,6 +35,10 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>('All');
+  const [pagination, setPagination] = useState({ datasetId: '', page: 1 });
+  const [totalCount, setTotalCount] = useState(0);
+  const [pageSize, setPageSize] = useState(100);
+  const page = pagination.datasetId === activeDatasetId ? pagination.page : 1;
 
   useEffect(() => {
     let isCancelled = false;
@@ -48,11 +52,13 @@ export default function OrdersPage() {
       setError(null);
 
       try {
-        const res = await fetch(`/api/orders?datasetId=${activeDatasetId}`);
+        const res = await fetch(`/api/orders?datasetId=${activeDatasetId}&page=${page}&limit=100`);
         const data = await res.json();
         if (isCancelled) return;
         if (data.error) throw new Error(data.error);
         setOrders(data.orders ?? []);
+        setTotalCount(data.totalCount ?? 0);
+        setPageSize(data.pageSize ?? 100);
       } catch (err) {
         if (!isCancelled) setError(err instanceof Error ? err.message : 'Failed to load orders.');
       } finally {
@@ -65,7 +71,7 @@ export default function OrdersPage() {
     return () => {
       isCancelled = true;
     };
-  }, [activeDatasetId]);
+  }, [activeDatasetId, page]);
 
   const filteredOrders = useMemo(() => {
     switch (filter) {
@@ -201,14 +207,14 @@ export default function OrdersPage() {
         ) : orders.length === 0 ? (
           <EmptyState
             icon={PackageSearch}
-            title="No orders found"
-            description="There are no orders in the active dataset yet. You can import order records in the Imports tab."
-            action={{ label: 'Go to Imports', href: '/imports' }}
+            title="No procurement data yet"
+            description="Start by uploading Orders. Then add Offers → Decisions → Outcomes to unlock replay and performance intelligence."
+            action={{ label: 'Upload Orders', href: '/imports' }}
           />
         ) : (
           <>
             <p className="cl-meta mb-3">
-              Showing {filteredOrders.length} of {orders.length} orders
+              Showing {filteredOrders.length} matching orders on page {page} · {totalCount} total backend orders
             </p>
             <DataTable
               columns={columns}
@@ -218,6 +224,29 @@ export default function OrdersPage() {
               onRowClick={(r) => router.push(`/orders/${r.id}`)}
               emptyMessage="No orders match this filter in the active dataset."
             />
+            {totalCount > pageSize && (
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <span className="cl-meta">Page {page} of {Math.ceil(totalCount / pageSize)}</span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    disabled={page <= 1}
+                    onClick={() => setPagination({ datasetId: activeDatasetId, page: Math.max(1, page - 1) })}
+                    className="rounded-lg border border-line px-3 py-2 text-sm font-semibold text-ink disabled:opacity-40"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    disabled={page * pageSize >= totalCount}
+                    onClick={() => setPagination({ datasetId: activeDatasetId, page: page + 1 })}
+                    className="rounded-lg border border-line px-3 py-2 text-sm font-semibold text-ink disabled:opacity-40"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </PageBody>

@@ -19,6 +19,8 @@ import {
 } from '../../lib/db/repositories/traceability';
 import { getSupabaseServerClient } from '../../lib/supabase/server';
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability', () => {
   let datasetId: string;
   let amoxProductId: string;
@@ -118,6 +120,7 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
 
     const persisted = await upsertRegulatoryNotices(notices);
     expect(persisted.length).toBeGreaterThanOrEqual(10);
+    expect(persisted.every((notice) => UUID_PATTERN.test(notice.id))).toBe(true);
 
     const { notices: list, totalCount } = await listRegulatoryNotices({ limit: 10 });
     expect(totalCount).toBeGreaterThanOrEqual(10);
@@ -129,6 +132,7 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
 
     const exposures = await listRegulatoryExposures(datasetId);
     expect(exposures.length).toBe(totalCount);
+    expect(exposures.every((exposure) => UUID_PATTERN.test(exposure.id))).toBe(true);
   }, 60_000);
 
   it('runs EPTTS CSV preflight, records import, persists events, and reconciles orders', async () => {
@@ -155,11 +159,13 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
     });
 
     expect(importRow.preflight_status).toBe('PASS');
+    expect(importRow.id).toMatch(UUID_PATTERN);
     expect(findings).toHaveLength(0);
 
     // 3. Persist Canonical Events
     const events = await persistCanonicalEvents(datasetId, importRow.id, canonicalEvents);
     expect(events).toHaveLength(2);
+    expect(events.every((event) => UUID_PATTERN.test(event.id))).toBe(true);
 
     const eventList = await listCanonicalEvents(datasetId);
     expect(eventList.totalCount).toBe(2);
@@ -175,6 +181,7 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
 
     const links = await listTraceabilityProductLinks(datasetId);
     expect(links.some((l) => l.gtin === '06221234567891' && l.status === 'CONFIRMED')).toBe(true);
+    expect(links.every((link) => UUID_PATTERN.test(link.id))).toBe(true);
 
     // 5. Expiry Intelligence
     const expiryData = await getExpiryIntelligenceSummary(datasetId);
@@ -184,6 +191,7 @@ describe('Chunk 4 Integration — Regulatory Intelligence & EPTTS Traceability',
     // 6. Reconciliation
     const reconciliations = await evaluateAndPersistReconciliations(datasetId);
     expect(reconciliations.length).toBeGreaterThanOrEqual(1);
+    expect(reconciliations.every((item) => UUID_PATTERN.test(item.id))).toBe(true);
 
     const reconsList = await listTraceabilityReconciliations(datasetId);
     expect(reconsList.length).toBeGreaterThanOrEqual(1);

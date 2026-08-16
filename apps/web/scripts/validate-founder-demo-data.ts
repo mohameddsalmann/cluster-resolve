@@ -2,6 +2,11 @@ import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { parse } from 'csv-parse/sync';
+import {
+  evaluateDecisionReplay,
+  evaluateOrderExceptions,
+  evaluatePharmacyServiceRisk,
+} from '@cluster/core';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT_DIR = resolve(__dirname, '../../..');
@@ -23,6 +28,18 @@ export interface ValidationReport {
     multiItemOrders: number;
     futureOffers: number;
   };
+  pharmacyRiskDistribution: {
+    STABLE: number;
+    AT_RISK: number;
+    HIGH_RISK: number;
+    INSUFFICIENT_DATA: number;
+  };
+  decisionReplayDistribution: {
+    DOMINATED: number;
+    NON_DOMINATED: number;
+    SELECTED_NOT_FEASIBLE: number;
+    INSUFFICIENT_DATA: number;
+  };
   scenariosValidated: {
     stableStrongSuppliers: boolean;
     deterioratingSuppliers: boolean;
@@ -34,6 +51,7 @@ export interface ValidationReport {
     dominatedDecisions: boolean;
     nonDominatedDecisions: boolean;
     selectedNotFeasible: boolean;
+    insufficientDataDecisions: boolean;
     cancellations: boolean;
     partialFills: boolean;
     lateDeliveries: boolean;
@@ -282,6 +300,153 @@ export function validateFounderDemoDataset(): ValidationReport {
     }
   }
 
+  // Run the same production exception and pharmacy-risk policies against the
+  // generated source rows. This prevents a structurally valid sample from
+  // silently collapsing into a single founder-facing risk status after import.
+  const exceptionEvaluation = evaluateOrderExceptions({
+    orders: Array.from(orderMap.entries()).map(([orderId, order]) => ({
+      id: orderId,
+      datasetId: 'founder-demo',
+      placedAt: new Date(order.placedAt).toISOString(),
+    })),
+    items: ordersRows.map((row, index) => ({
+      id: `item-${index + 1}`,
+      orderId: row.order_id,
+      productId: row.product_id,
+      requestedQty: parseInt(row.requested_qty, 10),
+    })),
+    outcomes: outcomesRows.map((row, index) => ({
+      id: `outcome-${index + 1}`,
+      orderId: row.order_id,
+      supplierId: row.supplier_id,
+      productId: row.product_id,
+      filledQty: parseInt(row.filled_qty, 10),
+      deliveredAt: row.delivered_at || null,
+      cancelled: row.cancelled.toLowerCase() === 'true',
+      outcomeFinal: row.outcome_final.toLowerCase() === 'true',
+    })),
+    offers: offersRows.map((row) => ({
+      id: row.offer_id,
+      orderId: row.order_id,
+      supplierId: row.supplier_id,
+      productId: row.product_id,
+      promisedDeliveryAt: row.promised_delivery_at || null,
+      offeredAt: row.offered_at,
+    })),
+    decisions: decisionsRows.map((row) => ({
+      id: row.decision_id,
+      orderId: row.order_id,
+      selectedSupplierId: row.selected_supplier_id,
+      decidedAt: row.decided_at,
+    })),
+  });
+
+  const pharmacyRiskDistribution = {
+    STABLE: 0,
+    AT_RISK: 0,
+    HIGH_RISK: 0,
+    INSUFFICIENT_DATA: 0,
+  };
+  for (const pharmacyId of pharmacySet) {
+    const pharmacyOrders = Array.from(orderMap.entries())
+      .filter(([, order]) => order.pharmacyId === pharmacyId)
+      .map(([orderId]) => ({ orderId }));
+    const orderIds = new Set(pharmacyOrders.map((order) => order.orderId));
+    const pharmacyExceptions = exceptionEvaluation.exceptions
+      .filter((exception) => orderIds.has(exception.orderId))
+      .map((exception) => ({
+        orderId: exception.orderId,
+        type: exception.type,
+        severity: exception.severity,
+      }));
+    const risk = evaluatePharmacyServiceRisk(pharmacyId, pharmacyOrders, pharmacyExceptions);
+    pharmacyRiskDistribution[risk.serviceRiskLevel]++;
+  }
+  console.log('[validator] Pharmacy service-risk distribution:', pharmacyRiskDistribution);
+
+  const orderRowsById = new Map<string, typeof ordersRows>();
+  for (const row of ordersRows) {
+    const list = orderRowsById.get(row.order_id) ?? [];
+    list.push(row);
+    orderRowsById.set(row.order_id, list);
+  }
+  const offerRowsByOrder = new Map<string, typeof offersRows>();
+  for (const row of offersRows) {
+    const list = offerRowsByOrder.get(row.order_id) ?? [];
+    list.push(row);
+    offerRowsByOrder.set(row.order_id, list);
+  }
+  const outcomeRowsByOrder = new Map<string, typeof outcomesRows>();
+  for (const row of outcomesRows) {
+    const list = outcomeRowsByOrder.get(row.order_id) ?? [];
+    list.push(row);
+    outcomeRowsByOrder.set(row.order_id, list);
+  }
+
+  const decisionReplayDistribution = {
+    DOMINATED: 0,
+    NON_DOMINATED: 0,
+    SELECTED_NOT_FEASIBLE: 0,
+    INSUFFICIENT_DATA: 0,
+  };
+  let totalFutureOffersExcluded = 0;
+  for (const decision of decisionsRows) {
+    const orderRows = orderRowsById.get(decision.order_id) ?? [];
+    const rawOffers = offerRowsByOrder.get(decision.order_id) ?? [];
+    const selectedOutcome = (outcomeRowsByOrder.get(decision.order_id) ?? [])
+      .find((row) => row.supplier_id === decision.selected_supplier_id);
+    const replay = evaluateDecisionReplay({
+      decisionId: decision.decision_id,
+      externalDecisionId: decision.decision_id,
+      datasetId: 'founder-demo',
+      orderId: decision.order_id,
+      externalOrderId: decision.order_id,
+      orderPlacedAt: orderRows[0]?.placed_at ?? decision.decided_at,
+      pharmacyName: orderRows[0]?.pharmacy_name ?? null,
+      selectedSupplierId: decision.selected_supplier_id,
+      decidedAt: decision.decided_at,
+      agentName: decision.agent_name,
+      agentVersion: decision.agent_version,
+      confidence: decision.confidence,
+      selectionReason: decision.selection_reason,
+      orderItems: orderRows.map((row) => ({
+        productId: row.product_id,
+        externalProductId: row.product_id,
+        productName: row.product_name,
+        requestedQty: Number.parseInt(row.requested_qty, 10),
+        unit: row.unit,
+      })),
+      rawOffers: rawOffers.map((row) => ({
+        id: row.offer_id,
+        externalOfferId: row.offer_id,
+        orderId: row.order_id,
+        supplierId: row.supplier_id,
+        supplierName: row.supplier_name,
+        externalSupplierId: row.supplier_id,
+        productId: row.product_id,
+        availableQty: Number.parseInt(row.available_qty, 10),
+        unitPriceMinor: BigInt(Math.round(Number.parseFloat(row.unit_price_egp) * 100)),
+        discountBps: Math.round(Number.parseFloat(row.discount_percent) * 100),
+        promisedDeliveryAt: row.promised_delivery_at || null,
+        offeredAt: row.offered_at,
+      })),
+      selectedOutcome: selectedOutcome ? {
+        id: `outcome-${decision.order_id}`,
+        orderId: selectedOutcome.order_id,
+        supplierId: selectedOutcome.supplier_id,
+        productId: selectedOutcome.product_id,
+        filledQty: Number.parseInt(selectedOutcome.filled_qty, 10),
+        deliveredAt: selectedOutcome.delivered_at || null,
+        cancelled: selectedOutcome.cancelled.toLowerCase() === 'true',
+        cancellationReason: selectedOutcome.cancellation_reason || null,
+        outcomeFinal: selectedOutcome.outcome_final.toLowerCase() === 'true',
+      } : null,
+    });
+    decisionReplayDistribution[replay.classification]++;
+    totalFutureOffersExcluded += replay.futureOffersExcludedCount;
+  }
+  console.log('[validator] Production Decision Replay distribution:', decisionReplayDistribution);
+
   // 2. Purposeful Scenarios Verification
   const scenariosValidated = {
     stableStrongSuppliers: supplierSet.has('SUP-001') && supplierSet.has('SUP-005'),
@@ -289,15 +454,18 @@ export function validateFounderDemoDataset(): ValidationReport {
     productSpecificWeakness: supplierSet.has('SUP-015'),
     overpromisingSuppliers: supplierSet.has('SUP-016'),
     insufficientDataSuppliers: supplierSet.has('SUP-029') || supplierSet.has('SUP-030'),
-    pharmacyServiceRiskHigh: pharmacySet.has('PHARM-005') && pharmacySet.has('PHARM-022'),
-    pharmacyServiceRiskAtRisk: pharmacySet.has('PHARM-012') && pharmacySet.has('PHARM-018'),
-    dominatedDecisions: decisionsRows.some((d) => d.selection_reason.includes('override') || parseFloat(d.confidence) < 0.7),
-    nonDominatedDecisions: decisionsRows.some((d) => parseFloat(d.confidence) >= 0.85),
-    selectedNotFeasible: decisionsRows.some((d) => d.selection_reason.includes('emergency') || d.selection_reason.includes('allocation')),
+    pharmacyServiceRiskHigh:
+      pharmacyRiskDistribution.HIGH_RISK >= 3 && pharmacyRiskDistribution.HIGH_RISK <= 8,
+    pharmacyServiceRiskAtRisk:
+      pharmacyRiskDistribution.AT_RISK >= 8 && pharmacyRiskDistribution.STABLE >= 25,
+    dominatedDecisions: decisionReplayDistribution.DOMINATED > 0,
+    nonDominatedDecisions: decisionReplayDistribution.NON_DOMINATED > 0,
+    selectedNotFeasible: decisionReplayDistribution.SELECTED_NOT_FEASIBLE > 0,
+    insufficientDataDecisions: decisionReplayDistribution.INSUFFICIENT_DATA > 0,
     cancellations: cancellationCount > 50,
     partialFills: partialFillCount > 50,
     lateDeliveries: lateDeliveryCount > 50,
-    futureOfferExclusions: futureOffers > 0,
+    futureOfferExclusions: totalFutureOffersExcluded > 0,
   };
 
   const allScenariosPassed = Object.values(scenariosValidated).every(Boolean);
@@ -324,6 +492,8 @@ export function validateFounderDemoDataset(): ValidationReport {
       multiItemOrders,
       futureOffers,
     },
+    pharmacyRiskDistribution,
+    decisionReplayDistribution,
     scenariosValidated,
   };
 }
@@ -345,6 +515,18 @@ function failReport(errors: string[], warnings: string[]): ValidationReport {
       multiItemOrders: 0,
       futureOffers: 0,
     },
+    pharmacyRiskDistribution: {
+      STABLE: 0,
+      AT_RISK: 0,
+      HIGH_RISK: 0,
+      INSUFFICIENT_DATA: 0,
+    },
+    decisionReplayDistribution: {
+      DOMINATED: 0,
+      NON_DOMINATED: 0,
+      SELECTED_NOT_FEASIBLE: 0,
+      INSUFFICIENT_DATA: 0,
+    },
     scenariosValidated: {
       stableStrongSuppliers: false,
       deterioratingSuppliers: false,
@@ -356,6 +538,7 @@ function failReport(errors: string[], warnings: string[]): ValidationReport {
       dominatedDecisions: false,
       nonDominatedDecisions: false,
       selectedNotFeasible: false,
+      insufficientDataDecisions: false,
       cancellations: false,
       partialFills: false,
       lateDeliveries: false,

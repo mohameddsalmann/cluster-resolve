@@ -72,19 +72,35 @@ interface RegulatorySummary {
   totalExposedValueMinor: string;
 }
 
+interface RegulatorySourceStatus {
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  sourceStatus: 'PERSISTED_OFFICIAL' | 'NOT_SYNCED' | 'PERSISTENCE_UNAVAILABLE';
+  sourceAuthority: string;
+  lastSync: string | null;
+  statusMessage: string;
+}
+
+const PAGE_SIZE = 25;
+
 export default function RegulatoryPage() {
-  const { activeDatasetId } = useDataset();
+  const { activeDataset, activeDatasetId } = useDataset();
   const [notices, setNotices] = useState<NoticeItem[]>([]);
   const [summary, setSummary] = useState<RegulatorySummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sourceStatus, setSourceStatus] = useState<RegulatorySourceStatus | null>(null);
 
   // Filters
   const [search, setSearch] = useState('');
   const [selectedYear, setSelectedYear] = useState<string>('ALL');
   const [selectedType, setSelectedType] = useState<string>('ALL');
   const [selectedClass, setSelectedClass] = useState<string>('ALL');
+  const paginationKey = `${activeDatasetId}|${selectedYear}|${selectedType}|${selectedClass}|${search}`;
+  const [pagination, setPagination] = useState({ key: '', page: 1 });
+  const page = pagination.key === paginationKey ? pagination.page : 1;
 
   // Active detail modal
   const [selectedNotice, setSelectedNotice] = useState<NoticeItem | null>(null);
@@ -104,6 +120,8 @@ export default function RegulatoryPage() {
         if (selectedType !== 'ALL') params.set('noticeType', selectedType);
         if (selectedClass !== 'ALL') params.set('recallClass', selectedClass);
         if (search.trim()) params.set('search', search.trim());
+        params.set('page', String(page));
+        params.set('limit', String(PAGE_SIZE));
 
         const res = await fetch(`/api/regulatory?${params.toString()}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
@@ -111,6 +129,15 @@ export default function RegulatoryPage() {
         if (!isCancelled) {
           setNotices(data.notices || []);
           setSummary(data.summary || null);
+          setSourceStatus({
+            totalCount: data.totalCount || 0,
+            page: data.page || page,
+            pageSize: data.pageSize || PAGE_SIZE,
+            sourceStatus: data.sourceStatus || 'NOT_SYNCED',
+            sourceAuthority: data.sourceAuthority || 'Egyptian Drug Authority',
+            lastSync: data.lastSync || null,
+            statusMessage: data.statusMessage || '',
+          });
         }
       } catch (err: unknown) {
         if (!isCancelled) {
@@ -129,7 +156,7 @@ export default function RegulatoryPage() {
     return () => {
       isCancelled = true;
     };
-  }, [activeDatasetId, selectedYear, selectedType, selectedClass, search, refreshTrigger]);
+  }, [activeDatasetId, selectedYear, selectedType, selectedClass, search, page, refreshTrigger]);
 
   async function handleSyncEda() {
     try {
@@ -138,10 +165,11 @@ export default function RegulatoryPage() {
         method: 'POST',
       });
       if (!res.ok) throw new Error(`Sync failed: ${await res.text()}`);
+      setError(null);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      alert(`EDA Sync Error: ${msg}`);
+      setError(`EDA sync did not persist data: ${msg}`);
     } finally {
       setSyncing(false);
     }
@@ -180,13 +208,13 @@ export default function RegulatoryPage() {
   return (
     <AppShell>
       <TopContextBar
-        title="Regulatory Intelligence"
-        subtitle="Egyptian Drug Authority (EDA) Official Notices & Batch Matching"
+        title="Official EDA Regulatory Intelligence"
+        subtitle="Official public notices matched against the active procurement dataset"
       />
       <PageBody wide>
         <PageHeader
-          title="Regulatory Intelligence"
-          subtitle="Real-time ingestion of official Egyptian Drug Authority defect reports, recalls, and alerts matched deterministically against procurement batches."
+          title="Official EDA Regulatory Intelligence"
+          subtitle="Operator-triggered, bounded ingestion of official Egyptian Drug Authority notices, matched deterministically against procurement evidence."
           actions={
             <div className="flex items-center gap-3">
               <button
@@ -201,13 +229,43 @@ export default function RegulatoryPage() {
           }
         />
 
+        <Panel className="mb-6 p-4">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <StatusChip
+                  label="OFFICIAL EDA DATA"
+                  tone={sourceStatus?.sourceStatus === 'PERSISTED_OFFICIAL' ? 'brand' : 'neutral'}
+                />
+                <StatusChip
+                  label={activeDataset?.mode === 'SAMPLE' ? 'FOUNDER DEMO / SAMPLE MATCHING' : 'CUSTOMER DATA MATCHING'}
+                  tone={activeDataset?.mode === 'SAMPLE' ? 'caution' : 'brand'}
+                />
+              </div>
+              <p className="mt-2 text-sm text-body">
+                Official EDA source matched against {activeDataset?.mode === 'SAMPLE'
+                  ? 'synthetic Founder Demo procurement. The notices are public external data; the procurement is sample data.'
+                  : 'the selected customer procurement dataset.'}
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                {sourceStatus?.statusMessage || 'Checking persisted official-source status…'}
+              </p>
+            </div>
+            <div className="text-xs text-muted sm:text-right">
+              <div>Source: {sourceStatus?.sourceAuthority || 'Egyptian Drug Authority'}</div>
+              <div>Total notices: {sourceStatus?.totalCount ?? 0}</div>
+              <div>Last sync: {sourceStatus?.lastSync ? new Date(sourceStatus.lastSync).toLocaleString() : 'Never'}</div>
+            </div>
+          </div>
+        </Panel>
+
         {/* Metric Summary Cards */}
         {summary && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-6">
             <Panel className="p-4">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted">EDA Notices Ingested</div>
               <div className="mt-2 text-2xl font-bold text-heading">{summary.totalMonitoredNotices}</div>
-              <div className="mt-1 text-xs text-muted">Official periodic reports (2025–2026)</div>
+              <div className="mt-1 text-xs text-muted">Persisted official public notices</div>
             </Panel>
 
             <Panel className="p-4 border-l-4 border-l-danger">
@@ -313,7 +371,7 @@ export default function RegulatoryPage() {
               <table className="w-full text-left text-sm">
                 <thead className="bg-surface-sunken/60 text-xs font-semibold uppercase tracking-wider text-muted border-b border-border">
                   <tr>
-                    <th className="py-3 px-4">Report / Year</th>
+                    <th className="py-3 px-4">Notice / Publication year</th>
                     <th className="py-3 px-4">Class / Type</th>
                     <th className="py-3 px-4">Product Name & Manufacturer</th>
                     <th className="py-3 px-4">Operational Status</th>
@@ -395,6 +453,32 @@ export default function RegulatoryPage() {
               </table>
             </div>
           </Panel>
+        )}
+
+        {!loading && !error && sourceStatus && sourceStatus.totalCount > sourceStatus.pageSize && (
+          <div className="mt-4 flex items-center justify-between gap-3 text-sm">
+            <span className="text-muted">
+              Page {sourceStatus.page} of {Math.ceil(sourceStatus.totalCount / sourceStatus.pageSize)} · {sourceStatus.totalCount} total notices
+            </span>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => setPagination({ key: paginationKey, page: Math.max(1, page - 1) })}
+                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-heading disabled:opacity-40"
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                disabled={page * sourceStatus.pageSize >= sourceStatus.totalCount}
+                onClick={() => setPagination({ key: paginationKey, page: page + 1 })}
+                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-heading disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
 
         {/* Interactive Notice Detail Drawer / Modal */}

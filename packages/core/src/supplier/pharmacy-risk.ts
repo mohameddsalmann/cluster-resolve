@@ -39,6 +39,9 @@ export function evaluatePharmacyServiceRisk(
   const partialFillAffected = new Set(
     pharmacyExceptions.filter((exc) => exc.type === 'PARTIAL_FILL').map((exc) => exc.orderId)
   ).size;
+  const lateDeliveryAffected = new Set(
+    pharmacyExceptions.filter((exc) => exc.type === 'LATE_DELIVERY').map((exc) => exc.orderId)
+  ).size;
   const highSeverityExceptions = pharmacyExceptions.filter((exc) => exc.severity === 'HIGH').length;
 
   const exceptionRateBps =
@@ -46,8 +49,9 @@ export function evaluatePharmacyServiceRisk(
       ? Math.round((ordersWithExceptions / totalOrders) * 10_000)
       : null;
 
-  let serviceRiskLevel: PharmacyServiceRiskLevel = 'STABLE';
+  let serviceRiskLevel: PharmacyServiceRiskLevel = 'INSUFFICIENT_DATA';
   if (totalOrders > 0) {
+    serviceRiskLevel = 'STABLE';
     if (
       (exceptionRateBps !== null && exceptionRateBps >= HIGH_RISK_EXCEPTION_RATE_BPS) ||
       highSeverityExceptions >= HIGH_RISK_MIN_HIGH_EXCEPTIONS
@@ -61,10 +65,12 @@ export function evaluatePharmacyServiceRisk(
   return {
     pharmacyId,
     totalOrders,
+    evaluatedOrders: totalOrders,
     ordersWithExceptions,
     exceptionRateBps,
     cancellationAffected,
     partialFillAffected,
+    lateDeliveryAffected,
     highSeverityExceptions,
     serviceRiskLevel,
   };

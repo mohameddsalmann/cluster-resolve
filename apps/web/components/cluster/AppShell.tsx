@@ -22,13 +22,13 @@ import { useDataset } from '@/lib/context/dataset-context';
 import { cn } from '@/lib/utils';
 
 const nav = [
-  { label: 'Resolve', href: '/', icon: Target, exact: true },
+  { label: 'Overview', href: '/', icon: Target, exact: true },
+  { label: 'Imports', href: '/imports', icon: FileStack },
   { label: 'Orders', href: '/orders', icon: PackageSearch },
   { label: 'Suppliers', href: '/suppliers', icon: Truck },
   { label: 'Pharmacies', href: '/pharmacies', icon: Building2 },
   { label: 'Regulatory', href: '/regulatory', icon: ScrollText },
   { label: 'Traceability', href: '/traceability', icon: ShieldCheck },
-  { label: 'Imports', href: '/imports', icon: FileStack },
 ];
 
 export function ClusterLogoMark({ className, compact = false }: { className?: string; compact?: boolean }) {
@@ -98,13 +98,22 @@ function SidebarFooter() {
 export function TopContextBar({
   title,
   subtitle,
-  source = 'Hosted Supabase',
+  source,
 }: {
   title: string;
   subtitle?: string;
   source?: string;
 }) {
   const { datasets, activeDataset, activeDatasetId, setActiveDatasetId, isLoading } = useDataset();
+  const sourceLabel = source ?? (
+    activeDataset?.mode === 'SAMPLE'
+      ? 'FOUNDER DEMO / SAMPLE'
+      : activeDataset?.mode === 'IMPORTED_REAL'
+        ? 'CUSTOMER DATA'
+        : activeDataset?.mode === 'LIVE'
+          ? 'LIVE DATASET'
+          : 'Hosted Supabase'
+  );
 
   return (
     <div className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur-[2px]">
@@ -113,12 +122,12 @@ export function TopContextBar({
           <p className="truncate text-[0.9375rem] font-semibold text-ink">{title}</p>
           {subtitle ? <p className="cl-meta truncate">{subtitle}</p> : null}
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <div className="flex w-full min-w-0 flex-wrap items-center gap-2 sm:w-auto sm:shrink-0">
           {datasets.length > 0 ? (
-            <label className="flex items-center gap-1.5 text-xs text-body">
+            <label className="flex w-full min-w-0 items-center gap-1.5 text-xs text-body sm:w-auto">
               <span className="cl-meta hidden sm:inline">Dataset:</span>
               <select
-                className="rounded-md border border-line bg-surface px-2 py-1 text-xs font-semibold text-ink focus:outline-none focus:ring-1 focus:ring-cluster-bright"
+                className="min-w-0 w-full rounded-md border border-line bg-surface px-2 py-1 text-xs font-semibold text-ink focus:outline-none focus:ring-1 focus:ring-cluster-bright sm:w-auto sm:max-w-[20rem]"
                 value={activeDatasetId}
                 onChange={(e) => setActiveDatasetId(e.target.value)}
                 disabled={isLoading}
@@ -142,7 +151,7 @@ export function TopContextBar({
           ) : (
             <DatasetModeChip mode="SAMPLE" />
           )}
-          <SourceBadge label={source} />
+          <SourceBadge label={sourceLabel} verified={activeDataset?.mode !== 'SAMPLE'} />
         </div>
       </div>
     </div>

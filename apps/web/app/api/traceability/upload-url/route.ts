@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/lib/supabase/server';
 import { getDatasetById } from '@/lib/db/repositories/datasets';
+import { getTraceabilityRepositoryStatus } from '@/lib/db/repositories/traceability';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { datasetId, filename } = body;
+    const { datasetId, filename, sourceType } = body;
 
     if (!datasetId || !filename) {
       return NextResponse.json(
@@ -19,9 +20,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Dataset not found' }, { status: 404 });
     }
 
+
+    const repositoryStatus = await getTraceabilityRepositoryStatus();
+    if (!repositoryStatus.available) {
+      return NextResponse.json({ error: repositoryStatus.reason }, { status: 503 });
+    }
+
     const timestamp = Date.now();
     const sanitizedName = filename.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const storagePath = `${datasetId}/${timestamp}_${sanitizedName}`;
+    const sourcePrefix = sourceType === 'OFFICIAL_REFERENCE_TEST' ? 'reference-test' : 'customer';
+    const storagePath = `${sourcePrefix}/${datasetId}/${timestamp}_${sanitizedName}`;
 
     const supabase = getSupabaseServerClient();
     const { data, error } = await supabase.storage

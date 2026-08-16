@@ -1,19 +1,7 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/daily",
-      "schedule": "0 3 * * *"
-    }
-  ],
-  "functions": {
-    "app/api/v1/**": {
-      "maxDuration": 300
-    },
-    "app/api/internal/**": {
-      "maxDuration": 300
-    },
-    "app/api/app/**": {
-      "maxDuration": 60
-    }
-  }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build",
+  "outputDirectory": "apps/web/.next"
 }

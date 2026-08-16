@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { getSupabaseServerClient } from '../../supabase/server';
 import type {
   ProcurementOrderRecord,
@@ -20,6 +21,38 @@ export interface ListRegulatoryNoticesOptions {
   offset?: number;
 }
 
+export async function getRegulatoryRepositoryStatus(): Promise<{
+  available: boolean;
+  reason: string | null;
+}> {
+  const supabase = getSupabaseServerClient();
+  const { error } = await supabase
+    .from('regulatory_notices' as never)
+    .select('id')
+    .limit(1);
+
+  if (!error) return { available: true, reason: null };
+  if (error.code === 'PGRST205' || error.message.includes('schema cache')) {
+    return {
+      available: false,
+      reason: 'The regulatory persistence migration has not been applied to this Supabase project.',
+    };
+  }
+  throw error;
+}
+
+export async function getRegulatoryLastSync(): Promise<string | null> {
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from('regulatory_notices' as never)
+    .select('retrieved_at')
+    .order('retrieved_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as { retrieved_at: string } | null)?.retrieved_at ?? null;
+}
+
 // In-memory fallback stores if hosted Supabase migration 20260815000002 is pending in PostgREST schema cache
 const memoryNotices = new Map<string, RegulatoryNoticeRow>();
 const memoryExposures = new Map<string, RegulatoryExposureRow>();
@@ -29,7 +62,7 @@ export async function upsertRegulatoryNotices(
 ): Promise<RegulatoryNoticeRow[]> {
   const supabase = getSupabaseServerClient();
   const rows = notices.map((n) => ({
-    id: `reg_${n.year}_${n.noticeNumber.replace(/[^a-zA-Z0-9]/g, '_')}`,
+    id: randomUUID(),
     notice_number: n.noticeNumber,
     title: n.title,
     year: n.year,
@@ -52,10 +85,7 @@ export async function upsertRegulatoryNotices(
   }));
 
   try {
-    const insertPayload = rows.map((r) => {
-      const copy = { ...r };
-      return copy;
-    });
+    const insertPayload = rows.map(withoutId);
 
     const { data, error } = await supabase
       .from('regulatory_notices' as never)
@@ -298,7 +328,7 @@ export async function evaluateAndPersistExposures(
     const noticeId = noticeDbMap.get(e.noticeNumber) || `notice_${e.noticeNumber}`;
 
     return {
-      id: `exp_${datasetId}_${noticeId}`,
+      id: randomUUID(),
       dataset_id: datasetId,
       notice_id: noticeId,
       match_status: e.matchStatus,
@@ -320,7 +350,7 @@ export async function evaluateAndPersistExposures(
     try {
       const { error: expErr } = await supabase
         .from('regulatory_exposures' as never)
-        .upsert(exposureRows as never, {
+        .upsert(exposureRows.map(withoutId) as never, {
           onConflict: 'dataset_id,notice_id',
         });
       if (expErr) {
@@ -439,4 +469,10 @@ function getMemoryExposures(datasetId: string, options: { matchStatus?: string }
       notice: notice as RegulatoryNoticeRow,
     };
   });
+}
+
+function withoutId<T extends { id: string }>(row: T): Omit<T, 'id'> {
+  const { id, ...payload } = row;
+  void id;
+  return payload;
 }

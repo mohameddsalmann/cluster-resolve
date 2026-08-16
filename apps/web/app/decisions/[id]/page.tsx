@@ -132,7 +132,7 @@ export default function DecisionDetailPage({ params }: { params: Promise<{ id: s
     classification === 'DOMINATED'
       ? 'danger'
       : classification === 'NON_DOMINATED'
-        ? 'success'
+        ? 'brand'
         : classification === 'SELECTED_NOT_FEASIBLE'
           ? 'danger'
           : 'neutral';
@@ -195,7 +195,7 @@ export default function DecisionDetailPage({ params }: { params: Promise<{ id: s
                     )}
                     {classification === 'NON_DOMINATED' && (
                       <p className="mt-1 text-xs">
-                        No dominating alternative existed among decision-time quotes (any alternative was either more expensive, slower, or infeasible).
+                        No dominating alternative existed among recorded decision-time quotes. This classification does not claim the selection was optimal or best.
                       </p>
                     )}
                   </div>

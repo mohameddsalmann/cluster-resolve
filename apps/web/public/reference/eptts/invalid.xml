@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" schemaVersion="1.2">
+  <EPCISBody>
+    <EventList>
+      <ObjectEvent>
+        <eventTime>2026-08-01T09:00:00Z</eventTime>
+        <epcList><epc>(01)06221234567891(21)SN01</epc></epcList>
+        <action>OBSERVE</action>
+        <bizStep>urn:epcglobal:cbv:bizstep:shipping</bizStep>
+        <readPoint><id>6221234567891</id></readPoint>
+        <bizLocation><id>6221234567891</id></bizLocation>
+        <sourceList><source>6221234567891</source></sourceList>
+      </ObjectEvent>
+    </EventList>
+  </EPCISBody>
+</epcis:EPCISDocument>

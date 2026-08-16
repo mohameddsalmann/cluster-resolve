@@ -1,0 +1,5 @@
+decision_id,order_id,selected_supplier_id,decided_at,agent_name,agent_version,confidence,selection_reason
+DEC-KIT260816-001,ORD-KIT260816-001,SUP-KIT260816-001,2026-08-14T10:20:00+03:00,Resolve Allocation Engine,2.1.0,0.9800,Complete basket availability and delivery window
+DEC-KIT260816-002,ORD-KIT260816-002,SUP-KIT260816-002,2026-08-14T11:15:00+03:00,Resolve Allocation Engine,2.1.0,0.9200,Regional discount and availability
+DEC-KIT260816-003,ORD-KIT260816-003,SUP-KIT260816-001,2026-08-14T12:20:00+03:00,Resolve Allocation Engine,2.1.0,0.9900,Established sample supplier history
+DEC-KIT260816-004,ORD-KIT260816-004,SUP-KIT260816-002,2026-08-14T14:50:00+03:00,Resolve Allocation Engine,2.1.0,0.9100,Depot stock matching requested window

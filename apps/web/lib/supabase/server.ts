@@ -1,6 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '../db/generated-types';
 
+if (typeof window !== 'undefined') {
+  throw new Error('The privileged Supabase client is server-only.');
+}
+
 let serverClient: SupabaseClient<Database> | null = null;
 
 export function getSupabaseServerClient(): SupabaseClient<Database> {

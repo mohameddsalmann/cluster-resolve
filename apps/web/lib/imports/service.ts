@@ -81,6 +81,7 @@ import {
   importOfferRowsBatched,
   importOutcomeRowsBatched,
 } from './batch-importers';
+import { evaluateDatasetOperations } from '../operations/evaluate';
 
 export interface InitializeImportInput {
   datasetId: string;
@@ -283,6 +284,13 @@ export async function processStoredImport(
           total: elapsed(totalStarted),
         },
       };
+    }
+
+    // Outcomes are the final four-file onboarding step. Run the same production
+    // evaluation used by the Founder Demo before declaring the import complete,
+    // so normal user uploads immediately unlock persisted intelligence.
+    if (job.kind === 'OUTCOMES') {
+      await evaluateDatasetOperations(job.dataset_id, new Date().toISOString());
     }
 
     const finishedAt = await completeImportJob(job.id, {

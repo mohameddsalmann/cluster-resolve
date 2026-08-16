@@ -14,6 +14,7 @@ import {
   RefreshCw,
   Check,
   AlertTriangle,
+  Plus,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { AppShell, PageBody, TopContextBar } from '@/components/cluster/AppShell';
@@ -60,8 +61,8 @@ interface ErrorRow {
 const importTypes: { key: ImportKind; label: string; icon: LucideIcon; hint: string }[] = [
   { key: 'ORDERS', label: 'Orders', icon: ClipboardList, hint: 'Requested products and quantities' },
   { key: 'OFFERS', label: 'Offers', icon: Layers, hint: 'Supplier offers at decision time' },
-  { key: 'OUTCOMES', label: 'Outcomes', icon: CheckCircle2, hint: 'What was actually delivered' },
   { key: 'DECISIONS', label: 'Decisions', icon: Gavel, hint: 'Selections made by the agent' },
+  { key: 'OUTCOMES', label: 'Outcomes', icon: CheckCircle2, hint: 'What was actually delivered' },
 ];
 
 const errorColumns: Column<ErrorRow>[] = [
@@ -116,7 +117,13 @@ function parseCsvClient(text: string): { headers: string[]; sampleRows: Array<{ 
 }
 
 export function ImportView() {
-  const { datasets, activeDatasetId, setActiveDatasetId, activeDataset } = useDataset();
+  const {
+    datasets,
+    activeDatasetId,
+    setActiveDatasetId,
+    activeDataset,
+    refetchDatasets,
+  } = useDataset();
   const [kind, setKind] = useState<ImportKind>('ORDERS');
   const [file, setFile] = useState<File | null>(null);
   const [phase, setPhase] = useState<'idle' | 'mapping' | 'uploading' | 'processing' | 'complete' | 'error'>('idle');
@@ -126,6 +133,10 @@ export function ImportView() {
   const [errors, setErrors] = useState<ErrorRow[]>([]);
   const [quality, setQuality] = useState<Record<string, unknown> | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [newDatasetName, setNewDatasetName] = useState('');
+  const [newDatasetMode, setNewDatasetMode] = useState<'IMPORTED_REAL' | 'SAMPLE'>('IMPORTED_REAL');
+  const [creatingDataset, setCreatingDataset] = useState(false);
+  const [datasetCreateError, setDatasetCreateError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [, startTransition] = useTransition();
 
@@ -279,6 +290,39 @@ export function ImportView() {
     setStatusMessage('');
   }
 
+  async function handleCreateDataset() {
+    const name = newDatasetName.trim();
+    if (!name || creatingDataset) return;
+    setCreatingDataset(true);
+    setDatasetCreateError(null);
+    try {
+      const response = await fetch('/api/datasets', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          mode: newDatasetMode,
+          description: newDatasetMode === 'SAMPLE'
+            ? 'Isolated sample/demo upload workspace; not customer data.'
+            : 'Customer-created procurement import workspace.',
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.dataset?.id) {
+        throw new Error(payload.error ?? 'Dataset creation failed.');
+      }
+      await refetchDatasets();
+      setActiveDatasetId(payload.dataset.id);
+      setNewDatasetName('');
+      setQuality(null);
+      resetImport();
+    } catch (error) {
+      setDatasetCreateError(error instanceof Error ? error.message : 'Dataset creation failed.');
+    } finally {
+      setCreatingDataset(false);
+    }
+  }
+
   const canonicalOptions = Object.entries(CANONICAL_FIELD_METADATA[kind]).map(([field, meta]) => {
     const m = meta as { required: boolean; description: string };
     return {
@@ -330,6 +374,66 @@ export function ImportView() {
                 )}
               </div>
             </div>
+            <div className="mt-5 border-t border-line pt-5">
+              <p className="text-sm font-semibold text-ink">Try your own data in an isolated dataset</p>
+              <p className="cl-meta mt-1">
+                Create a separate workspace before uploading so Founder Demo remains unchanged. Choose SAMPLE when using the bundled founder kit.
+              </p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_14rem_auto] sm:items-end">
+                <label className="min-w-0 flex-1">
+                  <span className="cl-label mb-1.5 block">New dataset name</span>
+                  <input
+                    className="cl-field"
+                    value={newDatasetName}
+                    onChange={(event) => setNewDatasetName(event.target.value)}
+                    placeholder="My Procurement Upload"
+                    maxLength={120}
+                  />
+                </label>
+                <label>
+                  <span className="cl-label mb-1.5 block">Data classification</span>
+                  <select
+                    className="cl-field"
+                    value={newDatasetMode}
+                    onChange={(event) => setNewDatasetMode(event.target.value as 'IMPORTED_REAL' | 'SAMPLE')}
+                  >
+                    <option value="IMPORTED_REAL">Customer data</option>
+                    <option value="SAMPLE">Sample / demo input</option>
+                  </select>
+                </label>
+                <ClusterButton
+                  type="button"
+                  size="sm"
+                  onClick={() => void handleCreateDataset()}
+                  disabled={!newDatasetName.trim() || creatingDataset}
+                >
+                  <Plus className="mr-1 h-4 w-4" />
+                  {creatingDataset ? 'Creating…' : 'New Dataset'}
+                </ClusterButton>
+              </div>
+              {datasetCreateError ? (
+                <p className="mt-2 text-sm text-danger">{datasetCreateError}</p>
+              ) : null}
+            </div>
+          </Panel>
+
+          <Panel
+            title="Four-file onboarding"
+            description="Upload in this order so each layer unlocks real backend evidence."
+          >
+            <ol className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {importTypes.map((item, index) => (
+                <li key={item.key} className="rounded-[10px] border border-line bg-surface p-4">
+                  <span className="cl-meta">STEP {index + 1}</span>
+                  <p className="mt-1 font-semibold text-ink">{item.label}</p>
+                  <p className="cl-meta mt-1">{item.hint}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 text-sm text-body">
+              Orders create pharmacies and products. Offers add supplier evidence. Decisions unlock replay.
+              Outcomes produce exceptions, reliability, and pharmacy service-risk intelligence.
+            </p>
           </Panel>
 
           {/* Import Type Selector */}

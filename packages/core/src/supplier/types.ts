@@ -10,7 +10,7 @@ export type DeteriorationTriggerCode =
 
 export type PromiseRiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'INSUFFICIENT_DATA';
 export type CoachingInsightSeverity = 'INFO' | 'WARN' | 'CRITICAL';
-export type PharmacyServiceRiskLevel = 'STABLE' | 'AT_RISK' | 'HIGH_RISK';
+export type PharmacyServiceRiskLevel = 'STABLE' | 'AT_RISK' | 'HIGH_RISK' | 'INSUFFICIENT_DATA';
 
 export interface SupplierOrderObservation {
   datasetId: string;
@@ -105,10 +105,12 @@ export interface CoachingInsight {
 export interface PharmacyServiceRisk {
   pharmacyId: string;
   totalOrders: number;
+  evaluatedOrders: number;
   ordersWithExceptions: number;
   exceptionRateBps: number | null;
   cancellationAffected: number;
   partialFillAffected: number;
+  lateDeliveryAffected: number;
   highSeverityExceptions: number;
   serviceRiskLevel: PharmacyServiceRiskLevel;
 }

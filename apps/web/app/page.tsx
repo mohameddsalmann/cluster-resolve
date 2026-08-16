@@ -116,6 +116,8 @@ function AttentionRow({ item }: { item: AttentionItem }) {
 export default function ResolvePage() {
   const { activeDatasetId, activeDataset } = useDataset();
   const [orders, setOrders] = useState<OrderSummary[]>([]);
+  const [ordersTotalCount, setOrdersTotalCount] = useState(0);
+  const [exceptionOrdersTotalCount, setExceptionOrdersTotalCount] = useState(0);
   const [suppliers, setSuppliers] = useState<SupplierSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -133,13 +135,15 @@ export default function ResolvePage() {
 
       try {
         const [orderRes, suppRes] = await Promise.all([
-          fetch(`/api/orders?datasetId=${activeDatasetId}`).then((r) => r.json()),
+          fetch(`/api/orders?datasetId=${activeDatasetId}&limit=50`).then((r) => r.json()),
           fetch(`/api/suppliers?datasetId=${activeDatasetId}`).then((r) => r.json()),
         ]);
         if (isCancelled) return;
         if (orderRes.error) throw new Error(orderRes.error);
         if (suppRes.error) throw new Error(suppRes.error);
         setOrders(orderRes.orders ?? []);
+        setOrdersTotalCount(orderRes.totalCount ?? 0);
+        setExceptionOrdersTotalCount(orderRes.exceptionOrdersCount ?? 0);
         setSuppliers(suppRes.suppliers ?? []);
       } catch (err) {
         if (!isCancelled) setError(err instanceof Error ? err.message : 'Failed to load operational data.');
@@ -217,8 +221,8 @@ export default function ResolvePage() {
   }, [orders, suppliers]);
 
   // Real computed pulse metrics
-  const totalOrders = orders.length;
-  const exceptionOrdersCount = orders.filter((o) => o.exceptionSummary.count > 0).length;
+  const totalOrders = ordersTotalCount;
+  const exceptionOrdersCount = exceptionOrdersTotalCount;
   const suppliersUnderWatch = suppliers.filter(
     (s) => s.reliability?.status === 'WATCH' || s.reliability?.status === 'HIGH'
   ).length;
@@ -236,10 +240,10 @@ export default function ResolvePage() {
           subtitle="Procurement reliability and operational exception queue"
           actions={
             <>
-              <Link href="/imports" className={linkButtonClass('secondary', 'sm')}>
-                Import data
+              <Link href="/imports" className={linkButtonClass('primary', 'sm')}>
+                Upload Your Data
               </Link>
-              <Link href="/orders" className={linkButtonClass('primary', 'sm')}>
+              <Link href="/orders" className={linkButtonClass('secondary', 'sm')}>
                 Open order queue
               </Link>
             </>
@@ -260,8 +264,31 @@ export default function ResolvePage() {
             description="Select or import a dataset to inspect operational reliability."
             action={{ label: 'Go to imports', href: '/imports' }}
           />
+        ) : totalOrders === 0 ? (
+          <EmptyState
+            icon={FileStack}
+            title="No procurement data yet"
+            description="Start by uploading Orders, then add Offers → Decisions → Outcomes to unlock operational intelligence."
+            action={{ label: 'Upload Orders', href: '/imports' }}
+          />
         ) : (
           <>
+            <div className="mb-8 rounded-[12px] border border-line bg-surface p-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <StatusChip
+                  label={activeDataset?.mode === 'SAMPLE' ? 'FOUNDER DEMO / SAMPLE' : 'CUSTOMER DATA'}
+                  tone={activeDataset?.mode === 'SAMPLE' ? 'neutral' : 'brand'}
+                />
+                {activeDataset?.mode === 'SAMPLE' ? (
+                  <StatusChip label="PUBLIC MEDICINE REFERENCE" tone="brand" />
+                ) : null}
+              </div>
+              <p className="mt-3 text-sm text-body">
+                Resolve turns procurement files into evidence-backed order exceptions, supplier reliability,
+                decision replay, and pharmacy service experience. The Founder Demo combines public medicine
+                reference names with deterministic sample procurement history.
+              </p>
+            </div>
             <section aria-labelledby="needs-attention" className="mb-12">
               <SectionHeader
                 id="needs-attention"

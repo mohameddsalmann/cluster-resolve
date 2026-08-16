@@ -30,30 +30,90 @@ interface SnapshotBase {
 }
 type ProductSnapshotRow = Database['public']['Tables']['supplier_product_reliability_snapshots']['Row'];
 
-export async function listOrderReadModels(datasetId: string) {
-  const source = await loadOrderReadSource(datasetId);
-  return source.orders.map((order) => {
-    const items = source.items.filter((value) => value.order_id === order.id);
-    const outcomes = source.outcomes.filter((value) => value.order_id === order.id && value.outcome_final);
-    const exceptions = source.exceptions.filter((value) => value.order_id === order.id);
-    const supplierIds = [...new Set(outcomes.map((value) => value.supplier_id))];
+export async function listOrderReadModels(
+  datasetId: string,
+  options: { limit?: number; offset?: number } = {}
+) {
+  const supabase = getSupabaseServerClient();
+  const limit = Math.min(250, Math.max(1, options.limit ?? 100));
+  const offset = Math.max(0, options.offset ?? 0);
+  const { data: orderData, count, error: orderError } = await supabase
+    .from('orders')
+    .select('id, external_order_id, pharmacy_id, status, placed_at', { count: 'exact' })
+    .eq('dataset_id', datasetId)
+    .order('placed_at', { ascending: false })
+    .order('id')
+    .range(offset, offset + limit - 1);
+  if (orderError) throw orderError;
+
+  const orders = (orderData ?? []) as OrderBase[];
+  const orderIds = orders.map((order) => order.id);
+  const pharmacyIds = [...new Set(orders.map((order) => order.pharmacy_id))];
+  const [itemsResult, outcomesResult, exceptionsResult, pharmaciesResult, allExceptionOrderIds] = await Promise.all([
+    orderIds.length > 0
+      ? supabase.from('order_items').select('id, order_id, product_id, requested_qty, unit').eq('dataset_id', datasetId).in('order_id', orderIds)
+      : Promise.resolve({ data: [], error: null }),
+    orderIds.length > 0
+      ? supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, cancellation_reason, outcome_final').eq('dataset_id', datasetId).in('order_id', orderIds)
+      : Promise.resolve({ data: [], error: null }),
+    orderIds.length > 0
+      ? supabase.from('order_exceptions').select('id, order_id, supplier_id, product_id, type, severity, evidence_json, detected_at, engine_version').eq('dataset_id', datasetId).in('order_id', orderIds)
+      : Promise.resolve({ data: [], error: null }),
+    pharmacyIds.length > 0
+      ? supabase.from('pharmacies').select('id, external_pharmacy_id, name').eq('dataset_id', datasetId).in('id', pharmacyIds)
+      : Promise.resolve({ data: [], error: null }),
+    fetchPaged<{ order_id: string }>((from, to) => supabase
+      .from('order_exceptions')
+      .select('order_id')
+      .eq('dataset_id', datasetId)
+      .order('order_id')
+      .range(from, to)),
+  ]);
+  for (const result of [itemsResult, outcomesResult, exceptionsResult, pharmaciesResult]) {
+    if (result.error) throw result.error;
+  }
+
+  const outcomes = (outcomesResult.data ?? []) as OutcomeBase[];
+  const supplierIds = [...new Set(outcomes.map((outcome) => outcome.supplier_id))];
+  const suppliersResult = supplierIds.length > 0
+    ? await supabase.from('suppliers').select('id, external_supplier_id, name').eq('dataset_id', datasetId).in('id', supplierIds)
+    : { data: [], error: null };
+  if (suppliersResult.error) throw suppliersResult.error;
+
+  const pharmacies = new Map(((pharmaciesResult.data ?? []) as PharmacyBase[]).map((value) => [value.id, value]));
+  const suppliers = new Map(((suppliersResult.data ?? []) as SupplierBase[]).map((value) => [value.id, value]));
+  const itemsByOrder = groupBy((itemsResult.data ?? []) as ItemBase[], (value) => value.order_id);
+  const outcomesByOrder = groupBy(outcomes.filter((value) => value.outcome_final), (value) => value.order_id);
+  const exceptionsByOrder = groupBy((exceptionsResult.data ?? []) as ExceptionBase[], (value) => value.order_id);
+
+  const readModels = orders.map((order) => {
+    const items = itemsByOrder.get(order.id) ?? [];
+    const finalOutcomes = outcomesByOrder.get(order.id) ?? [];
+    const exceptions = exceptionsByOrder.get(order.id) ?? [];
+    const rowSupplierIds = [...new Set(finalOutcomes.map((value) => value.supplier_id))];
     return {
       id: order.id,
       externalOrderId: order.external_order_id,
       status: order.status,
       placedAt: order.placed_at,
-      pharmacy: source.pharmacies.get(order.pharmacy_id) ?? null,
-      suppliers: supplierIds.map((id) => source.suppliers.get(id)).filter(Boolean),
+      pharmacy: pharmacies.get(order.pharmacy_id) ?? null,
+      suppliers: rowSupplierIds.map((id) => suppliers.get(id)).filter(Boolean),
       requestedUnits: items.reduce((sum, value) => sum + value.requested_qty, 0),
-      filledUnits: outcomes.reduce((sum, value) => sum + value.filled_qty, 0),
-      deliveryState: deliveryState(outcomes, exceptions),
+      filledUnits: finalOutcomes.reduce((sum, value) => sum + value.filled_qty, 0),
+      deliveryState: deliveryState(finalOutcomes, exceptions),
       exceptionSummary: summarizeExceptions(exceptions),
     };
   });
+
+  return {
+    orders: readModels,
+    totalCount: count ?? 0,
+    exceptionOrdersCount: new Set(allExceptionOrderIds.map((row) => row.order_id)).size,
+  };
 }
 
 export async function getOrderReadModel(datasetId: string, orderId: string) {
-  const source = await loadOrderReadSource(datasetId);
+  const source = await loadOrderReadSource(datasetId, orderId);
   const order = source.orders.find((value) => value.id === orderId);
   if (!order) return null;
   const supabase = getSupabaseServerClient();
@@ -216,12 +276,15 @@ export async function listPharmacyReadModels(datasetId: string) {
   interface PharmacyRow { id: string; external_pharmacy_id: string; name: string | null }
   interface OrderForPharmacy { id: string; pharmacy_id: string }
   interface ExceptionForPharmacy { id: string; order_id: string; type: string; severity: string }
+  interface EvaluatedOutcome { order_id: string }
 
-  const [pharmacies, orders, exceptions] = await Promise.all([
+  const [pharmacies, orders, exceptions, outcomes] = await Promise.all([
     fetchPaged<PharmacyRow>((from, to) => supabase.from('pharmacies').select('id, external_pharmacy_id, name').eq('dataset_id', datasetId).order('id').range(from, to)),
     fetchPaged<OrderForPharmacy>((from, to) => supabase.from('orders').select('id, pharmacy_id').eq('dataset_id', datasetId).order('id').range(from, to)),
     fetchPaged<ExceptionForPharmacy>((from, to) => supabase.from('order_exceptions').select('id, order_id, type, severity').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged<EvaluatedOutcome>((from, to) => supabase.from('order_outcomes').select('order_id').eq('dataset_id', datasetId).eq('outcome_final', true).order('order_id').range(from, to)),
   ]);
+  const evaluatedOrderIds = new Set(outcomes.map((outcome) => outcome.order_id));
 
   // Re-map exceptions by orderId for efficient lookup
   const exceptionsByOrderId = new Map<string, ExceptionForPharmacy[]>();
@@ -232,9 +295,10 @@ export async function listPharmacyReadModels(datasetId: string) {
   }
 
   return pharmacies.map((pharmacy) => {
-    const pharmacyOrders = orders
+    const allPharmacyOrders = orders
       .filter((o) => o.pharmacy_id === pharmacy.id)
       .map((o) => ({ orderId: o.id }));
+    const pharmacyOrders = allPharmacyOrders.filter((order) => evaluatedOrderIds.has(order.orderId));
     const pharmacyExceptions = pharmacyOrders.flatMap((o) =>
       (exceptionsByOrderId.get(o.orderId) ?? []).map((exc) => ({
         orderId: exc.order_id,
@@ -242,20 +306,151 @@ export async function listPharmacyReadModels(datasetId: string) {
         severity: exc.severity,
       }))
     );
-    const risk = evaluatePharmacyServiceRisk(pharmacy.id, pharmacyOrders, pharmacyExceptions);
+    const derivedRisk = evaluatePharmacyServiceRisk(pharmacy.id, pharmacyOrders, pharmacyExceptions);
+    const risk = {
+      ...derivedRisk,
+      totalOrders: allPharmacyOrders.length,
+      evaluatedOrders: pharmacyOrders.length,
+    };
     return { pharmacy, risk };
   });
 }
 
-async function loadOrderReadSource(datasetId: string) {
+export async function getPharmacyReadModel(datasetId: string, pharmacyId: string) {
+  const supabase = getSupabaseServerClient();
+  const { data: pharmacy, error: pharmacyError } = await supabase
+    .from('pharmacies')
+    .select('id, external_pharmacy_id, name')
+    .eq('dataset_id', datasetId)
+    .eq('id', pharmacyId)
+    .maybeSingle();
+  if (pharmacyError) throw pharmacyError;
+  if (!pharmacy) return null;
+
+  const { data: orders, error: ordersError } = await supabase
+    .from('orders')
+    .select('id, external_order_id, status, placed_at')
+    .eq('dataset_id', datasetId)
+    .eq('pharmacy_id', pharmacyId)
+    .order('placed_at', { ascending: false });
+  if (ordersError) throw ordersError;
+
+  const orderRows = orders ?? [];
+  const orderIds = orderRows.map((order) => order.id);
+  const exceptions = orderIds.length > 0
+    ? await fetchPaged<ExceptionBase>((from, to) => supabase
+        .from('order_exceptions')
+        .select('id, order_id, supplier_id, product_id, type, severity, evidence_json, detected_at, engine_version')
+        .eq('dataset_id', datasetId)
+        .in('order_id', orderIds)
+        .order('detected_at', { ascending: false })
+        .range(from, to))
+    : [];
+  const evaluatedOutcomes = orderIds.length > 0
+    ? await fetchPaged<{ order_id: string }>((from, to) => supabase
+        .from('order_outcomes')
+        .select('order_id')
+        .eq('dataset_id', datasetId)
+        .eq('outcome_final', true)
+        .in('order_id', orderIds)
+        .order('order_id')
+        .range(from, to))
+    : [];
+  const evaluatedOrderIds = new Set(evaluatedOutcomes.map((outcome) => outcome.order_id));
+
+  const supplierIds = [...new Set(
+    exceptions.map((exception) => exception.supplier_id).filter((id): id is string => Boolean(id))
+  )];
+  const { data: suppliers, error: suppliersError } = supplierIds.length > 0
+    ? await supabase
+        .from('suppliers')
+        .select('id, external_supplier_id, name')
+        .eq('dataset_id', datasetId)
+        .in('id', supplierIds)
+    : { data: [], error: null };
+  if (suppliersError) throw suppliersError;
+
+  const supplierMap = new Map((suppliers ?? []).map((supplier) => [supplier.id, supplier]));
+  const exceptionsByOrder = new Map<string, ExceptionBase[]>();
+  const exceptionCountsBySupplier = new Map<string, number>();
+  for (const exception of exceptions) {
+    const list = exceptionsByOrder.get(exception.order_id) ?? [];
+    list.push(exception);
+    exceptionsByOrder.set(exception.order_id, list);
+    if (exception.supplier_id) {
+      exceptionCountsBySupplier.set(
+        exception.supplier_id,
+        (exceptionCountsBySupplier.get(exception.supplier_id) ?? 0) + 1
+      );
+    }
+  }
+
+  const derivedRisk = evaluatePharmacyServiceRisk(
+    pharmacy.id,
+    orderRows.filter((order) => evaluatedOrderIds.has(order.id)).map((order) => ({ orderId: order.id })),
+    exceptions.map((exception) => ({
+      orderId: exception.order_id,
+      type: exception.type,
+      severity: exception.severity,
+    }))
+  );
+  const risk = {
+    ...derivedRisk,
+    totalOrders: orderRows.length,
+    evaluatedOrders: evaluatedOrderIds.size,
+  };
+
+  return {
+    pharmacy,
+    risk,
+    topProblematicSuppliers: [...exceptionCountsBySupplier.entries()]
+      .sort(([, left], [, right]) => right - left)
+      .slice(0, 5)
+      .map(([supplierId, exceptionCount]) => ({
+        supplier: supplierMap.get(supplierId) ?? null,
+        exceptionCount,
+      })),
+    recentAffectedOrders: orderRows
+      .filter((order) => exceptionsByOrder.has(order.id))
+      .slice(0, 20)
+      .map((order) => ({
+        order,
+        exceptions: (exceptionsByOrder.get(order.id) ?? []).map((exception) => ({
+          id: exception.id,
+          type: exception.type,
+          severity: exception.severity,
+          evidence: exception.evidence_json,
+          supplier: exception.supplier_id ? supplierMap.get(exception.supplier_id) ?? null : null,
+        })),
+      })),
+  };
+}
+
+async function loadOrderReadSource(datasetId: string, orderId?: string) {
   const supabase = getSupabaseServerClient();
   const [orders, pharmacies, suppliers, items, outcomes, exceptions] = await Promise.all([
-    fetchPaged<OrderBase>((from, to) => supabase.from('orders').select('id, external_order_id, pharmacy_id, status, placed_at').eq('dataset_id', datasetId).order('placed_at', { ascending: false }).order('id').range(from, to)),
+    fetchPaged<OrderBase>((from, to) => {
+      let query = supabase.from('orders').select('id, external_order_id, pharmacy_id, status, placed_at').eq('dataset_id', datasetId);
+      if (orderId) query = query.eq('id', orderId);
+      return query.order('placed_at', { ascending: false }).order('id').range(from, to);
+    }),
     fetchPaged<PharmacyBase>((from, to) => supabase.from('pharmacies').select('id, external_pharmacy_id, name').eq('dataset_id', datasetId).order('id').range(from, to)),
     fetchPaged<SupplierBase>((from, to) => supabase.from('suppliers').select('id, external_supplier_id, name').eq('dataset_id', datasetId).order('id').range(from, to)),
-    fetchPaged<ItemBase>((from, to) => supabase.from('order_items').select('id, order_id, product_id, requested_qty, unit').eq('dataset_id', datasetId).order('id').range(from, to)),
-    fetchPaged<OutcomeBase>((from, to) => supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, cancellation_reason, outcome_final').eq('dataset_id', datasetId).order('id').range(from, to)),
-    fetchPaged<ExceptionBase>((from, to) => supabase.from('order_exceptions').select('id, order_id, supplier_id, product_id, type, severity, evidence_json, detected_at, engine_version').eq('dataset_id', datasetId).order('id').range(from, to)),
+    fetchPaged<ItemBase>((from, to) => {
+      let query = supabase.from('order_items').select('id, order_id, product_id, requested_qty, unit').eq('dataset_id', datasetId);
+      if (orderId) query = query.eq('order_id', orderId);
+      return query.order('id').range(from, to);
+    }),
+    fetchPaged<OutcomeBase>((from, to) => {
+      let query = supabase.from('order_outcomes').select('id, order_id, supplier_id, product_id, filled_qty, delivered_at, cancelled, cancellation_reason, outcome_final').eq('dataset_id', datasetId);
+      if (orderId) query = query.eq('order_id', orderId);
+      return query.order('id').range(from, to);
+    }),
+    fetchPaged<ExceptionBase>((from, to) => {
+      let query = supabase.from('order_exceptions').select('id, order_id, supplier_id, product_id, type, severity, evidence_json, detected_at, engine_version').eq('dataset_id', datasetId);
+      if (orderId) query = query.eq('order_id', orderId);
+      return query.order('id').range(from, to);
+    }),
   ]);
   return {
     orders,
@@ -301,6 +496,17 @@ async function fetchPaged<T>(fetchPage: (from: number, to: number) => PromiseLik
 function firstBy<T>(values: T[], key: (value: T) => string): Map<string, T> {
   const result = new Map<string, T>();
   for (const value of values) if (!result.has(key(value))) result.set(key(value), value);
+  return result;
+}
+
+function groupBy<T>(values: T[], key: (value: T) => string): Map<string, T[]> {
+  const result = new Map<string, T[]>();
+  for (const value of values) {
+    const groupKey = key(value);
+    const group = result.get(groupKey) ?? [];
+    group.push(value);
+    result.set(groupKey, group);
+  }
   return result;
 }
 

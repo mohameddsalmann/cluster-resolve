@@ -130,7 +130,7 @@ export function ResponsiveDataList<T>({
               c.hideOnMobileList ? null : (
                 <div key={c.key} className="min-w-0">
                   <dt className="cl-meta">{c.mobileLabel ?? c.header}</dt>
-                  <dd className="text-[0.875rem] text-ink">{c.cell(row)}</dd>
+                  <dd className="min-w-0 text-[0.875rem] text-ink [overflow-wrap:anywhere]">{c.cell(row)}</dd>
                 </div>
               )
             )}

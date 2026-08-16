@@ -43,6 +43,10 @@ async function main() {
 
   console.log(`[eda:sync] Retrieved ${notices.length} notices (Source: ${source}, Timestamp: ${retrievedAt})`);
 
+  if (source !== 'LIVE_SCRAPED') {
+    throw new Error('Official EDA pages were unavailable. Reference/test notices will not be persisted as official data.');
+  }
+
   console.log('[eda:sync] Upserting notices into global database repository...');
   const persisted = await upsertRegulatoryNotices(notices);
   console.log(`[eda:sync] Persisted ${persisted.length} notices in regulatory_notices table.`);

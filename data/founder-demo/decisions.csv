@@ -16,7 +16,7 @@ DEC-000014,ORD-000014,SUP-015,2026-04-22T13:44:57.868Z,cluster-resolve-v1,1.0.0,
 DEC-000015,ORD-000015,SUP-022,2026-06-04T09:27:23.544Z,cluster-resolve-v1,1.0.0,0.84,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-000016,ORD-000016,SUP-003,2026-08-06T23:33:31.234Z,cluster-resolve-v1,1.0.0,0.87,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-000017,ORD-000017,SUP-028,2026-04-15T11:40:26.797Z,cluster-resolve-v1,1.0.0,0.89,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-000018,ORD-000018,SUP-026,2025-10-30T03:57:26.969Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Safwa Pharma Distro due to strategic volume contract despite higher per-unit quote.
+DEC-000018,ORD-000018,SUP-026,2025-10-30T03:57:26.969Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Safwa Pharma Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000019,ORD-000019,SUP-016,2026-08-09T04:30:35.916Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
 DEC-000020,ORD-000020,SUP-026,2026-01-09T16:01:24.501Z,cluster-resolve-v1,1.0.0,0.83,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-000021,ORD-000021,SUP-015,2026-01-08T11:33:36.589Z,cluster-resolve-v1,1.0.0,0.72,Selected Lotus Drug Distribution under emergency stock allocation.
@@ -44,7 +44,7 @@ DEC-000042,ORD-000042,SUP-028,2026-04-20T09:31:59.967Z,cluster-resolve-v1,1.0.0,
 DEC-000043,ORD-000043,SUP-012,2026-07-21T14:32:08.558Z,cluster-resolve-v1,1.0.0,0.83,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-000044,ORD-000044,SUP-026,2026-07-31T02:14:58.716Z,cluster-resolve-v1,1.0.0,0.89,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-000045,ORD-000045,SUP-016,2026-08-02T05:17:32.308Z,cluster-resolve-v1,1.0.0,0.9,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-000046,ORD-000046,SUP-008,2026-06-29T03:27:24.394Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-000046,ORD-000046,SUP-008,2026-06-29T03:27:24.394Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000047,ORD-000047,SUP-016,2026-04-21T15:20:08.369Z,cluster-resolve-v1,1.0.0,0.9,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-000048,ORD-000048,SUP-005,2026-08-10T00:53:21.914Z,cluster-resolve-v1,1.0.0,0.94,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-000049,ORD-000049,SUP-015,2026-05-14T08:35:14.266Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -310,7 +310,7 @@ DEC-000308,ORD-000308,SUP-015,2026-08-06T18:22:26.000Z,cluster-resolve-v1,1.0.0,
 DEC-000309,ORD-000309,SUP-004,2025-10-10T23:37:51.010Z,cluster-resolve-v1,1.0.0,0.87,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000310,ORD-000310,SUP-010,2025-10-08T14:46:05.143Z,cluster-resolve-v1,1.0.0,0.91,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-000311,ORD-000311,SUP-010,2026-06-21T20:28:55.143Z,cluster-resolve-v1,1.0.0,0.89,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-000312,ORD-000312,SUP-028,2026-03-01T19:03:49.029Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-000312,ORD-000312,SUP-028,2026-03-01T19:03:49.029Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Rowad Healthcare Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000313,ORD-000313,SUP-018,2026-08-04T21:40:00.466Z,cluster-resolve-v1,1.0.0,0.94,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-000314,ORD-000314,SUP-002,2026-03-17T09:46:38.808Z,cluster-resolve-v1,1.0.0,0.82,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-000315,ORD-000315,SUP-015,2026-01-28T07:16:41.694Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -352,7 +352,7 @@ DEC-000350,ORD-000350,SUP-015,2026-07-31T16:27:25.738Z,cluster-resolve-v1,1.0.0,
 DEC-000351,ORD-000351,SUP-016,2026-02-28T06:27:42.023Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-000352,ORD-000352,SUP-015,2026-06-10T21:34:32.641Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000353,ORD-000353,SUP-008,2026-03-07T23:41:39.727Z,cluster-resolve-v1,1.0.0,0.87,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
-DEC-000354,ORD-000354,SUP-025,2026-08-03T11:37:09.848Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-000354,ORD-000354,SUP-025,2026-08-03T11:37:09.848Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000355,ORD-000355,SUP-021,2026-08-11T18:01:39.100Z,cluster-resolve-v1,1.0.0,0.84,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-000356,ORD-000356,SUP-004,2026-07-09T08:08:21.936Z,cluster-resolve-v1,1.0.0,0.89,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000357,ORD-000357,SUP-015,2026-05-21T17:51:24.430Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -361,7 +361,7 @@ DEC-000359,ORD-000359,SUP-002,2026-01-20T18:35:55.994Z,cluster-resolve-v1,1.0.0,
 DEC-000360,ORD-000360,SUP-016,2026-06-05T03:37:04.152Z,cluster-resolve-v1,1.0.0,0.85,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-000361,ORD-000361,SUP-020,2026-01-23T12:17:26.784Z,cluster-resolve-v1,1.0.0,0.88,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-000362,ORD-000362,SUP-024,2026-05-04T01:49:22.838Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Canal Cities Drug Supply due to strategic volume contract despite higher per-unit quote.
-DEC-000363,ORD-000363,SUP-020,2026-03-04T13:47:50.032Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nefertiti Drug Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-000363,ORD-000363,SUP-020,2026-03-04T13:47:50.032Z,cluster-resolve-v1,1.0.0,0.5,Selected Nefertiti Drug Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000364,ORD-000364,SUP-015,2026-08-01T00:13:53.686Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000365,ORD-000365,SUP-001,2026-05-02T00:47:34.470Z,cluster-resolve-v1,1.0.0,0.89,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000366,ORD-000366,SUP-018,2026-07-04T05:54:46.821Z,cluster-resolve-v1,1.0.0,0.88,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
@@ -568,7 +568,7 @@ DEC-000566,ORD-000566,SUP-014,2025-12-05T19:57:50.161Z,cluster-resolve-v1,1.0.0,
 DEC-000567,ORD-000567,SUP-015,2025-10-11T10:15:36.295Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000568,ORD-000568,SUP-005,2026-03-25T04:07:55.790Z,cluster-resolve-v1,1.0.0,0.91,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-000569,ORD-000569,SUP-013,2026-05-08T12:01:41.335Z,cluster-resolve-v1,1.0.0,0.95,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
-DEC-000570,ORD-000570,SUP-008,2025-11-27T07:57:30.090Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-000570,ORD-000570,SUP-008,2025-11-27T07:57:30.090Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000571,ORD-000571,SUP-021,2025-12-15T10:07:36.250Z,cluster-resolve-v1,1.0.0,0.85,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-000572,ORD-000572,SUP-028,2026-03-14T00:35:04.388Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-000573,ORD-000573,SUP-009,2025-12-13T22:07:08.628Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
@@ -584,7 +584,7 @@ DEC-000582,ORD-000582,SUP-020,2026-07-31T12:54:51.892Z,cluster-resolve-v1,1.0.0,
 DEC-000583,ORD-000583,SUP-011,2026-08-06T17:30:22.491Z,cluster-resolve-v1,1.0.0,0.89,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-000584,ORD-000584,SUP-023,2025-10-03T22:31:18.514Z,cluster-resolve-v1,1.0.0,0.94,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000585,ORD-000585,SUP-016,2026-03-09T02:07:55.747Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-000586,ORD-000586,SUP-026,2026-01-16T10:54:50.892Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Safwa Pharma Distro due to strategic volume contract despite higher per-unit quote.
+DEC-000586,ORD-000586,SUP-026,2026-01-16T10:54:50.892Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Safwa Pharma Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000587,ORD-000587,SUP-027,2025-10-02T21:47:27.539Z,cluster-resolve-v1,1.0.0,0.89,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-000588,ORD-000588,SUP-015,2026-07-05T01:26:28.065Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000589,ORD-000589,SUP-007,2026-08-05T11:11:08.191Z,cluster-resolve-v1,1.0.0,0.83,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
@@ -765,7 +765,7 @@ DEC-000763,ORD-000763,SUP-015,2026-01-11T09:51:12.423Z,cluster-resolve-v1,1.0.0,
 DEC-000764,ORD-000764,SUP-001,2026-05-31T10:32:25.293Z,cluster-resolve-v1,1.0.0,0.83,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000765,ORD-000765,SUP-016,2026-03-22T11:28:37.914Z,cluster-resolve-v1,1.0.0,0.94,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-000766,ORD-000766,SUP-026,2026-01-04T01:34:31.671Z,cluster-resolve-v1,1.0.0,0.9,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-000767,ORD-000767,SUP-015,2026-07-10T09:25:15.572Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Lotus Drug Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-000767,ORD-000767,SUP-015,2026-07-10T09:25:15.572Z,cluster-resolve-v1,1.0.0,0.5,Selected Lotus Drug Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000768,ORD-000768,SUP-017,2026-06-11T15:55:18.956Z,cluster-resolve-v1,1.0.0,0.9,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-000769,ORD-000769,SUP-026,2026-08-07T03:56:54.018Z,cluster-resolve-v1,1.0.0,0.83,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-000770,ORD-000770,SUP-015,2025-12-31T19:55:22.419Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -812,7 +812,7 @@ DEC-000810,ORD-000810,SUP-016,2026-02-14T17:55:15.977Z,cluster-resolve-v1,1.0.0,
 DEC-000811,ORD-000811,SUP-002,2025-11-15T21:33:00.867Z,cluster-resolve-v1,1.0.0,0.87,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-000812,ORD-000812,SUP-015,2026-04-10T14:52:03.745Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000813,ORD-000813,SUP-006,2026-02-21T00:05:09.723Z,cluster-resolve-v1,1.0.0,0.91,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-000814,ORD-000814,SUP-008,2026-08-05T11:03:41.280Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-000814,ORD-000814,SUP-008,2026-08-05T11:03:41.280Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000815,ORD-000815,SUP-025,2026-08-14T01:56:23.513Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-000816,ORD-000816,SUP-028,2025-12-26T19:28:50.503Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-000817,ORD-000817,SUP-010,2026-02-17T01:03:23.970Z,cluster-resolve-v1,1.0.0,0.92,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -895,7 +895,7 @@ DEC-000893,ORD-000893,SUP-003,2026-06-22T00:29:40.320Z,cluster-resolve-v1,1.0.0,
 DEC-000894,ORD-000894,SUP-012,2026-08-05T20:13:07.461Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
 DEC-000895,ORD-000895,SUP-022,2026-08-12T19:58:40.592Z,cluster-resolve-v1,1.0.0,0.85,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-000896,ORD-000896,SUP-015,2026-01-26T08:27:35.094Z,cluster-resolve-v1,1.0.0,0.9,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-000897,ORD-000897,SUP-008,2025-12-22T22:47:29.202Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-000897,ORD-000897,SUP-008,2025-12-22T22:47:29.202Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-000898,ORD-000898,SUP-025,2026-08-12T17:56:38.195Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-000899,ORD-000899,SUP-021,2026-01-19T03:43:47.860Z,cluster-resolve-v1,1.0.0,0.85,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-000900,ORD-000900,SUP-016,2026-07-01T13:39:28.196Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -1022,7 +1022,7 @@ DEC-001020,ORD-001020,SUP-011,2025-11-26T07:29:41.378Z,cluster-resolve-v1,1.0.0,
 DEC-001021,ORD-001021,SUP-005,2025-11-06T12:28:28.757Z,cluster-resolve-v1,1.0.0,0.85,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-001022,ORD-001022,SUP-015,2026-03-17T23:22:25.648Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001023,ORD-001023,SUP-027,2025-10-21T08:54:07.375Z,cluster-resolve-v1,1.0.0,0.85,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
-DEC-001024,ORD-001024,SUP-006,2026-08-06T11:08:52.814Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-001024,ORD-001024,SUP-006,2026-08-06T11:08:52.814Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001025,ORD-001025,SUP-025,2026-04-21T14:42:00.521Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
 DEC-001026,ORD-001026,SUP-016,2025-10-04T09:38:51.513Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001027,ORD-001027,SUP-011,2026-08-12T05:37:49.252Z,cluster-resolve-v1,1.0.0,0.89,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
@@ -1107,7 +1107,7 @@ DEC-001105,ORD-001105,SUP-028,2026-07-04T12:04:01.797Z,cluster-resolve-v1,1.0.0,
 DEC-001106,ORD-001106,SUP-015,2026-07-04T10:12:02.536Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001107,ORD-001107,SUP-016,2025-12-17T10:44:57.852Z,cluster-resolve-v1,1.0.0,0.89,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001108,ORD-001108,SUP-026,2026-02-22T13:03:16.232Z,cluster-resolve-v1,1.0.0,0.96,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-001109,ORD-001109,SUP-010,2026-05-07T12:20:26.578Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-001109,ORD-001109,SUP-010,2026-05-07T12:20:26.578Z,cluster-resolve-v1,1.0.0,0.5,Selected Delta Prime Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001110,ORD-001110,SUP-001,2026-04-01T10:18:54.875Z,cluster-resolve-v1,1.0.0,0.86,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001111,ORD-001111,SUP-006,2026-01-22T09:44:57.322Z,cluster-resolve-v1,1.0.0,0.91,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-001112,ORD-001112,SUP-023,2026-06-05T11:49:08.718Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Oasis Pharma Distribution due to strategic volume contract despite higher per-unit quote.
@@ -1262,7 +1262,7 @@ DEC-001260,ORD-001260,SUP-015,2026-08-05T18:38:32.176Z,cluster-resolve-v1,1.0.0,
 DEC-001261,ORD-001261,SUP-001,2026-08-04T09:38:02.419Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nile Delta Pharma Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-001262,ORD-001262,SUP-027,2026-08-06T15:17:46.296Z,cluster-resolve-v1,1.0.0,0.86,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-001263,ORD-001263,SUP-015,2026-01-20T04:14:02.824Z,cluster-resolve-v1,1.0.0,0.95,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-001264,ORD-001264,SUP-025,2025-12-25T16:45:22.637Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-001264,ORD-001264,SUP-025,2025-12-25T16:45:22.637Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001265,ORD-001265,SUP-020,2026-06-28T07:34:50.238Z,cluster-resolve-v1,1.0.0,0.83,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-001266,ORD-001266,SUP-017,2026-02-17T11:35:15.239Z,cluster-resolve-v1,1.0.0,0.86,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-001267,ORD-001267,SUP-015,2026-08-02T12:58:54.166Z,cluster-resolve-v1,1.0.0,0.82,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -1318,14 +1318,14 @@ DEC-001316,ORD-001316,SUP-015,2026-04-13T22:02:54.451Z,cluster-resolve-v1,1.0.0,
 DEC-001317,ORD-001317,SUP-022,2026-03-30T14:22:02.671Z,cluster-resolve-v1,1.0.0,0.85,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-001318,ORD-001318,SUP-014,2026-03-30T05:22:04.454Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
 DEC-001319,ORD-001319,SUP-008,2026-08-06T15:33:05.647Z,cluster-resolve-v1,1.0.0,0.88,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
-DEC-001320,ORD-001320,SUP-021,2026-06-16T01:06:57.999Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Red Sea Pharma Supply due to strategic volume contract despite higher per-unit quote.
+DEC-001320,ORD-001320,SUP-021,2026-06-16T01:06:57.999Z,cluster-resolve-v1,1.0.0,0.5,Selected Red Sea Pharma Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001321,ORD-001321,SUP-015,2026-02-04T22:50:48.522Z,cluster-resolve-v1,1.0.0,0.9,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001322,ORD-001322,SUP-002,2026-02-10T16:51:09.386Z,cluster-resolve-v1,1.0.0,0.89,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-001323,ORD-001323,SUP-015,2026-03-27T04:21:55.712Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001324,ORD-001324,SUP-010,2026-08-03T07:38:12.682Z,cluster-resolve-v1,1.0.0,0.82,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-001325,ORD-001325,SUP-022,2025-10-23T20:07:48.160Z,cluster-resolve-v1,1.0.0,0.85,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-001326,ORD-001326,SUP-015,2026-08-10T12:05:02.538Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-001327,ORD-001327,SUP-018,2026-02-24T00:57:42.243Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Ramses Healthcare Distro due to strategic volume contract despite higher per-unit quote.
+DEC-001327,ORD-001327,SUP-018,2026-02-24T00:57:42.243Z,cluster-resolve-v1,1.0.0,0.5,Selected Ramses Healthcare Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001328,ORD-001328,SUP-007,2025-12-08T15:27:55.537Z,cluster-resolve-v1,1.0.0,0.88,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-001329,ORD-001329,SUP-022,2026-01-26T03:30:10.497Z,cluster-resolve-v1,1.0.0,0.72,Selected Mediterranean Med Logistics under emergency stock allocation.
 DEC-001330,ORD-001330,SUP-027,2026-03-29T20:53:26.961Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
@@ -1468,7 +1468,7 @@ DEC-001466,ORD-001466,SUP-004,2026-01-18T05:25:37.069Z,cluster-resolve-v1,1.0.0,
 DEC-001467,ORD-001467,SUP-016,2026-06-02T05:57:54.172Z,cluster-resolve-v1,1.0.0,0.89,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001468,ORD-001468,SUP-018,2026-02-27T07:16:51.820Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Ramses Healthcare Distro due to strategic volume contract despite higher per-unit quote.
 DEC-001469,ORD-001469,SUP-019,2025-11-25T03:00:48.544Z,cluster-resolve-v1,1.0.0,0.95,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-001470,ORD-001470,SUP-028,2025-12-31T20:15:23.215Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-001470,ORD-001470,SUP-028,2025-12-31T20:15:23.215Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Rowad Healthcare Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001471,ORD-001471,SUP-015,2026-05-17T04:40:58.667Z,cluster-resolve-v1,1.0.0,0.96,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001472,ORD-001472,SUP-004,2026-03-12T12:56:18.306Z,cluster-resolve-v1,1.0.0,0.96,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001473,ORD-001473,SUP-008,2026-07-14T23:46:15.742Z,cluster-resolve-v1,1.0.0,0.83,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
@@ -1528,7 +1528,7 @@ DEC-001526,ORD-001526,SUP-015,2026-01-25T10:55:20.875Z,cluster-resolve-v1,1.0.0,
 DEC-001527,ORD-001527,SUP-001,2026-08-13T22:30:52.123Z,cluster-resolve-v1,1.0.0,0.91,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001528,ORD-001528,SUP-005,2026-07-25T23:25:24.610Z,cluster-resolve-v1,1.0.0,0.85,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-001529,ORD-001529,SUP-007,2025-12-27T10:19:46.173Z,cluster-resolve-v1,1.0.0,0.88,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
-DEC-001530,ORD-001530,SUP-026,2026-03-17T14:33:05.581Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Safwa Pharma Distro due to strategic volume contract despite higher per-unit quote.
+DEC-001530,ORD-001530,SUP-026,2026-03-17T14:33:05.581Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Safwa Pharma Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001531,ORD-001531,SUP-025,2026-08-12T22:17:09.315Z,cluster-resolve-v1,1.0.0,0.95,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-001532,ORD-001532,SUP-018,2025-11-30T08:55:55.663Z,cluster-resolve-v1,1.0.0,0.84,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-001533,ORD-001533,SUP-015,2026-08-01T00:30:21.365Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -1717,7 +1717,7 @@ DEC-001715,ORD-001715,SUP-015,2025-12-26T23:15:39.951Z,cluster-resolve-v1,1.0.0,
 DEC-001716,ORD-001716,SUP-014,2025-10-04T10:01:37.779Z,cluster-resolve-v1,1.0.0,0.94,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-001717,ORD-001717,SUP-008,2025-12-12T08:18:23.554Z,cluster-resolve-v1,1.0.0,0.87,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-001718,ORD-001718,SUP-024,2026-08-09T23:50:23.154Z,cluster-resolve-v1,1.0.0,0.96,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
-DEC-001719,ORD-001719,SUP-005,2026-04-21T11:40:51.170Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
+DEC-001719,ORD-001719,SUP-005,2026-04-21T11:40:51.170Z,cluster-resolve-v1,1.0.0,0.5,Selected Pyramids Health Logistics without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001720,ORD-001720,SUP-015,2026-03-30T23:31:48.251Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001721,ORD-001721,SUP-016,2026-08-01T17:16:28.977Z,cluster-resolve-v1,1.0.0,0.85,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001722,ORD-001722,SUP-015,2026-04-10T00:38:09.119Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -1905,7 +1905,7 @@ DEC-001903,ORD-001903,SUP-004,2026-02-24T16:45:11.897Z,cluster-resolve-v1,1.0.0,
 DEC-001904,ORD-001904,SUP-015,2026-08-01T13:37:18.030Z,cluster-resolve-v1,1.0.0,0.82,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001905,ORD-001905,SUP-027,2026-01-11T16:01:14.930Z,cluster-resolve-v1,1.0.0,0.88,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-001906,ORD-001906,SUP-008,2026-08-09T20:02:58.736Z,cluster-resolve-v1,1.0.0,0.88,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
-DEC-001907,ORD-001907,SUP-027,2025-10-05T07:42:30.583Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-001907,ORD-001907,SUP-027,2025-10-05T07:42:30.583Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001908,ORD-001908,SUP-016,2026-08-03T13:17:42.341Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001909,ORD-001909,SUP-001,2026-04-06T05:11:53.350Z,cluster-resolve-v1,1.0.0,0.92,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001910,ORD-001910,SUP-012,2026-06-10T08:39:13.165Z,cluster-resolve-v1,1.0.0,0.72,Selected Sovereign Medical Distro under emergency stock allocation.
@@ -1966,8 +1966,8 @@ DEC-001964,ORD-001964,SUP-014,2026-07-06T13:48:44.487Z,cluster-resolve-v1,1.0.0,
 DEC-001965,ORD-001965,SUP-009,2026-08-08T19:36:01.444Z,cluster-resolve-v1,1.0.0,0.82,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-001966,ORD-001966,SUP-026,2025-10-16T11:24:05.066Z,cluster-resolve-v1,1.0.0,0.91,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-001967,ORD-001967,SUP-015,2026-04-09T18:07:10.884Z,cluster-resolve-v1,1.0.0,0.72,Selected Lotus Drug Distribution under emergency stock allocation.
-DEC-001968,ORD-001968,SUP-007,2026-06-25T19:13:21.759Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Upper Egypt Pharma Direct due to strategic volume contract despite higher per-unit quote.
-DEC-001969,ORD-001969,SUP-007,2026-08-12T00:24:27.260Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Upper Egypt Pharma Direct due to strategic volume contract despite higher per-unit quote.
+DEC-001968,ORD-001968,SUP-007,2026-06-25T19:13:21.759Z,cluster-resolve-v1,1.0.0,0.5,Selected Upper Egypt Pharma Direct without a recorded decision-time offer; evidence arrived after allocation.
+DEC-001969,ORD-001969,SUP-007,2026-08-12T00:24:27.260Z,cluster-resolve-v1,1.0.0,0.5,Selected Upper Egypt Pharma Direct without a recorded decision-time offer; evidence arrived after allocation.
 DEC-001970,ORD-001970,SUP-022,2026-06-03T00:50:50.357Z,cluster-resolve-v1,1.0.0,0.83,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-001971,ORD-001971,SUP-016,2025-11-22T11:25:43.014Z,cluster-resolve-v1,1.0.0,0.96,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-001972,ORD-001972,SUP-019,2026-08-10T16:11:12.664Z,cluster-resolve-v1,1.0.0,0.93,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
@@ -2070,7 +2070,7 @@ DEC-002068,ORD-002068,SUP-027,2026-08-01T20:20:34.104Z,cluster-resolve-v1,1.0.0,
 DEC-002069,ORD-002069,SUP-017,2026-03-31T08:32:30.933Z,cluster-resolve-v1,1.0.0,0.96,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-002070,ORD-002070,SUP-016,2026-08-08T11:21:31.887Z,cluster-resolve-v1,1.0.0,0.94,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002071,ORD-002071,SUP-011,2026-06-08T07:11:47.686Z,cluster-resolve-v1,1.0.0,0.86,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
-DEC-002072,ORD-002072,SUP-028,2026-04-05T22:09:05.847Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-002072,ORD-002072,SUP-028,2026-04-05T22:09:05.847Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Rowad Healthcare Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002073,ORD-002073,SUP-011,2025-12-28T22:56:40.985Z,cluster-resolve-v1,1.0.0,0.9,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-002074,ORD-002074,SUP-001,2026-08-07T01:11:31.509Z,cluster-resolve-v1,1.0.0,0.82,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002075,ORD-002075,SUP-001,2026-05-27T20:56:56.134Z,cluster-resolve-v1,1.0.0,0.84,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
@@ -2295,7 +2295,7 @@ DEC-002293,ORD-002293,SUP-018,2026-05-25T18:41:47.592Z,cluster-resolve-v1,1.0.0,
 DEC-002294,ORD-002294,SUP-017,2026-06-14T20:23:07.374Z,cluster-resolve-v1,1.0.0,0.93,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-002295,ORD-002295,SUP-016,2026-08-10T04:12:33.815Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002296,ORD-002296,SUP-015,2026-03-05T04:03:00.765Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-002297,ORD-002297,SUP-011,2026-08-11T20:59:11.534Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
+DEC-002297,ORD-002297,SUP-011,2026-08-11T20:59:11.534Z,cluster-resolve-v1,1.0.0,0.5,Selected Apex National Pharma Logistic without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002298,ORD-002298,SUP-027,2026-06-21T10:21:35.333Z,cluster-resolve-v1,1.0.0,0.95,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-002299,ORD-002299,SUP-008,2026-08-10T02:32:53.107Z,cluster-resolve-v1,1.0.0,0.9,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-002300,ORD-002300,SUP-028,2026-02-03T16:43:49.797Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
@@ -2339,7 +2339,7 @@ DEC-002337,ORD-002337,SUP-006,2026-02-22T10:10:31.915Z,cluster-resolve-v1,1.0.0,
 DEC-002338,ORD-002338,SUP-015,2026-06-16T21:51:56.737Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002339,ORD-002339,SUP-013,2026-08-12T05:04:21.002Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
 DEC-002340,ORD-002340,SUP-016,2025-12-01T19:07:25.731Z,cluster-resolve-v1,1.0.0,0.83,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-002341,ORD-002341,SUP-006,2026-08-10T20:54:56.733Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-002341,ORD-002341,SUP-006,2026-08-10T20:54:56.733Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002342,ORD-002342,SUP-002,2026-07-25T09:48:41.004Z,cluster-resolve-v1,1.0.0,0.95,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-002343,ORD-002343,SUP-019,2026-01-08T05:07:36.774Z,cluster-resolve-v1,1.0.0,0.95,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-002344,ORD-002344,SUP-022,2026-03-12T02:05:20.605Z,cluster-resolve-v1,1.0.0,0.85,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
@@ -2486,7 +2486,7 @@ DEC-002484,ORD-002484,SUP-016,2025-11-13T02:46:13.730Z,cluster-resolve-v1,1.0.0,
 DEC-002485,ORD-002485,SUP-013,2026-08-13T18:20:58.118Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
 DEC-002486,ORD-002486,SUP-016,2026-04-24T10:35:46.973Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002487,ORD-002487,SUP-009,2026-06-06T18:53:00.547Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-002488,ORD-002488,SUP-012,2026-03-24T11:15:07.065Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-002488,ORD-002488,SUP-012,2026-03-24T11:15:07.065Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002489,ORD-002489,SUP-020,2026-08-01T19:49:36.626Z,cluster-resolve-v1,1.0.0,0.83,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002490,ORD-002490,SUP-004,2026-06-17T03:49:55.645Z,cluster-resolve-v1,1.0.0,0.96,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002491,ORD-002491,SUP-028,2026-08-03T10:06:46.344Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
@@ -2500,7 +2500,7 @@ DEC-002498,ORD-002498,SUP-005,2026-05-19T05:08:10.475Z,cluster-resolve-v1,1.0.0,
 DEC-002499,ORD-002499,SUP-015,2026-02-19T11:21:43.269Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002500,ORD-002500,SUP-024,2026-03-17T02:35:31.812Z,cluster-resolve-v1,1.0.0,0.93,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-002501,ORD-002501,SUP-016,2025-10-21T17:55:17.998Z,cluster-resolve-v1,1.0.0,0.94,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-002502,ORD-002502,SUP-013,2025-11-03T12:04:16.557Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
+DEC-002502,ORD-002502,SUP-013,2025-11-03T12:04:16.557Z,cluster-resolve-v1,1.0.0,0.5,Selected Karnak Pharma Services without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002503,ORD-002503,SUP-016,2026-01-02T17:17:39.836Z,cluster-resolve-v1,1.0.0,0.96,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002504,ORD-002504,SUP-002,2026-04-25T17:39:15.988Z,cluster-resolve-v1,1.0.0,0.9,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-002505,ORD-002505,SUP-015,2025-10-21T13:05:25.356Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -2524,7 +2524,7 @@ DEC-002522,ORD-002522,SUP-022,2026-08-13T19:40:57.665Z,cluster-resolve-v1,1.0.0,
 DEC-002523,ORD-002523,SUP-010,2025-12-24T02:59:19.314Z,cluster-resolve-v1,1.0.0,0.85,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002524,ORD-002524,SUP-021,2026-01-11T17:26:56.418Z,cluster-resolve-v1,1.0.0,0.9,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-002525,ORD-002525,SUP-016,2026-08-11T04:21:41.655Z,cluster-resolve-v1,1.0.0,0.9,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-002526,ORD-002526,SUP-014,2025-11-30T10:19:30.356Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-002526,ORD-002526,SUP-014,2025-11-30T10:19:30.356Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002527,ORD-002527,SUP-015,2026-08-07T18:02:30.790Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002528,ORD-002528,SUP-018,2026-08-03T12:24:49.444Z,cluster-resolve-v1,1.0.0,0.84,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-002529,ORD-002529,SUP-016,2026-04-04T03:23:06.951Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -2600,7 +2600,7 @@ DEC-002598,ORD-002598,SUP-006,2026-04-23T20:21:07.997Z,cluster-resolve-v1,1.0.0,
 DEC-002599,ORD-002599,SUP-020,2025-10-29T23:35:49.088Z,cluster-resolve-v1,1.0.0,0.87,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002600,ORD-002600,SUP-022,2026-06-18T22:24:28.470Z,cluster-resolve-v1,1.0.0,0.88,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-002601,ORD-002601,SUP-016,2026-08-06T15:47:44.781Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-002602,ORD-002602,SUP-003,2026-07-31T02:51:58.196Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Alexandria MedLog Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-002602,ORD-002602,SUP-003,2026-07-31T02:51:58.196Z,cluster-resolve-v1,1.0.0,0.5,Selected Alexandria MedLog Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002603,ORD-002603,SUP-020,2026-03-31T17:43:56.122Z,cluster-resolve-v1,1.0.0,0.9,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002604,ORD-002604,SUP-015,2025-12-23T11:12:57.617Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002605,ORD-002605,SUP-021,2025-11-17T18:00:35.424Z,cluster-resolve-v1,1.0.0,0.94,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
@@ -2698,7 +2698,7 @@ DEC-002696,ORD-002696,SUP-021,2026-08-05T07:22:04.817Z,cluster-resolve-v1,1.0.0,
 DEC-002697,ORD-002697,SUP-005,2025-10-13T23:25:13.284Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
 DEC-002698,ORD-002698,SUP-013,2025-12-30T20:15:19.397Z,cluster-resolve-v1,1.0.0,0.94,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-002699,ORD-002699,SUP-007,2026-03-30T18:43:21.650Z,cluster-resolve-v1,1.0.0,0.86,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
-DEC-002700,ORD-002700,SUP-021,2026-03-20T21:37:35.292Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Red Sea Pharma Supply due to strategic volume contract despite higher per-unit quote.
+DEC-002700,ORD-002700,SUP-021,2026-03-20T21:37:35.292Z,cluster-resolve-v1,1.0.0,0.5,Selected Red Sea Pharma Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002701,ORD-002701,SUP-028,2026-08-02T05:42:36.508Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002702,ORD-002702,SUP-015,2026-08-04T20:05:10.736Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002703,ORD-002703,SUP-010,2026-07-09T12:48:57.228Z,cluster-resolve-v1,1.0.0,0.87,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -2748,7 +2748,7 @@ DEC-002746,ORD-002746,SUP-016,2025-11-28T09:06:20.215Z,cluster-resolve-v1,1.0.0,
 DEC-002747,ORD-002747,SUP-012,2026-08-01T12:02:26.278Z,cluster-resolve-v1,1.0.0,0.92,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-002748,ORD-002748,SUP-008,2026-05-01T01:07:41.506Z,cluster-resolve-v1,1.0.0,0.92,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-002749,ORD-002749,SUP-027,2026-08-13T18:21:12.266Z,cluster-resolve-v1,1.0.0,0.85,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
-DEC-002750,ORD-002750,SUP-020,2026-04-24T20:59:58.533Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nefertiti Drug Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-002750,ORD-002750,SUP-020,2026-04-24T20:59:58.533Z,cluster-resolve-v1,1.0.0,0.5,Selected Nefertiti Drug Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002751,ORD-002751,SUP-015,2026-07-31T12:20:45.423Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002752,ORD-002752,SUP-014,2026-02-13T01:22:36.640Z,cluster-resolve-v1,1.0.0,0.88,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002753,ORD-002753,SUP-019,2025-11-15T14:59:23.525Z,cluster-resolve-v1,1.0.0,0.84,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
@@ -2878,7 +2878,7 @@ DEC-002876,ORD-002876,SUP-006,2025-10-21T21:52:16.679Z,cluster-resolve-v1,1.0.0,
 DEC-002877,ORD-002877,SUP-015,2026-08-08T08:08:01.133Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002878,ORD-002878,SUP-001,2026-07-13T10:51:52.200Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nile Delta Pharma Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-002879,ORD-002879,SUP-025,2026-02-12T20:32:13.369Z,cluster-resolve-v1,1.0.0,0.9,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-002880,ORD-002880,SUP-018,2025-10-08T18:54:45.286Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Ramses Healthcare Distro due to strategic volume contract despite higher per-unit quote.
+DEC-002880,ORD-002880,SUP-018,2025-10-08T18:54:45.286Z,cluster-resolve-v1,1.0.0,0.5,Selected Ramses Healthcare Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002881,ORD-002881,SUP-016,2026-07-18T08:22:43.455Z,cluster-resolve-v1,1.0.0,0.9,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002882,ORD-002882,SUP-012,2026-08-03T23:16:15.693Z,cluster-resolve-v1,1.0.0,0.95,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-002883,ORD-002883,SUP-014,2026-07-26T04:13:47.657Z,cluster-resolve-v1,1.0.0,0.84,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -2890,7 +2890,7 @@ DEC-002888,ORD-002888,SUP-028,2025-10-10T20:38:22.097Z,cluster-resolve-v1,1.0.0,
 DEC-002889,ORD-002889,SUP-016,2026-06-18T17:02:05.557Z,cluster-resolve-v1,1.0.0,0.91,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-002890,ORD-002890,SUP-022,2025-10-18T08:23:51.376Z,cluster-resolve-v1,1.0.0,0.96,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-002891,ORD-002891,SUP-015,2025-12-09T23:03:23.413Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-002892,ORD-002892,SUP-005,2025-12-08T21:50:24.374Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
+DEC-002892,ORD-002892,SUP-005,2025-12-08T21:50:24.374Z,cluster-resolve-v1,1.0.0,0.5,Selected Pyramids Health Logistics without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002893,ORD-002893,SUP-028,2026-08-07T00:33:19.957Z,cluster-resolve-v1,1.0.0,0.91,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002894,ORD-002894,SUP-011,2026-08-02T17:32:02.615Z,cluster-resolve-v1,1.0.0,0.9,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-002895,ORD-002895,SUP-007,2026-03-02T10:10:51.593Z,cluster-resolve-v1,1.0.0,0.87,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
@@ -2918,7 +2918,7 @@ DEC-002916,ORD-002916,SUP-003,2025-11-07T05:20:02.473Z,cluster-resolve-v1,1.0.0,
 DEC-002917,ORD-002917,SUP-022,2026-02-20T12:31:05.138Z,cluster-resolve-v1,1.0.0,0.72,Selected Mediterranean Med Logistics under emergency stock allocation.
 DEC-002918,ORD-002918,SUP-009,2025-12-19T21:39:05.251Z,cluster-resolve-v1,1.0.0,0.96,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002919,ORD-002919,SUP-017,2026-08-01T15:14:15.803Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
-DEC-002920,ORD-002920,SUP-016,2025-12-08T03:01:44.943Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-002920,ORD-002920,SUP-016,2025-12-08T03:01:44.943Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002921,ORD-002921,SUP-002,2025-10-22T14:55:19.758Z,cluster-resolve-v1,1.0.0,0.94,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-002922,ORD-002922,SUP-004,2026-04-07T16:33:41.343Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cairo Valley Drug Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-002923,ORD-002923,SUP-011,2025-11-15T07:09:41.106Z,cluster-resolve-v1,1.0.0,0.88,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
@@ -2932,7 +2932,7 @@ DEC-002930,ORD-002930,SUP-012,2026-06-30T05:31:26.569Z,cluster-resolve-v1,1.0.0,
 DEC-002931,ORD-002931,SUP-002,2026-08-11T06:12:48.797Z,cluster-resolve-v1,1.0.0,0.9,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-002932,ORD-002932,SUP-028,2026-08-13T04:41:10.290Z,cluster-resolve-v1,1.0.0,0.87,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-002933,ORD-002933,SUP-015,2026-06-24T07:54:07.685Z,cluster-resolve-v1,1.0.0,0.9,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-002934,ORD-002934,SUP-014,2026-01-10T03:39:43.956Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-002934,ORD-002934,SUP-014,2026-01-10T03:39:43.956Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-002935,ORD-002935,SUP-010,2026-01-14T00:28:50.452Z,cluster-resolve-v1,1.0.0,0.88,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-002936,ORD-002936,SUP-005,2025-11-21T22:26:06.663Z,cluster-resolve-v1,1.0.0,0.89,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-002937,ORD-002937,SUP-015,2025-10-17T04:58:04.517Z,cluster-resolve-v1,1.0.0,0.95,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -3212,7 +3212,7 @@ DEC-003210,ORD-003210,SUP-011,2026-05-04T10:32:02.607Z,cluster-resolve-v1,1.0.0,
 DEC-003211,ORD-003211,SUP-016,2026-01-19T09:35:59.560Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-003212,ORD-003212,SUP-026,2026-08-04T13:04:32.461Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-003213,ORD-003213,SUP-015,2026-02-23T23:41:39.622Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-003214,ORD-003214,SUP-011,2026-01-23T03:20:38.741Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
+DEC-003214,ORD-003214,SUP-011,2026-01-23T03:20:38.741Z,cluster-resolve-v1,1.0.0,0.5,Selected Apex National Pharma Logistic without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003215,ORD-003215,SUP-024,2026-08-04T03:45:47.249Z,cluster-resolve-v1,1.0.0,0.88,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-003216,ORD-003216,SUP-011,2026-05-28T10:20:15.218Z,cluster-resolve-v1,1.0.0,0.89,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-003217,ORD-003217,SUP-020,2026-08-10T21:24:40.374Z,cluster-resolve-v1,1.0.0,0.92,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -3238,7 +3238,7 @@ DEC-003236,ORD-003236,SUP-015,2026-08-01T18:42:00.264Z,cluster-resolve-v1,1.0.0,
 DEC-003237,ORD-003237,SUP-019,2025-12-13T09:41:22.403Z,cluster-resolve-v1,1.0.0,0.9,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-003238,ORD-003238,SUP-011,2026-06-06T01:07:28.028Z,cluster-resolve-v1,1.0.0,0.94,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-003239,ORD-003239,SUP-018,2025-11-19T13:49:25.080Z,cluster-resolve-v1,1.0.0,0.9,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
-DEC-003240,ORD-003240,SUP-027,2026-07-23T07:39:23.418Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-003240,ORD-003240,SUP-027,2026-07-23T07:39:23.418Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003241,ORD-003241,SUP-015,2026-03-02T03:00:43.228Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003242,ORD-003242,SUP-015,2026-03-14T15:13:39.367Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003243,ORD-003243,SUP-011,2026-02-01T07:56:11.407Z,cluster-resolve-v1,1.0.0,0.93,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
@@ -3278,12 +3278,12 @@ DEC-003276,ORD-003276,SUP-020,2026-08-13T17:30:35.756Z,cluster-resolve-v1,1.0.0,
 DEC-003277,ORD-003277,SUP-025,2026-02-18T06:55:32.120Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-003278,ORD-003278,SUP-025,2026-04-15T11:21:59.954Z,cluster-resolve-v1,1.0.0,0.72,Selected Al-Salam Medical Trading under emergency stock allocation.
 DEC-003279,ORD-003279,SUP-017,2026-01-03T00:55:53.442Z,cluster-resolve-v1,1.0.0,0.84,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
-DEC-003280,ORD-003280,SUP-016,2026-01-26T03:21:52.210Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-003280,ORD-003280,SUP-016,2026-01-26T03:21:52.210Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003281,ORD-003281,SUP-015,2026-01-31T08:08:31.736Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003282,ORD-003282,SUP-012,2025-11-23T16:14:19.632Z,cluster-resolve-v1,1.0.0,0.95,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-003283,ORD-003283,SUP-015,2026-04-02T19:24:58.161Z,cluster-resolve-v1,1.0.0,0.95,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003284,ORD-003284,SUP-013,2026-03-30T23:47:33.287Z,cluster-resolve-v1,1.0.0,0.88,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
-DEC-003285,ORD-003285,SUP-026,2026-07-05T12:31:25.232Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Safwa Pharma Distro due to strategic volume contract despite higher per-unit quote.
+DEC-003285,ORD-003285,SUP-026,2026-07-05T12:31:25.232Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Safwa Pharma Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003286,ORD-003286,SUP-004,2026-03-13T16:15:18.206Z,cluster-resolve-v1,1.0.0,0.82,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003287,ORD-003287,SUP-007,2026-08-01T19:44:44.419Z,cluster-resolve-v1,1.0.0,0.88,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-003288,ORD-003288,SUP-018,2026-08-03T19:17:56.117Z,cluster-resolve-v1,1.0.0,0.86,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
@@ -3361,7 +3361,7 @@ DEC-003359,ORD-003359,SUP-018,2025-10-13T21:10:31.402Z,cluster-resolve-v1,1.0.0,
 DEC-003360,ORD-003360,SUP-010,2026-07-07T19:46:27.190Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
 DEC-003361,ORD-003361,SUP-011,2025-11-12T04:19:43.402Z,cluster-resolve-v1,1.0.0,0.94,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-003362,ORD-003362,SUP-008,2026-05-22T11:03:23.616Z,cluster-resolve-v1,1.0.0,0.92,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
-DEC-003363,ORD-003363,SUP-012,2026-07-06T05:53:59.435Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-003363,ORD-003363,SUP-012,2026-07-06T05:53:59.435Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003364,ORD-003364,SUP-025,2026-04-19T21:30:51.229Z,cluster-resolve-v1,1.0.0,0.72,Selected Al-Salam Medical Trading under emergency stock allocation.
 DEC-003365,ORD-003365,SUP-006,2026-08-12T09:29:08.187Z,cluster-resolve-v1,1.0.0,0.92,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-003366,ORD-003366,SUP-016,2026-02-03T08:04:40.560Z,cluster-resolve-v1,1.0.0,0.96,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -3407,7 +3407,7 @@ DEC-003405,ORD-003405,SUP-001,2025-11-07T18:42:56.627Z,cluster-resolve-v1,1.0.0,
 DEC-003406,ORD-003406,SUP-014,2026-08-08T18:38:47.413Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
 DEC-003407,ORD-003407,SUP-016,2026-02-26T08:37:21.980Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-003408,ORD-003408,SUP-025,2025-10-06T02:07:38.619Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-003409,ORD-003409,SUP-025,2026-05-11T14:58:33.387Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-003409,ORD-003409,SUP-025,2026-05-11T14:58:33.387Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003410,ORD-003410,SUP-008,2026-08-06T16:25:45.361Z,cluster-resolve-v1,1.0.0,0.84,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-003411,ORD-003411,SUP-016,2026-03-10T05:26:52.264Z,cluster-resolve-v1,1.0.0,0.83,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-003412,ORD-003412,SUP-018,2026-07-20T04:49:56.782Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Ramses Healthcare Distro due to strategic volume contract despite higher per-unit quote.
@@ -3464,7 +3464,7 @@ DEC-003462,ORD-003462,SUP-020,2026-07-01T08:59:08.996Z,cluster-resolve-v1,1.0.0,
 DEC-003463,ORD-003463,SUP-018,2026-03-10T00:12:34.045Z,cluster-resolve-v1,1.0.0,0.88,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-003464,ORD-003464,SUP-014,2026-08-05T08:03:49.904Z,cluster-resolve-v1,1.0.0,0.9,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-003465,ORD-003465,SUP-015,2026-08-12T18:52:53.518Z,cluster-resolve-v1,1.0.0,0.9,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-003466,ORD-003466,SUP-001,2026-05-10T11:56:01.764Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nile Delta Pharma Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-003466,ORD-003466,SUP-001,2026-05-10T11:56:01.764Z,cluster-resolve-v1,1.0.0,0.5,Selected Nile Delta Pharma Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003467,ORD-003467,SUP-021,2026-08-08T22:52:51.136Z,cluster-resolve-v1,1.0.0,0.96,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-003468,ORD-003468,SUP-016,2026-02-21T17:29:36.196Z,cluster-resolve-v1,1.0.0,0.85,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-003469,ORD-003469,SUP-011,2026-07-24T01:46:22.854Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
@@ -3673,7 +3673,7 @@ DEC-003671,ORD-003671,SUP-005,2026-01-04T09:12:18.445Z,cluster-resolve-v1,1.0.0,
 DEC-003672,ORD-003672,SUP-016,2025-10-03T05:03:51.413Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-003673,ORD-003673,SUP-013,2025-12-27T21:57:16.463Z,cluster-resolve-v1,1.0.0,0.84,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-003674,ORD-003674,SUP-017,2026-01-29T09:02:00.483Z,cluster-resolve-v1,1.0.0,0.85,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
-DEC-003675,ORD-003675,SUP-027,2026-03-16T20:14:05.690Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-003675,ORD-003675,SUP-027,2026-03-16T20:14:05.690Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003676,ORD-003676,SUP-021,2026-08-13T02:59:35.994Z,cluster-resolve-v1,1.0.0,0.88,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-003677,ORD-003677,SUP-028,2026-03-20T17:26:56.541Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003678,ORD-003678,SUP-016,2026-07-24T22:27:45.568Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -3710,7 +3710,7 @@ DEC-003708,ORD-003708,SUP-016,2026-03-26T02:50:29.909Z,cluster-resolve-v1,1.0.0,
 DEC-003709,ORD-003709,SUP-008,2026-04-03T02:23:35.567Z,cluster-resolve-v1,1.0.0,0.91,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-003710,ORD-003710,SUP-015,2025-11-22T01:42:06.272Z,cluster-resolve-v1,1.0.0,0.96,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003711,ORD-003711,SUP-003,2026-02-12T01:59:13.189Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Alexandria MedLog Wholesalers due to strategic volume contract despite higher per-unit quote.
-DEC-003712,ORD-003712,SUP-020,2026-04-24T04:51:20.498Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nefertiti Drug Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-003712,ORD-003712,SUP-020,2026-04-24T04:51:20.498Z,cluster-resolve-v1,1.0.0,0.5,Selected Nefertiti Drug Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003713,ORD-003713,SUP-006,2026-06-09T10:04:58.179Z,cluster-resolve-v1,1.0.0,0.89,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-003714,ORD-003714,SUP-012,2026-06-13T20:35:54.297Z,cluster-resolve-v1,1.0.0,0.87,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-003715,ORD-003715,SUP-002,2025-10-04T00:57:25.272Z,cluster-resolve-v1,1.0.0,0.93,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
@@ -3844,7 +3844,7 @@ DEC-003842,ORD-003842,SUP-003,2026-06-12T05:48:50.210Z,cluster-resolve-v1,1.0.0,
 DEC-003843,ORD-003843,SUP-015,2025-10-10T06:46:21.408Z,cluster-resolve-v1,1.0.0,0.82,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003844,ORD-003844,SUP-003,2025-12-22T14:39:42.425Z,cluster-resolve-v1,1.0.0,0.88,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-003845,ORD-003845,SUP-021,2026-08-13T08:01:03.307Z,cluster-resolve-v1,1.0.0,0.89,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
-DEC-003846,ORD-003846,SUP-028,2026-04-02T19:55:36.150Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-003846,ORD-003846,SUP-028,2026-04-02T19:55:36.150Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Rowad Healthcare Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003847,ORD-003847,SUP-015,2026-03-11T14:06:40.910Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003848,ORD-003848,SUP-014,2026-06-26T23:14:40.006Z,cluster-resolve-v1,1.0.0,0.88,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-003849,ORD-003849,SUP-014,2026-01-24T12:25:42.982Z,cluster-resolve-v1,1.0.0,0.72,Selected Sphinx Healthcare Wholesale under emergency stock allocation.
@@ -3904,7 +3904,7 @@ DEC-003902,ORD-003902,SUP-027,2025-12-04T14:43:09.794Z,cluster-resolve-v1,1.0.0,
 DEC-003903,ORD-003903,SUP-011,2026-07-10T09:23:25.259Z,cluster-resolve-v1,1.0.0,0.91,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-003904,ORD-003904,SUP-009,2025-12-01T19:16:31.409Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003905,ORD-003905,SUP-025,2026-07-11T15:26:29.399Z,cluster-resolve-v1,1.0.0,0.84,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-003906,ORD-003906,SUP-007,2026-03-20T16:52:02.719Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Upper Egypt Pharma Direct due to strategic volume contract despite higher per-unit quote.
+DEC-003906,ORD-003906,SUP-007,2026-03-20T16:52:02.719Z,cluster-resolve-v1,1.0.0,0.5,Selected Upper Egypt Pharma Direct without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003907,ORD-003907,SUP-017,2026-07-31T11:09:52.837Z,cluster-resolve-v1,1.0.0,0.92,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-003908,ORD-003908,SUP-006,2026-08-02T03:48:22.628Z,cluster-resolve-v1,1.0.0,0.88,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-003909,ORD-003909,SUP-028,2026-01-13T22:04:31.861Z,cluster-resolve-v1,1.0.0,0.89,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
@@ -3940,7 +3940,7 @@ DEC-003938,ORD-003938,SUP-018,2026-02-28T05:37:04.902Z,cluster-resolve-v1,1.0.0,
 DEC-003939,ORD-003939,SUP-028,2026-07-10T21:16:08.177Z,cluster-resolve-v1,1.0.0,0.9,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-003940,ORD-003940,SUP-025,2026-08-11T13:00:20.950Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-003941,ORD-003941,SUP-015,2026-08-08T22:00:34.229Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-003942,ORD-003942,SUP-014,2026-02-28T08:35:51.263Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-003942,ORD-003942,SUP-014,2026-02-28T08:35:51.263Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-003943,ORD-003943,SUP-007,2026-07-10T14:56:42.376Z,cluster-resolve-v1,1.0.0,0.95,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-003944,ORD-003944,SUP-020,2026-02-20T20:34:55.014Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nefertiti Drug Wholesale due to strategic volume contract despite higher per-unit quote.
 DEC-003945,ORD-003945,SUP-005,2026-01-16T10:48:17.573Z,cluster-resolve-v1,1.0.0,0.88,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
@@ -4005,7 +4005,7 @@ DEC-004003,ORD-004003,SUP-020,2026-02-04T12:07:43.744Z,cluster-resolve-v1,1.0.0,
 DEC-004004,ORD-004004,SUP-015,2026-01-26T09:07:18.090Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004005,ORD-004005,SUP-016,2026-06-16T23:59:53.146Z,cluster-resolve-v1,1.0.0,0.92,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-004006,ORD-004006,SUP-003,2025-10-07T11:26:19.590Z,cluster-resolve-v1,1.0.0,0.72,Selected Alexandria MedLog Wholesalers under emergency stock allocation.
-DEC-004007,ORD-004007,SUP-011,2026-01-21T06:30:12.822Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
+DEC-004007,ORD-004007,SUP-011,2026-01-21T06:30:12.822Z,cluster-resolve-v1,1.0.0,0.5,Selected Apex National Pharma Logistic without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004008,ORD-004008,SUP-006,2026-08-10T07:10:56.944Z,cluster-resolve-v1,1.0.0,0.93,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-004009,ORD-004009,SUP-011,2026-08-11T03:13:23.581Z,cluster-resolve-v1,1.0.0,0.93,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-004010,ORD-004010,SUP-025,2025-12-03T06:10:53.233Z,cluster-resolve-v1,1.0.0,0.9,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
@@ -4040,7 +4040,7 @@ DEC-004038,ORD-004038,SUP-019,2026-07-31T09:34:25.771Z,cluster-resolve-v1,1.0.0,
 DEC-004039,ORD-004039,SUP-015,2026-08-14T00:14:03.961Z,cluster-resolve-v1,1.0.0,0.9,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004040,ORD-004040,SUP-003,2026-07-13T00:09:18.039Z,cluster-resolve-v1,1.0.0,0.93,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-004041,ORD-004041,SUP-016,2025-10-16T17:29:57.215Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-004042,ORD-004042,SUP-006,2026-08-05T06:53:17.107Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-004042,ORD-004042,SUP-006,2026-08-05T06:53:17.107Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004043,ORD-004043,SUP-012,2026-05-23T09:40:50.788Z,cluster-resolve-v1,1.0.0,0.91,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-004044,ORD-004044,SUP-023,2026-06-25T06:25:19.726Z,cluster-resolve-v1,1.0.0,0.87,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004045,ORD-004045,SUP-001,2025-12-21T05:54:28.009Z,cluster-resolve-v1,1.0.0,0.91,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
@@ -4071,7 +4071,7 @@ DEC-004069,ORD-004069,SUP-011,2026-07-28T10:10:10.026Z,cluster-resolve-v1,1.0.0,
 DEC-004070,ORD-004070,SUP-021,2025-10-03T13:28:18.663Z,cluster-resolve-v1,1.0.0,0.89,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004071,ORD-004071,SUP-008,2026-02-02T22:45:11.055Z,cluster-resolve-v1,1.0.0,0.72,Selected Middle East Pharmaceutical Hub under emergency stock allocation.
 DEC-004072,ORD-004072,SUP-020,2026-03-15T15:12:12.060Z,cluster-resolve-v1,1.0.0,0.92,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-004073,ORD-004073,SUP-027,2026-05-12T18:17:50.414Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-004073,ORD-004073,SUP-027,2026-05-12T18:17:50.414Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004074,ORD-004074,SUP-015,2026-06-23T12:48:45.037Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004075,ORD-004075,SUP-015,2025-11-03T23:38:11.280Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004076,ORD-004076,SUP-005,2026-07-18T12:48:26.995Z,cluster-resolve-v1,1.0.0,0.94,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
@@ -4099,7 +4099,7 @@ DEC-004097,ORD-004097,SUP-016,2026-06-19T09:42:52.797Z,cluster-resolve-v1,1.0.0,
 DEC-004098,ORD-004098,SUP-019,2025-11-14T07:25:23.806Z,cluster-resolve-v1,1.0.0,0.86,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004099,ORD-004099,SUP-021,2026-07-07T03:18:36.195Z,cluster-resolve-v1,1.0.0,0.91,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004100,ORD-004100,SUP-005,2025-10-31T01:27:57.763Z,cluster-resolve-v1,1.0.0,0.91,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-004101,ORD-004101,SUP-002,2026-03-24T01:24:01.403Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
+DEC-004101,ORD-004101,SUP-002,2026-03-24T01:24:01.403Z,cluster-resolve-v1,1.0.0,0.5,Selected Horus Medical Supply Co. without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004102,ORD-004102,SUP-015,2025-11-05T03:40:14.261Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004103,ORD-004103,SUP-007,2026-08-01T11:54:05.602Z,cluster-resolve-v1,1.0.0,0.92,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-004104,ORD-004104,SUP-016,2026-01-30T18:39:43.498Z,cluster-resolve-v1,1.0.0,0.72,Selected Amon Medical Supplies under emergency stock allocation.
@@ -4143,7 +4143,7 @@ DEC-004141,ORD-004141,SUP-023,2025-11-02T11:09:52.316Z,cluster-resolve-v1,1.0.0,
 DEC-004142,ORD-004142,SUP-015,2026-04-21T22:59:41.854Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004143,ORD-004143,SUP-005,2026-04-02T20:42:18.894Z,cluster-resolve-v1,1.0.0,0.9,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004144,ORD-004144,SUP-015,2025-11-15T17:39:04.887Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-004145,ORD-004145,SUP-023,2026-04-03T13:27:16.249Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Oasis Pharma Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-004145,ORD-004145,SUP-023,2026-04-03T13:27:16.249Z,cluster-resolve-v1,1.0.0,0.5,Selected Oasis Pharma Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004146,ORD-004146,SUP-024,2026-02-19T08:17:20.787Z,cluster-resolve-v1,1.0.0,0.86,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004147,ORD-004147,SUP-024,2026-08-12T23:06:05.288Z,cluster-resolve-v1,1.0.0,0.82,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004148,ORD-004148,SUP-004,2026-05-27T23:33:23.403Z,cluster-resolve-v1,1.0.0,0.91,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -4242,7 +4242,7 @@ DEC-004240,ORD-004240,SUP-019,2025-10-18T06:59:37.332Z,cluster-resolve-v1,1.0.0,
 DEC-004241,ORD-004241,SUP-022,2026-02-19T03:39:02.805Z,cluster-resolve-v1,1.0.0,0.91,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004242,ORD-004242,SUP-015,2026-01-17T00:15:31.254Z,cluster-resolve-v1,1.0.0,0.96,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004243,ORD-004243,SUP-014,2026-07-17T02:29:21.113Z,cluster-resolve-v1,1.0.0,0.96,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-004244,ORD-004244,SUP-009,2026-06-18T00:09:45.864Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Amal Medical Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-004244,ORD-004244,SUP-009,2026-06-18T00:09:45.864Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Amal Medical Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004245,ORD-004245,SUP-005,2026-08-13T11:22:05.016Z,cluster-resolve-v1,1.0.0,0.82,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004246,ORD-004246,SUP-021,2025-10-16T18:23:44.778Z,cluster-resolve-v1,1.0.0,0.91,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004247,ORD-004247,SUP-007,2026-04-22T11:31:15.829Z,cluster-resolve-v1,1.0.0,0.92,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
@@ -4360,7 +4360,7 @@ DEC-004358,ORD-004358,SUP-012,2026-04-02T06:55:39.282Z,cluster-resolve-v1,1.0.0,
 DEC-004359,ORD-004359,SUP-004,2026-03-09T14:39:51.684Z,cluster-resolve-v1,1.0.0,0.83,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004360,ORD-004360,SUP-018,2026-02-15T08:21:28.765Z,cluster-resolve-v1,1.0.0,0.96,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-004361,ORD-004361,SUP-015,2026-03-02T03:01:09.347Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-004362,ORD-004362,SUP-006,2026-07-12T02:44:54.189Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-004362,ORD-004362,SUP-006,2026-07-12T02:44:54.189Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004363,ORD-004363,SUP-014,2026-04-22T04:38:01.238Z,cluster-resolve-v1,1.0.0,0.87,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-004364,ORD-004364,SUP-015,2026-03-26T20:02:56.317Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004365,ORD-004365,SUP-016,2025-12-02T20:57:57.387Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -4646,7 +4646,7 @@ DEC-004644,ORD-004644,SUP-016,2026-08-10T13:40:45.125Z,cluster-resolve-v1,1.0.0,
 DEC-004645,ORD-004645,SUP-024,2025-12-15T15:55:55.932Z,cluster-resolve-v1,1.0.0,0.86,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-004646,ORD-004646,SUP-016,2026-04-11T02:49:16.516Z,cluster-resolve-v1,1.0.0,0.87,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-004647,ORD-004647,SUP-026,2026-08-12T18:43:07.289Z,cluster-resolve-v1,1.0.0,0.92,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-004648,ORD-004648,SUP-025,2026-03-21T09:26:45.148Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-004648,ORD-004648,SUP-025,2026-03-21T09:26:45.148Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004649,ORD-004649,SUP-020,2025-12-24T02:51:08.549Z,cluster-resolve-v1,1.0.0,0.85,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-004650,ORD-004650,SUP-008,2025-11-27T22:52:25.477Z,cluster-resolve-v1,1.0.0,0.72,Selected Middle East Pharmaceutical Hub under emergency stock allocation.
 DEC-004651,ORD-004651,SUP-010,2026-08-11T03:08:40.761Z,cluster-resolve-v1,1.0.0,0.83,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -4666,7 +4666,7 @@ DEC-004664,ORD-004664,SUP-007,2026-06-04T01:31:36.710Z,cluster-resolve-v1,1.0.0,
 DEC-004665,ORD-004665,SUP-014,2026-08-02T12:02:00.030Z,cluster-resolve-v1,1.0.0,0.85,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-004666,ORD-004666,SUP-008,2026-07-15T18:26:31.219Z,cluster-resolve-v1,1.0.0,0.91,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-004667,ORD-004667,SUP-011,2026-08-09T10:44:24.817Z,cluster-resolve-v1,1.0.0,0.88,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
-DEC-004668,ORD-004668,SUP-001,2026-08-10T20:08:18.232Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nile Delta Pharma Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-004668,ORD-004668,SUP-001,2026-08-10T20:08:18.232Z,cluster-resolve-v1,1.0.0,0.5,Selected Nile Delta Pharma Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004669,ORD-004669,SUP-015,2026-08-04T06:26:28.962Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004670,ORD-004670,SUP-017,2025-11-01T19:41:38.402Z,cluster-resolve-v1,1.0.0,0.83,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-004671,ORD-004671,SUP-016,2026-08-07T06:25:57.908Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -4697,7 +4697,7 @@ DEC-004695,ORD-004695,SUP-026,2026-06-23T19:17:55.483Z,cluster-resolve-v1,1.0.0,
 DEC-004696,ORD-004696,SUP-005,2026-02-28T22:25:40.695Z,cluster-resolve-v1,1.0.0,0.94,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004697,ORD-004697,SUP-023,2025-10-23T10:24:23.176Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Oasis Pharma Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-004698,ORD-004698,SUP-016,2026-08-12T09:34:49.539Z,cluster-resolve-v1,1.0.0,0.85,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-004699,ORD-004699,SUP-013,2025-11-18T17:40:42.658Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
+DEC-004699,ORD-004699,SUP-013,2025-11-18T17:40:42.658Z,cluster-resolve-v1,1.0.0,0.5,Selected Karnak Pharma Services without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004700,ORD-004700,SUP-009,2025-10-02T05:33:03.784Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004701,ORD-004701,SUP-002,2026-02-06T13:39:47.469Z,cluster-resolve-v1,1.0.0,0.96,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-004702,ORD-004702,SUP-014,2026-03-09T07:54:20.569Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
@@ -4830,9 +4830,9 @@ DEC-004828,ORD-004828,SUP-008,2026-04-13T01:15:20.800Z,cluster-resolve-v1,1.0.0,
 DEC-004829,ORD-004829,SUP-022,2026-05-05T19:08:04.836Z,cluster-resolve-v1,1.0.0,0.85,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004830,ORD-004830,SUP-015,2026-06-03T03:01:05.422Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004831,ORD-004831,SUP-007,2026-06-14T08:25:12.601Z,cluster-resolve-v1,1.0.0,0.85,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
-DEC-004832,ORD-004832,SUP-025,2026-08-10T06:38:24.612Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-004832,ORD-004832,SUP-025,2026-08-10T06:38:24.612Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004833,ORD-004833,SUP-016,2025-10-04T07:30:14.540Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-004834,ORD-004834,SUP-014,2026-08-08T18:10:23.954Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-004834,ORD-004834,SUP-014,2026-08-08T18:10:23.954Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004835,ORD-004835,SUP-017,2026-07-31T00:51:19.204Z,cluster-resolve-v1,1.0.0,0.88,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-004836,ORD-004836,SUP-007,2026-08-08T00:39:16.699Z,cluster-resolve-v1,1.0.0,0.85,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-004837,ORD-004837,SUP-015,2026-05-17T15:16:56.522Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -4845,7 +4845,7 @@ DEC-004843,ORD-004843,SUP-021,2026-02-21T09:13:02.521Z,cluster-resolve-v1,1.0.0,
 DEC-004844,ORD-004844,SUP-015,2026-08-03T06:14:55.493Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-004845,ORD-004845,SUP-005,2025-10-20T16:22:33.267Z,cluster-resolve-v1,1.0.0,0.93,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004846,ORD-004846,SUP-011,2026-03-02T23:50:39.595Z,cluster-resolve-v1,1.0.0,0.83,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
-DEC-004847,ORD-004847,SUP-010,2026-06-11T16:40:26.735Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-004847,ORD-004847,SUP-010,2026-06-11T16:40:26.735Z,cluster-resolve-v1,1.0.0,0.5,Selected Delta Prime Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004848,ORD-004848,SUP-027,2025-10-08T03:33:16.881Z,cluster-resolve-v1,1.0.0,0.89,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-004849,ORD-004849,SUP-011,2025-12-19T10:57:08.034Z,cluster-resolve-v1,1.0.0,0.84,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-004850,ORD-004850,SUP-004,2026-03-18T00:12:31.439Z,cluster-resolve-v1,1.0.0,0.93,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -4940,7 +4940,7 @@ DEC-004938,ORD-004938,SUP-004,2025-12-07T16:35:12.538Z,cluster-resolve-v1,1.0.0,
 DEC-004939,ORD-004939,SUP-005,2026-05-28T07:24:21.684Z,cluster-resolve-v1,1.0.0,0.89,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-004940,ORD-004940,SUP-018,2026-04-27T11:31:49.696Z,cluster-resolve-v1,1.0.0,0.84,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-004941,ORD-004941,SUP-016,2025-12-22T07:30:41.670Z,cluster-resolve-v1,1.0.0,0.91,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-004942,ORD-004942,SUP-008,2026-08-08T19:54:03.506Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-004942,ORD-004942,SUP-008,2026-08-08T19:54:03.506Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-004943,ORD-004943,SUP-002,2026-01-21T19:34:57.566Z,cluster-resolve-v1,1.0.0,0.82,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-004944,ORD-004944,SUP-002,2025-12-01T08:46:45.709Z,cluster-resolve-v1,1.0.0,0.94,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-004945,ORD-004945,SUP-017,2026-01-20T08:25:14.423Z,cluster-resolve-v1,1.0.0,0.84,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
@@ -5063,7 +5063,7 @@ DEC-005061,ORD-005061,SUP-015,2026-06-09T13:58:01.624Z,cluster-resolve-v1,1.0.0,
 DEC-005062,ORD-005062,SUP-020,2025-10-25T04:26:43.450Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nefertiti Drug Wholesale due to strategic volume contract despite higher per-unit quote.
 DEC-005063,ORD-005063,SUP-012,2025-11-22T23:06:07.429Z,cluster-resolve-v1,1.0.0,0.88,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005064,ORD-005064,SUP-022,2026-08-01T18:05:46.292Z,cluster-resolve-v1,1.0.0,0.95,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-005065,ORD-005065,SUP-017,2026-06-11T04:14:53.633Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
+DEC-005065,ORD-005065,SUP-017,2026-06-11T04:14:53.633Z,cluster-resolve-v1,1.0.0,0.5,Selected Cleopatra Pharma Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005066,ORD-005066,SUP-026,2026-06-21T05:37:45.545Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005067,ORD-005067,SUP-016,2025-10-31T23:10:23.093Z,cluster-resolve-v1,1.0.0,0.83,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-005068,ORD-005068,SUP-015,2025-10-01T18:03:16.451Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -5079,7 +5079,7 @@ DEC-005077,ORD-005077,SUP-017,2025-10-11T16:06:33.712Z,cluster-resolve-v1,1.0.0,
 DEC-005078,ORD-005078,SUP-017,2026-05-18T20:53:55.573Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
 DEC-005079,ORD-005079,SUP-024,2026-07-28T17:13:21.892Z,cluster-resolve-v1,1.0.0,0.94,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-005080,ORD-005080,SUP-016,2025-11-21T11:00:24.606Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-005081,ORD-005081,SUP-013,2026-07-31T03:37:17.712Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
+DEC-005081,ORD-005081,SUP-013,2026-07-31T03:37:17.712Z,cluster-resolve-v1,1.0.0,0.5,Selected Karnak Pharma Services without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005082,ORD-005082,SUP-015,2026-06-08T21:48:00.455Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005083,ORD-005083,SUP-026,2025-10-26T07:00:02.997Z,cluster-resolve-v1,1.0.0,0.9,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005084,ORD-005084,SUP-023,2026-07-28T23:56:59.756Z,cluster-resolve-v1,1.0.0,0.95,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
@@ -5353,7 +5353,7 @@ DEC-005351,ORD-005351,SUP-006,2025-10-27T21:34:06.048Z,cluster-resolve-v1,1.0.0,
 DEC-005352,ORD-005352,SUP-014,2026-08-03T20:54:15.817Z,cluster-resolve-v1,1.0.0,0.93,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-005353,ORD-005353,SUP-012,2026-08-03T15:42:26.442Z,cluster-resolve-v1,1.0.0,0.95,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005354,ORD-005354,SUP-006,2026-05-20T04:31:57.740Z,cluster-resolve-v1,1.0.0,0.83,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-005355,ORD-005355,SUP-017,2026-06-28T15:29:40.172Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
+DEC-005355,ORD-005355,SUP-017,2026-06-28T15:29:40.172Z,cluster-resolve-v1,1.0.0,0.5,Selected Cleopatra Pharma Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005356,ORD-005356,SUP-018,2026-04-21T20:37:21.585Z,cluster-resolve-v1,1.0.0,0.89,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005357,ORD-005357,SUP-001,2026-08-13T06:04:28.007Z,cluster-resolve-v1,1.0.0,0.9,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005358,ORD-005358,SUP-006,2026-02-12T07:06:35.915Z,cluster-resolve-v1,1.0.0,0.9,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
@@ -5407,7 +5407,7 @@ DEC-005405,ORD-005405,SUP-018,2025-11-30T16:26:24.348Z,cluster-resolve-v1,1.0.0,
 DEC-005406,ORD-005406,SUP-015,2026-08-04T04:45:15.500Z,cluster-resolve-v1,1.0.0,0.95,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005407,ORD-005407,SUP-017,2026-07-11T03:43:03.849Z,cluster-resolve-v1,1.0.0,0.9,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-005408,ORD-005408,SUP-011,2026-03-25T03:29:10.236Z,cluster-resolve-v1,1.0.0,0.93,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
-DEC-005409,ORD-005409,SUP-028,2026-02-06T11:20:56.623Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-005409,ORD-005409,SUP-028,2026-02-06T11:20:56.623Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Rowad Healthcare Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005410,ORD-005410,SUP-006,2025-10-18T04:35:59.409Z,cluster-resolve-v1,1.0.0,0.83,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-005411,ORD-005411,SUP-015,2026-03-13T02:15:30.469Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005412,ORD-005412,SUP-023,2026-02-18T07:17:36.182Z,cluster-resolve-v1,1.0.0,0.9,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
@@ -5418,7 +5418,7 @@ DEC-005416,ORD-005416,SUP-009,2026-03-16T13:28:31.466Z,cluster-resolve-v1,1.0.0,
 DEC-005417,ORD-005417,SUP-009,2026-08-10T04:35:23.694Z,cluster-resolve-v1,1.0.0,0.89,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005418,ORD-005418,SUP-015,2026-06-01T18:34:49.283Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005419,ORD-005419,SUP-002,2026-03-27T00:21:55.025Z,cluster-resolve-v1,1.0.0,0.72,Selected Horus Medical Supply Co. under emergency stock allocation.
-DEC-005420,ORD-005420,SUP-003,2026-03-16T18:31:58.815Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Alexandria MedLog Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-005420,ORD-005420,SUP-003,2026-03-16T18:31:58.815Z,cluster-resolve-v1,1.0.0,0.5,Selected Alexandria MedLog Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005421,ORD-005421,SUP-025,2026-08-02T21:59:05.665Z,cluster-resolve-v1,1.0.0,0.72,Selected Al-Salam Medical Trading under emergency stock allocation.
 DEC-005422,ORD-005422,SUP-004,2026-03-29T14:49:51.914Z,cluster-resolve-v1,1.0.0,0.94,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005423,ORD-005423,SUP-018,2026-08-08T18:55:40.165Z,cluster-resolve-v1,1.0.0,0.91,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
@@ -5461,11 +5461,11 @@ DEC-005459,ORD-005459,SUP-018,2025-10-08T04:53:19.768Z,cluster-resolve-v1,1.0.0,
 DEC-005460,ORD-005460,SUP-015,2026-06-21T17:18:26.290Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005461,ORD-005461,SUP-003,2026-03-24T16:35:13.966Z,cluster-resolve-v1,1.0.0,0.84,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-005462,ORD-005462,SUP-009,2026-08-13T03:49:57.062Z,cluster-resolve-v1,1.0.0,0.95,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-005463,ORD-005463,SUP-012,2026-07-20T13:43:31.493Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-005463,ORD-005463,SUP-012,2026-07-20T13:43:31.493Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005464,ORD-005464,SUP-005,2026-03-28T12:41:54.984Z,cluster-resolve-v1,1.0.0,0.88,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-005465,ORD-005465,SUP-025,2026-01-26T05:03:26.366Z,cluster-resolve-v1,1.0.0,0.83,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-005466,ORD-005466,SUP-014,2026-07-20T05:03:15.854Z,cluster-resolve-v1,1.0.0,0.87,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-005467,ORD-005467,SUP-024,2026-08-12T03:50:39.536Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Canal Cities Drug Supply due to strategic volume contract despite higher per-unit quote.
+DEC-005467,ORD-005467,SUP-024,2026-08-12T03:50:39.536Z,cluster-resolve-v1,1.0.0,0.5,Selected Canal Cities Drug Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005468,ORD-005468,SUP-010,2026-08-13T12:31:53.693Z,cluster-resolve-v1,1.0.0,0.92,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-005469,ORD-005469,SUP-020,2026-02-17T13:26:53.740Z,cluster-resolve-v1,1.0.0,0.96,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-005470,ORD-005470,SUP-002,2026-08-12T01:42:53.230Z,cluster-resolve-v1,1.0.0,0.94,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
@@ -5501,9 +5501,9 @@ DEC-005499,ORD-005499,SUP-016,2025-12-10T02:53:30.337Z,cluster-resolve-v1,1.0.0,
 DEC-005500,ORD-005500,SUP-011,2026-02-06T00:40:38.132Z,cluster-resolve-v1,1.0.0,0.82,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-005501,ORD-005501,SUP-006,2025-11-02T21:08:55.357Z,cluster-resolve-v1,1.0.0,0.87,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-005502,ORD-005502,SUP-015,2025-10-30T08:57:32.788Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-005503,ORD-005503,SUP-006,2025-10-28T02:02:30.316Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-005503,ORD-005503,SUP-006,2025-10-28T02:02:30.316Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005504,ORD-005504,SUP-026,2026-08-09T16:11:28.608Z,cluster-resolve-v1,1.0.0,0.92,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-005505,ORD-005505,SUP-017,2026-07-26T06:44:14.862Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
+DEC-005505,ORD-005505,SUP-017,2026-07-26T06:44:14.862Z,cluster-resolve-v1,1.0.0,0.5,Selected Cleopatra Pharma Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005506,ORD-005506,SUP-001,2026-02-17T17:17:24.113Z,cluster-resolve-v1,1.0.0,0.94,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005507,ORD-005507,SUP-026,2025-11-11T19:33:21.940Z,cluster-resolve-v1,1.0.0,0.84,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-005508,ORD-005508,SUP-009,2026-04-18T06:34:41.964Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Amal Medical Distribution due to strategic volume contract despite higher per-unit quote.
@@ -5564,7 +5564,7 @@ DEC-005562,ORD-005562,SUP-016,2026-08-01T09:36:44.337Z,cluster-resolve-v1,1.0.0,
 DEC-005563,ORD-005563,SUP-007,2026-01-24T23:13:16.149Z,cluster-resolve-v1,1.0.0,0.91,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-005564,ORD-005564,SUP-005,2026-01-22T23:00:22.684Z,cluster-resolve-v1,1.0.0,0.95,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-005565,ORD-005565,SUP-015,2025-10-13T03:41:20.010Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-005566,ORD-005566,SUP-005,2025-12-10T18:11:26.935Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
+DEC-005566,ORD-005566,SUP-005,2025-12-10T18:11:26.935Z,cluster-resolve-v1,1.0.0,0.5,Selected Pyramids Health Logistics without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005567,ORD-005567,SUP-004,2026-01-14T13:48:47.422Z,cluster-resolve-v1,1.0.0,0.95,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005568,ORD-005568,SUP-014,2025-11-26T17:39:46.609Z,cluster-resolve-v1,1.0.0,0.91,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-005569,ORD-005569,SUP-012,2025-12-28T18:20:19.044Z,cluster-resolve-v1,1.0.0,0.88,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
@@ -5689,7 +5689,7 @@ DEC-005687,ORD-005687,SUP-021,2026-02-12T01:20:04.766Z,cluster-resolve-v1,1.0.0,
 DEC-005688,ORD-005688,SUP-016,2026-08-04T00:09:15.267Z,cluster-resolve-v1,1.0.0,0.82,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-005689,ORD-005689,SUP-017,2025-12-27T08:07:00.291Z,cluster-resolve-v1,1.0.0,0.88,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-005690,ORD-005690,SUP-027,2026-08-01T03:36:52.502Z,cluster-resolve-v1,1.0.0,0.87,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
-DEC-005691,ORD-005691,SUP-006,2026-01-08T05:29:02.594Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-005691,ORD-005691,SUP-006,2026-01-08T05:29:02.594Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005692,ORD-005692,SUP-001,2026-08-12T15:13:30.055Z,cluster-resolve-v1,1.0.0,0.91,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005693,ORD-005693,SUP-014,2026-06-10T14:54:28.351Z,cluster-resolve-v1,1.0.0,0.86,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-005694,ORD-005694,SUP-028,2026-07-19T03:20:52.269Z,cluster-resolve-v1,1.0.0,0.72,Selected Al-Rowad Healthcare Distribution under emergency stock allocation.
@@ -5718,11 +5718,11 @@ DEC-005716,ORD-005716,SUP-026,2026-08-08T15:14:49.807Z,cluster-resolve-v1,1.0.0,
 DEC-005717,ORD-005717,SUP-025,2026-07-13T22:21:55.264Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-005718,ORD-005718,SUP-003,2026-03-22T04:31:15.675Z,cluster-resolve-v1,1.0.0,0.86,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-005719,ORD-005719,SUP-015,2026-05-12T11:06:29.716Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-005720,ORD-005720,SUP-017,2026-08-04T15:33:38.231Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
+DEC-005720,ORD-005720,SUP-017,2026-08-04T15:33:38.231Z,cluster-resolve-v1,1.0.0,0.5,Selected Cleopatra Pharma Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005721,ORD-005721,SUP-003,2026-02-20T19:20:39.609Z,cluster-resolve-v1,1.0.0,0.87,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-005722,ORD-005722,SUP-001,2025-11-16T02:43:52.400Z,cluster-resolve-v1,1.0.0,0.95,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005723,ORD-005723,SUP-018,2026-08-12T23:06:33.727Z,cluster-resolve-v1,1.0.0,0.87,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
-DEC-005724,ORD-005724,SUP-008,2026-08-04T05:25:21.745Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-005724,ORD-005724,SUP-008,2026-08-04T05:25:21.745Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005725,ORD-005725,SUP-027,2025-11-24T04:30:13.673Z,cluster-resolve-v1,1.0.0,0.82,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-005726,ORD-005726,SUP-015,2026-01-09T23:21:05.113Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005727,ORD-005727,SUP-011,2025-10-17T12:11:07.994Z,cluster-resolve-v1,1.0.0,0.93,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
@@ -5988,7 +5988,7 @@ DEC-005986,ORD-005986,SUP-026,2026-03-31T00:47:18.079Z,cluster-resolve-v1,1.0.0,
 DEC-005987,ORD-005987,SUP-023,2026-06-02T05:39:59.286Z,cluster-resolve-v1,1.0.0,0.72,Selected Oasis Pharma Distribution under emergency stock allocation.
 DEC-005988,ORD-005988,SUP-007,2026-04-07T22:26:19.491Z,cluster-resolve-v1,1.0.0,0.91,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-005989,ORD-005989,SUP-004,2026-06-01T11:28:04.837Z,cluster-resolve-v1,1.0.0,0.86,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-005990,ORD-005990,SUP-015,2026-05-02T15:21:46.515Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Lotus Drug Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-005990,ORD-005990,SUP-015,2026-05-02T15:21:46.515Z,cluster-resolve-v1,1.0.0,0.5,Selected Lotus Drug Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-005991,ORD-005991,SUP-024,2026-02-07T11:15:50.305Z,cluster-resolve-v1,1.0.0,0.9,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-005992,ORD-005992,SUP-015,2025-12-03T20:43:03.328Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-005993,ORD-005993,SUP-001,2025-12-09T06:33:51.614Z,cluster-resolve-v1,1.0.0,0.94,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
@@ -5997,7 +5997,7 @@ DEC-005995,ORD-005995,SUP-003,2026-08-11T02:28:12.385Z,cluster-resolve-v1,1.0.0,
 DEC-005996,ORD-005996,SUP-006,2026-04-19T20:03:58.816Z,cluster-resolve-v1,1.0.0,0.95,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-005997,ORD-005997,SUP-005,2026-04-24T15:21:58.447Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
 DEC-005998,ORD-005998,SUP-018,2026-05-15T04:25:59.328Z,cluster-resolve-v1,1.0.0,0.86,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
-DEC-005999,ORD-005999,SUP-010,2026-08-06T09:26:49.686Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-005999,ORD-005999,SUP-010,2026-08-06T09:26:49.686Z,cluster-resolve-v1,1.0.0,0.5,Selected Delta Prime Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006000,ORD-006000,SUP-011,2026-08-08T09:06:55.335Z,cluster-resolve-v1,1.0.0,0.96,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-006001,ORD-006001,SUP-005,2026-01-25T21:25:37.069Z,cluster-resolve-v1,1.0.0,0.87,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-006002,ORD-006002,SUP-015,2026-04-12T05:05:17.658Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Lotus Drug Distribution due to strategic volume contract despite higher per-unit quote.
@@ -6018,7 +6018,7 @@ DEC-006016,ORD-006016,SUP-012,2025-12-13T15:47:22.591Z,cluster-resolve-v1,1.0.0,
 DEC-006017,ORD-006017,SUP-024,2026-08-11T21:33:22.323Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Canal Cities Drug Supply due to strategic volume contract despite higher per-unit quote.
 DEC-006018,ORD-006018,SUP-008,2026-08-06T20:15:17.150Z,cluster-resolve-v1,1.0.0,0.86,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-006019,ORD-006019,SUP-003,2025-11-06T02:25:56.610Z,cluster-resolve-v1,1.0.0,0.92,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
-DEC-006020,ORD-006020,SUP-024,2026-08-09T08:29:12.043Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Canal Cities Drug Supply due to strategic volume contract despite higher per-unit quote.
+DEC-006020,ORD-006020,SUP-024,2026-08-09T08:29:12.043Z,cluster-resolve-v1,1.0.0,0.5,Selected Canal Cities Drug Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006021,ORD-006021,SUP-016,2025-10-26T07:57:19.471Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-006022,ORD-006022,SUP-028,2025-11-10T19:24:32.693Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006023,ORD-006023,SUP-016,2026-04-30T19:59:32.358Z,cluster-resolve-v1,1.0.0,0.96,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -6534,7 +6534,7 @@ DEC-006532,ORD-006532,SUP-011,2026-05-20T03:31:40.149Z,cluster-resolve-v1,1.0.0,
 DEC-006533,ORD-006533,SUP-014,2025-12-19T06:02:46.540Z,cluster-resolve-v1,1.0.0,0.93,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-006534,ORD-006534,SUP-016,2026-02-09T07:44:47.210Z,cluster-resolve-v1,1.0.0,0.92,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-006535,ORD-006535,SUP-028,2025-11-01T12:48:57.956Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-006536,ORD-006536,SUP-010,2026-02-15T14:53:49.817Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-006536,ORD-006536,SUP-010,2026-02-15T14:53:49.817Z,cluster-resolve-v1,1.0.0,0.5,Selected Delta Prime Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006537,ORD-006537,SUP-023,2026-02-28T11:50:04.954Z,cluster-resolve-v1,1.0.0,0.86,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006538,ORD-006538,SUP-015,2026-03-23T12:06:09.966Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006539,ORD-006539,SUP-025,2025-11-08T15:15:29.743Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
@@ -6632,7 +6632,7 @@ DEC-006630,ORD-006630,SUP-010,2026-03-17T11:05:55.492Z,cluster-resolve-v1,1.0.0,
 DEC-006631,ORD-006631,SUP-013,2025-11-23T10:52:13.402Z,cluster-resolve-v1,1.0.0,0.87,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-006632,ORD-006632,SUP-006,2026-02-23T14:19:17.253Z,cluster-resolve-v1,1.0.0,0.88,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-006633,ORD-006633,SUP-002,2026-08-13T12:52:06.496Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
-DEC-006634,ORD-006634,SUP-002,2026-05-25T11:46:30.497Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
+DEC-006634,ORD-006634,SUP-002,2026-05-25T11:46:30.497Z,cluster-resolve-v1,1.0.0,0.5,Selected Horus Medical Supply Co. without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006635,ORD-006635,SUP-007,2026-03-10T11:04:59.653Z,cluster-resolve-v1,1.0.0,0.9,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-006636,ORD-006636,SUP-015,2026-07-27T14:49:40.888Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006637,ORD-006637,SUP-004,2026-02-11T15:11:43.649Z,cluster-resolve-v1,1.0.0,0.86,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -6725,7 +6725,7 @@ DEC-006723,ORD-006723,SUP-016,2026-03-18T18:26:48.983Z,cluster-resolve-v1,1.0.0,
 DEC-006724,ORD-006724,SUP-017,2026-04-07T17:41:40.478Z,cluster-resolve-v1,1.0.0,0.91,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-006725,ORD-006725,SUP-025,2025-11-27T05:50:38.285Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-006726,ORD-006726,SUP-023,2026-05-27T16:03:16.442Z,cluster-resolve-v1,1.0.0,0.89,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-006727,ORD-006727,SUP-004,2025-10-27T07:19:01.416Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cairo Valley Drug Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-006727,ORD-006727,SUP-004,2025-10-27T07:19:01.416Z,cluster-resolve-v1,1.0.0,0.5,Selected Cairo Valley Drug Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006728,ORD-006728,SUP-020,2026-01-21T13:19:24.375Z,cluster-resolve-v1,1.0.0,0.87,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-006729,ORD-006729,SUP-016,2026-05-26T02:22:31.788Z,cluster-resolve-v1,1.0.0,0.91,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-006730,ORD-006730,SUP-026,2025-11-13T12:10:18.366Z,cluster-resolve-v1,1.0.0,0.94,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
@@ -6752,7 +6752,7 @@ DEC-006750,ORD-006750,SUP-016,2026-01-21T00:09:13.227Z,cluster-resolve-v1,1.0.0,
 DEC-006751,ORD-006751,SUP-007,2026-01-20T05:25:41.408Z,cluster-resolve-v1,1.0.0,0.83,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-006752,ORD-006752,SUP-028,2026-01-18T07:44:20.009Z,cluster-resolve-v1,1.0.0,0.92,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006753,ORD-006753,SUP-026,2026-08-09T11:07:12.982Z,cluster-resolve-v1,1.0.0,0.89,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-006754,ORD-006754,SUP-008,2026-08-06T08:40:33.998Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-006754,ORD-006754,SUP-008,2026-08-06T08:40:33.998Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006755,ORD-006755,SUP-015,2026-04-05T16:34:34.501Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006756,ORD-006756,SUP-028,2026-07-31T06:17:58.870Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006757,ORD-006757,SUP-021,2026-01-13T09:39:50.148Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Red Sea Pharma Supply due to strategic volume contract despite higher per-unit quote.
@@ -6827,14 +6827,14 @@ DEC-006825,ORD-006825,SUP-001,2026-02-22T21:42:54.946Z,cluster-resolve-v1,1.0.0,
 DEC-006826,ORD-006826,SUP-018,2026-07-18T19:17:25.183Z,cluster-resolve-v1,1.0.0,0.83,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-006827,ORD-006827,SUP-011,2026-06-26T23:48:29.882Z,cluster-resolve-v1,1.0.0,0.94,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-006828,ORD-006828,SUP-025,2025-11-24T22:14:58.703Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-006829,ORD-006829,SUP-016,2026-07-07T21:09:23.092Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-006829,ORD-006829,SUP-016,2026-07-07T21:09:23.092Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006830,ORD-006830,SUP-018,2026-03-22T08:10:10.029Z,cluster-resolve-v1,1.0.0,0.83,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-006831,ORD-006831,SUP-016,2026-08-04T12:15:00.108Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-006832,ORD-006832,SUP-015,2026-08-06T08:38:27.689Z,cluster-resolve-v1,1.0.0,0.85,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-006833,ORD-006833,SUP-011,2026-04-04T18:51:31.679Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
+DEC-006833,ORD-006833,SUP-011,2026-04-04T18:51:31.679Z,cluster-resolve-v1,1.0.0,0.5,Selected Apex National Pharma Logistic without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006834,ORD-006834,SUP-028,2025-11-04T10:09:03.717Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Rowad Healthcare Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-006835,ORD-006835,SUP-011,2026-08-04T09:59:24.762Z,cluster-resolve-v1,1.0.0,0.87,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
-DEC-006836,ORD-006836,SUP-002,2026-08-06T17:41:20.211Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
+DEC-006836,ORD-006836,SUP-002,2026-08-06T17:41:20.211Z,cluster-resolve-v1,1.0.0,0.5,Selected Horus Medical Supply Co. without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006837,ORD-006837,SUP-009,2026-06-12T07:33:07.830Z,cluster-resolve-v1,1.0.0,0.86,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006838,ORD-006838,SUP-008,2026-06-19T20:24:13.394Z,cluster-resolve-v1,1.0.0,0.88,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-006839,ORD-006839,SUP-015,2026-03-22T03:47:03.973Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -6848,7 +6848,7 @@ DEC-006846,ORD-006846,SUP-015,2026-07-21T17:01:19.047Z,cluster-resolve-v1,1.0.0,
 DEC-006847,ORD-006847,SUP-027,2025-10-04T18:36:41.862Z,cluster-resolve-v1,1.0.0,0.85,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-006848,ORD-006848,SUP-021,2026-08-13T19:04:11.442Z,cluster-resolve-v1,1.0.0,0.9,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-006849,ORD-006849,SUP-016,2026-07-27T08:22:17.824Z,cluster-resolve-v1,1.0.0,0.93,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-006850,ORD-006850,SUP-009,2026-06-06T06:22:36.144Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Amal Medical Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-006850,ORD-006850,SUP-009,2026-06-06T06:22:36.144Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Amal Medical Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006851,ORD-006851,SUP-002,2025-11-11T11:23:22.841Z,cluster-resolve-v1,1.0.0,0.95,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-006852,ORD-006852,SUP-027,2026-07-31T03:31:16.587Z,cluster-resolve-v1,1.0.0,0.91,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-006853,ORD-006853,SUP-015,2026-01-15T08:24:39.513Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -6943,11 +6943,11 @@ DEC-006941,ORD-006941,SUP-014,2025-12-30T17:02:48.345Z,cluster-resolve-v1,1.0.0,
 DEC-006942,ORD-006942,SUP-013,2026-08-11T19:38:17.239Z,cluster-resolve-v1,1.0.0,0.95,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-006943,ORD-006943,SUP-011,2026-06-04T16:59:37.574Z,cluster-resolve-v1,1.0.0,0.88,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-006944,ORD-006944,SUP-015,2026-05-31T11:42:46.175Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-006945,ORD-006945,SUP-007,2026-08-08T03:13:16.177Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Upper Egypt Pharma Direct due to strategic volume contract despite higher per-unit quote.
+DEC-006945,ORD-006945,SUP-007,2026-08-08T03:13:16.177Z,cluster-resolve-v1,1.0.0,0.5,Selected Upper Egypt Pharma Direct without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006946,ORD-006946,SUP-014,2026-06-01T20:01:43.811Z,cluster-resolve-v1,1.0.0,0.9,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-006947,ORD-006947,SUP-015,2026-07-31T09:39:08.220Z,cluster-resolve-v1,1.0.0,0.91,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006948,ORD-006948,SUP-016,2026-08-05T06:01:00.723Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-006949,ORD-006949,SUP-012,2026-05-27T20:09:39.641Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-006949,ORD-006949,SUP-012,2026-05-27T20:09:39.641Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-006950,ORD-006950,SUP-025,2026-06-09T03:08:13.549Z,cluster-resolve-v1,1.0.0,0.87,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-006951,ORD-006951,SUP-015,2026-05-09T10:37:37.132Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-006952,ORD-006952,SUP-026,2025-12-25T14:44:31.601Z,cluster-resolve-v1,1.0.0,0.95,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
@@ -7056,7 +7056,7 @@ DEC-007054,ORD-007054,SUP-015,2026-03-16T16:45:34.516Z,cluster-resolve-v1,1.0.0,
 DEC-007055,ORD-007055,SUP-002,2026-07-28T20:34:37.154Z,cluster-resolve-v1,1.0.0,0.86,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-007056,ORD-007056,SUP-015,2025-11-12T11:50:30.367Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007057,ORD-007057,SUP-026,2025-10-15T18:33:33.894Z,cluster-resolve-v1,1.0.0,0.91,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
-DEC-007058,ORD-007058,SUP-010,2026-06-01T00:33:02.067Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Delta Prime Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-007058,ORD-007058,SUP-010,2026-06-01T00:33:02.067Z,cluster-resolve-v1,1.0.0,0.5,Selected Delta Prime Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007059,ORD-007059,SUP-001,2026-08-10T11:52:15.315Z,cluster-resolve-v1,1.0.0,0.89,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007060,ORD-007060,SUP-015,2026-03-19T12:49:13.493Z,cluster-resolve-v1,1.0.0,0.93,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007061,ORD-007061,SUP-005,2026-01-31T13:37:14.350Z,cluster-resolve-v1,1.0.0,0.89,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
@@ -7108,7 +7108,7 @@ DEC-007106,ORD-007106,SUP-028,2026-08-04T10:20:11.193Z,cluster-resolve-v1,1.0.0,
 DEC-007107,ORD-007107,SUP-017,2026-05-27T23:15:12.925Z,cluster-resolve-v1,1.0.0,0.85,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007108,ORD-007108,SUP-001,2026-08-03T03:50:51.348Z,cluster-resolve-v1,1.0.0,0.95,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007109,ORD-007109,SUP-021,2026-04-29T17:36:20.338Z,cluster-resolve-v1,1.0.0,0.91,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
-DEC-007110,ORD-007110,SUP-012,2026-01-01T05:48:50.005Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-007110,ORD-007110,SUP-012,2026-01-01T05:48:50.005Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007111,ORD-007111,SUP-024,2026-05-07T02:36:23.285Z,cluster-resolve-v1,1.0.0,0.95,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
 DEC-007112,ORD-007112,SUP-015,2025-11-21T21:37:10.255Z,cluster-resolve-v1,1.0.0,0.82,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007113,ORD-007113,SUP-018,2026-08-01T21:40:50.179Z,cluster-resolve-v1,1.0.0,0.95,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
@@ -7131,7 +7131,7 @@ DEC-007129,ORD-007129,SUP-028,2026-08-10T06:21:10.944Z,cluster-resolve-v1,1.0.0,
 DEC-007130,ORD-007130,SUP-010,2026-06-04T04:41:58.767Z,cluster-resolve-v1,1.0.0,0.95,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-007131,ORD-007131,SUP-027,2026-05-16T09:07:51.661Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
 DEC-007132,ORD-007132,SUP-009,2025-11-10T18:04:49.757Z,cluster-resolve-v1,1.0.0,0.92,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-007133,ORD-007133,SUP-016,2025-10-13T12:27:05.449Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-007133,ORD-007133,SUP-016,2025-10-13T12:27:05.449Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007134,ORD-007134,SUP-017,2025-12-14T02:49:12.217Z,cluster-resolve-v1,1.0.0,0.87,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007135,ORD-007135,SUP-002,2026-03-22T11:15:39.974Z,cluster-resolve-v1,1.0.0,0.9,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
 DEC-007136,ORD-007136,SUP-028,2026-03-31T01:56:06.525Z,cluster-resolve-v1,1.0.0,0.84,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
@@ -7156,7 +7156,7 @@ DEC-007154,ORD-007154,SUP-015,2025-10-22T21:47:37.266Z,cluster-resolve-v1,1.0.0,
 DEC-007155,ORD-007155,SUP-016,2026-08-02T06:22:18.362Z,cluster-resolve-v1,1.0.0,0.83,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-007156,ORD-007156,SUP-027,2026-04-17T21:25:17.255Z,cluster-resolve-v1,1.0.0,0.89,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007157,ORD-007157,SUP-013,2026-08-08T07:32:59.174Z,cluster-resolve-v1,1.0.0,0.83,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
-DEC-007158,ORD-007158,SUP-013,2026-08-09T07:58:35.258Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Karnak Pharma Services due to strategic volume contract despite higher per-unit quote.
+DEC-007158,ORD-007158,SUP-013,2026-08-09T07:58:35.258Z,cluster-resolve-v1,1.0.0,0.5,Selected Karnak Pharma Services without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007159,ORD-007159,SUP-010,2025-10-28T15:17:00.095Z,cluster-resolve-v1,1.0.0,0.88,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-007160,ORD-007160,SUP-007,2026-08-01T23:29:21.983Z,cluster-resolve-v1,1.0.0,0.89,Selected Upper Egypt Pharma Direct based on optimal unit cost and historical fill rate reliability.
 DEC-007161,ORD-007161,SUP-015,2026-03-05T01:00:04.258Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -7179,7 +7179,7 @@ DEC-007177,ORD-007177,SUP-015,2026-05-26T11:10:22.400Z,cluster-resolve-v1,1.0.0,
 DEC-007178,ORD-007178,SUP-026,2026-08-07T23:40:01.459Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
 DEC-007179,ORD-007179,SUP-020,2026-06-11T17:06:11.216Z,cluster-resolve-v1,1.0.0,0.92,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-007180,ORD-007180,SUP-024,2026-05-31T03:02:26.567Z,cluster-resolve-v1,1.0.0,0.93,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
-DEC-007181,ORD-007181,SUP-021,2025-11-28T21:14:04.947Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Red Sea Pharma Supply due to strategic volume contract despite higher per-unit quote.
+DEC-007181,ORD-007181,SUP-021,2025-11-28T21:14:04.947Z,cluster-resolve-v1,1.0.0,0.5,Selected Red Sea Pharma Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007182,ORD-007182,SUP-015,2026-04-23T12:22:44.806Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007183,ORD-007183,SUP-008,2025-10-10T10:46:40.656Z,cluster-resolve-v1,1.0.0,0.96,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007184,ORD-007184,SUP-006,2026-07-06T22:21:40.525Z,cluster-resolve-v1,1.0.0,0.87,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
@@ -7481,7 +7481,7 @@ DEC-007479,ORD-007479,SUP-016,2026-02-09T16:29:34.853Z,cluster-resolve-v1,1.0.0,
 DEC-007480,ORD-007480,SUP-027,2026-06-05T11:49:37.122Z,cluster-resolve-v1,1.0.0,0.84,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007481,ORD-007481,SUP-006,2026-02-05T16:22:51.247Z,cluster-resolve-v1,1.0.0,0.83,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-007482,ORD-007482,SUP-028,2026-04-09T04:47:40.246Z,cluster-resolve-v1,1.0.0,0.96,Selected Al-Rowad Healthcare Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-007483,ORD-007483,SUP-014,2026-07-19T05:28:26.363Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-007483,ORD-007483,SUP-014,2026-07-19T05:28:26.363Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007484,ORD-007484,SUP-018,2026-06-15T13:57:27.573Z,cluster-resolve-v1,1.0.0,0.87,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-007485,ORD-007485,SUP-016,2026-07-18T09:40:28.971Z,cluster-resolve-v1,1.0.0,0.93,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-007486,ORD-007486,SUP-016,2026-05-13T06:22:14.788Z,cluster-resolve-v1,1.0.0,0.9,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -7606,7 +7606,7 @@ DEC-007604,ORD-007604,SUP-015,2026-08-02T08:25:19.282Z,cluster-resolve-v1,1.0.0,
 DEC-007605,ORD-007605,SUP-016,2025-10-02T14:09:54.730Z,cluster-resolve-v1,1.0.0,0.94,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-007606,ORD-007606,SUP-017,2025-10-14T07:23:04.633Z,cluster-resolve-v1,1.0.0,0.88,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007607,ORD-007607,SUP-025,2026-06-21T17:27:13.340Z,cluster-resolve-v1,1.0.0,0.82,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-007608,ORD-007608,SUP-025,2026-08-05T20:17:53.560Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-007608,ORD-007608,SUP-025,2026-08-05T20:17:53.560Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007609,ORD-007609,SUP-015,2026-01-20T11:22:32.231Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007610,ORD-007610,SUP-016,2025-12-10T01:20:34.649Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-007611,ORD-007611,SUP-013,2026-04-14T13:38:41.082Z,cluster-resolve-v1,1.0.0,0.93,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
@@ -7669,7 +7669,7 @@ DEC-007667,ORD-007667,SUP-007,2026-06-23T05:17:38.074Z,cluster-resolve-v1,1.0.0,
 DEC-007668,ORD-007668,SUP-016,2026-08-04T00:29:06.483Z,cluster-resolve-v1,1.0.0,0.72,Selected Amon Medical Supplies under emergency stock allocation.
 DEC-007669,ORD-007669,SUP-017,2026-08-09T13:52:44.555Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cleopatra Pharma Hub due to strategic volume contract despite higher per-unit quote.
 DEC-007670,ORD-007670,SUP-022,2026-08-11T07:58:06.741Z,cluster-resolve-v1,1.0.0,0.82,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-007671,ORD-007671,SUP-015,2026-01-26T13:33:56.867Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Lotus Drug Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-007671,ORD-007671,SUP-015,2026-01-26T13:33:56.867Z,cluster-resolve-v1,1.0.0,0.5,Selected Lotus Drug Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007672,ORD-007672,SUP-015,2025-12-20T07:22:26.621Z,cluster-resolve-v1,1.0.0,0.92,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007673,ORD-007673,SUP-027,2025-12-07T03:22:35.639Z,cluster-resolve-v1,1.0.0,0.84,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007674,ORD-007674,SUP-011,2026-02-07T02:26:51.194Z,cluster-resolve-v1,1.0.0,0.94,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
@@ -7682,7 +7682,7 @@ DEC-007680,ORD-007680,SUP-021,2026-04-25T12:05:24.694Z,cluster-resolve-v1,1.0.0,
 DEC-007681,ORD-007681,SUP-008,2026-01-22T13:59:44.976Z,cluster-resolve-v1,1.0.0,0.83,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007682,ORD-007682,SUP-003,2025-11-03T05:39:09.931Z,cluster-resolve-v1,1.0.0,0.83,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007683,ORD-007683,SUP-005,2025-10-15T03:54:44.195Z,cluster-resolve-v1,1.0.0,0.93,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-007684,ORD-007684,SUP-006,2026-01-23T23:41:10.061Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-007684,ORD-007684,SUP-006,2026-01-23T23:41:10.061Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007685,ORD-007685,SUP-019,2026-08-12T00:48:48.773Z,cluster-resolve-v1,1.0.0,0.91,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-007686,ORD-007686,SUP-015,2026-05-08T02:05:04.728Z,cluster-resolve-v1,1.0.0,0.89,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007687,ORD-007687,SUP-001,2025-10-24T22:00:11.513Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Nile Delta Pharma Distribution due to strategic volume contract despite higher per-unit quote.
@@ -7720,7 +7720,7 @@ DEC-007718,ORD-007718,SUP-007,2026-05-30T10:51:16.375Z,cluster-resolve-v1,1.0.0,
 DEC-007719,ORD-007719,SUP-027,2026-07-17T20:40:58.112Z,cluster-resolve-v1,1.0.0,0.91,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007720,ORD-007720,SUP-013,2026-04-24T14:29:41.764Z,cluster-resolve-v1,1.0.0,0.92,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-007721,ORD-007721,SUP-015,2026-05-05T06:43:01.985Z,cluster-resolve-v1,1.0.0,0.86,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-007722,ORD-007722,SUP-025,2026-05-10T02:40:31.811Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-007722,ORD-007722,SUP-025,2026-05-10T02:40:31.811Z,cluster-resolve-v1,1.0.0,0.5,Selected Al-Salam Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007723,ORD-007723,SUP-012,2026-08-13T12:23:58.789Z,cluster-resolve-v1,1.0.0,0.96,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-007724,ORD-007724,SUP-025,2026-03-10T02:25:00.379Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Al-Salam Medical Trading due to strategic volume contract despite higher per-unit quote.
 DEC-007725,ORD-007725,SUP-026,2026-01-04T11:16:39.769Z,cluster-resolve-v1,1.0.0,0.84,Selected Al-Safwa Pharma Distro based on optimal unit cost and historical fill rate reliability.
@@ -7734,7 +7734,7 @@ DEC-007732,ORD-007732,SUP-012,2026-08-06T01:47:20.460Z,cluster-resolve-v1,1.0.0,
 DEC-007733,ORD-007733,SUP-008,2026-08-04T05:52:14.951Z,cluster-resolve-v1,1.0.0,0.86,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-007734,ORD-007734,SUP-027,2026-07-31T06:39:20.583Z,cluster-resolve-v1,1.0.0,0.92,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-007735,ORD-007735,SUP-015,2025-11-13T04:07:18.325Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-007736,ORD-007736,SUP-016,2026-05-31T18:40:35.366Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-007736,ORD-007736,SUP-016,2026-05-31T18:40:35.366Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007737,ORD-007737,SUP-013,2025-10-23T09:20:39.027Z,cluster-resolve-v1,1.0.0,0.89,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
 DEC-007738,ORD-007738,SUP-009,2026-08-01T07:16:26.436Z,cluster-resolve-v1,1.0.0,0.88,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007739,ORD-007739,SUP-027,2026-08-06T19:24:53.011Z,cluster-resolve-v1,1.0.0,0.95,Selected United Egyptian Wholesalers based on optimal unit cost and historical fill rate reliability.
@@ -7970,7 +7970,7 @@ DEC-007968,ORD-007968,SUP-013,2025-11-08T01:44:04.843Z,cluster-resolve-v1,1.0.0,
 DEC-007969,ORD-007969,SUP-004,2026-05-27T23:09:57.980Z,cluster-resolve-v1,1.0.0,0.85,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007970,ORD-007970,SUP-011,2026-08-02T18:52:20.193Z,cluster-resolve-v1,1.0.0,0.84,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-007971,ORD-007971,SUP-024,2026-08-14T01:42:03.502Z,cluster-resolve-v1,1.0.0,0.96,Selected Canal Cities Drug Supply based on optimal unit cost and historical fill rate reliability.
-DEC-007972,ORD-007972,SUP-008,2026-07-31T17:32:46.940Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Middle East Pharmaceutical Hub due to strategic volume contract despite higher per-unit quote.
+DEC-007972,ORD-007972,SUP-008,2026-07-31T17:32:46.940Z,cluster-resolve-v1,1.0.0,0.5,Selected Middle East Pharmaceutical Hub without a recorded decision-time offer; evidence arrived after allocation.
 DEC-007973,ORD-007973,SUP-015,2025-12-16T00:14:04.224Z,cluster-resolve-v1,1.0.0,0.96,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-007974,ORD-007974,SUP-016,2026-04-15T03:24:01.504Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-007975,ORD-007975,SUP-012,2026-07-07T12:26:42.988Z,cluster-resolve-v1,1.0.0,0.95,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
@@ -8400,7 +8400,7 @@ DEC-008398,ORD-008398,SUP-022,2026-01-25T21:51:31.193Z,cluster-resolve-v1,1.0.0,
 DEC-008399,ORD-008399,SUP-022,2026-04-21T08:39:29.268Z,cluster-resolve-v1,1.0.0,0.93,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-008400,ORD-008400,SUP-015,2026-08-11T18:07:00.596Z,cluster-resolve-v1,1.0.0,0.83,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-008401,ORD-008401,SUP-014,2026-08-05T11:21:26.158Z,cluster-resolve-v1,1.0.0,0.89,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-008402,ORD-008402,SUP-006,2025-10-07T03:24:03.094Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sinai Medical Trading due to strategic volume contract despite higher per-unit quote.
+DEC-008402,ORD-008402,SUP-006,2025-10-07T03:24:03.094Z,cluster-resolve-v1,1.0.0,0.5,Selected Sinai Medical Trading without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008403,ORD-008403,SUP-006,2025-10-21T06:17:53.041Z,cluster-resolve-v1,1.0.0,0.83,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-008404,ORD-008404,SUP-018,2026-05-15T19:23:44.926Z,cluster-resolve-v1,1.0.0,0.87,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-008405,ORD-008405,SUP-017,2026-01-04T00:17:31.394Z,cluster-resolve-v1,1.0.0,0.85,Selected Cleopatra Pharma Hub based on optimal unit cost and historical fill rate reliability.
@@ -8454,7 +8454,7 @@ DEC-008452,ORD-008452,SUP-001,2026-01-04T00:35:05.964Z,cluster-resolve-v1,1.0.0,
 DEC-008453,ORD-008453,SUP-011,2025-11-27T15:45:06.824Z,cluster-resolve-v1,1.0.0,0.94,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-008454,ORD-008454,SUP-018,2025-12-28T15:32:39.530Z,cluster-resolve-v1,1.0.0,0.89,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-008455,ORD-008455,SUP-022,2026-05-02T01:17:53.643Z,cluster-resolve-v1,1.0.0,0.94,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
-DEC-008456,ORD-008456,SUP-011,2025-12-24T14:52:51.190Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Apex National Pharma Logistic due to strategic volume contract despite higher per-unit quote.
+DEC-008456,ORD-008456,SUP-011,2025-12-24T14:52:51.190Z,cluster-resolve-v1,1.0.0,0.5,Selected Apex National Pharma Logistic without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008457,ORD-008457,SUP-025,2026-06-21T15:48:19.107Z,cluster-resolve-v1,1.0.0,0.83,Selected Al-Salam Medical Trading based on optimal unit cost and historical fill rate reliability.
 DEC-008458,ORD-008458,SUP-012,2026-04-04T18:36:36.203Z,cluster-resolve-v1,1.0.0,0.85,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-008459,ORD-008459,SUP-014,2026-07-18T12:02:28.071Z,cluster-resolve-v1,1.0.0,0.95,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -8860,7 +8860,7 @@ DEC-008858,ORD-008858,SUP-011,2026-08-13T06:29:11.489Z,cluster-resolve-v1,1.0.0,
 DEC-008859,ORD-008859,SUP-003,2026-03-30T20:55:41.786Z,cluster-resolve-v1,1.0.0,0.83,Selected Alexandria MedLog Wholesalers based on optimal unit cost and historical fill rate reliability.
 DEC-008860,ORD-008860,SUP-004,2026-01-17T15:50:00.725Z,cluster-resolve-v1,1.0.0,0.83,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-008861,ORD-008861,SUP-016,2026-03-14T07:00:40.650Z,cluster-resolve-v1,1.0.0,0.86,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-008862,ORD-008862,SUP-027,2025-10-17T08:38:02.475Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-008862,ORD-008862,SUP-027,2025-10-17T08:38:02.475Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008863,ORD-008863,SUP-019,2026-04-16T15:16:07.030Z,cluster-resolve-v1,1.0.0,0.87,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-008864,ORD-008864,SUP-021,2026-03-22T00:10:56.790Z,cluster-resolve-v1,1.0.0,0.91,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
 DEC-008865,ORD-008865,SUP-016,2026-06-10T23:20:53.862Z,cluster-resolve-v1,1.0.0,0.88,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
@@ -8886,7 +8886,7 @@ DEC-008884,ORD-008884,SUP-022,2026-08-11T12:00:33.034Z,cluster-resolve-v1,1.0.0,
 DEC-008885,ORD-008885,SUP-017,2026-08-08T18:08:01.346Z,cluster-resolve-v1,1.0.0,0.72,Selected Cleopatra Pharma Hub under emergency stock allocation.
 DEC-008886,ORD-008886,SUP-002,2025-10-03T02:55:45.330Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
 DEC-008887,ORD-008887,SUP-021,2026-08-02T23:19:30.845Z,cluster-resolve-v1,1.0.0,0.93,Selected Red Sea Pharma Supply based on optimal unit cost and historical fill rate reliability.
-DEC-008888,ORD-008888,SUP-003,2026-08-11T00:33:47.217Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Alexandria MedLog Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-008888,ORD-008888,SUP-003,2026-08-11T00:33:47.217Z,cluster-resolve-v1,1.0.0,0.5,Selected Alexandria MedLog Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008889,ORD-008889,SUP-023,2025-10-17T20:42:14.969Z,cluster-resolve-v1,1.0.0,0.87,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-008890,ORD-008890,SUP-015,2026-08-03T00:50:09.543Z,cluster-resolve-v1,1.0.0,0.72,Selected Lotus Drug Distribution under emergency stock allocation.
 DEC-008891,ORD-008891,SUP-027,2026-04-27T16:40:58.956Z,cluster-resolve-v1,1.0.0,0.72,Selected United Egyptian Wholesalers under emergency stock allocation.
@@ -8958,7 +8958,7 @@ DEC-008956,ORD-008956,SUP-015,2025-12-07T21:06:07.781Z,cluster-resolve-v1,1.0.0,
 DEC-008957,ORD-008957,SUP-005,2026-08-01T22:54:08.343Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Pyramids Health Logistics due to strategic volume contract despite higher per-unit quote.
 DEC-008958,ORD-008958,SUP-012,2026-02-05T03:14:51.666Z,cluster-resolve-v1,1.0.0,0.91,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
 DEC-008959,ORD-008959,SUP-006,2026-07-04T22:03:55.856Z,cluster-resolve-v1,1.0.0,0.88,Selected Sinai Medical Trading based on optimal unit cost and historical fill rate reliability.
-DEC-008960,ORD-008960,SUP-014,2026-05-02T22:04:53.659Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-008960,ORD-008960,SUP-014,2026-05-02T22:04:53.659Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008961,ORD-008961,SUP-001,2026-08-06T06:47:02.145Z,cluster-resolve-v1,1.0.0,0.95,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-008962,ORD-008962,SUP-014,2026-01-13T06:31:40.567Z,cluster-resolve-v1,1.0.0,0.88,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-008963,ORD-008963,SUP-002,2026-02-01T12:21:40.404Z,cluster-resolve-v1,1.0.0,0.82,Selected Horus Medical Supply Co. based on optimal unit cost and historical fill rate reliability.
@@ -8969,7 +8969,7 @@ DEC-008967,ORD-008967,SUP-015,2026-08-11T18:34:19.107Z,cluster-resolve-v1,1.0.0,
 DEC-008968,ORD-008968,SUP-016,2026-08-05T11:02:53.224Z,cluster-resolve-v1,1.0.0,0.72,Selected Amon Medical Supplies under emergency stock allocation.
 DEC-008969,ORD-008969,SUP-014,2026-02-25T23:06:09.563Z,cluster-resolve-v1,1.0.0,0.86,Selected Sphinx Healthcare Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-008970,ORD-008970,SUP-004,2026-07-24T08:24:50.162Z,cluster-resolve-v1,1.0.0,0.89,Selected Cairo Valley Drug Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-008971,ORD-008971,SUP-007,2026-05-06T17:02:51.674Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Upper Egypt Pharma Direct due to strategic volume contract despite higher per-unit quote.
+DEC-008971,ORD-008971,SUP-007,2026-05-06T17:02:51.674Z,cluster-resolve-v1,1.0.0,0.5,Selected Upper Egypt Pharma Direct without a recorded decision-time offer; evidence arrived after allocation.
 DEC-008972,ORD-008972,SUP-022,2026-06-22T15:12:33.655Z,cluster-resolve-v1,1.0.0,0.87,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-008973,ORD-008973,SUP-016,2026-08-10T21:38:59.301Z,cluster-resolve-v1,1.0.0,0.85,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-008974,ORD-008974,SUP-015,2026-07-31T10:25:29.313Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
@@ -9100,7 +9100,7 @@ DEC-009098,ORD-009098,SUP-016,2025-12-01T19:06:26.131Z,cluster-resolve-v1,1.0.0,
 DEC-009099,ORD-009099,SUP-016,2026-08-08T18:24:46.200Z,cluster-resolve-v1,1.0.0,0.87,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-009100,ORD-009100,SUP-015,2026-03-20T18:43:47.028Z,cluster-resolve-v1,1.0.0,0.87,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009101,ORD-009101,SUP-020,2026-03-31T04:20:16.710Z,cluster-resolve-v1,1.0.0,0.86,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
-DEC-009102,ORD-009102,SUP-014,2026-05-07T08:26:37.827Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sphinx Healthcare Wholesale due to strategic volume contract despite higher per-unit quote.
+DEC-009102,ORD-009102,SUP-014,2026-05-07T08:26:37.827Z,cluster-resolve-v1,1.0.0,0.5,Selected Sphinx Healthcare Wholesale without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009103,ORD-009103,SUP-016,2025-12-06T06:51:43.145Z,cluster-resolve-v1,1.0.0,0.92,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-009104,ORD-009104,SUP-019,2026-08-10T20:13:25.996Z,cluster-resolve-v1,1.0.0,0.86,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-009105,ORD-009105,SUP-005,2026-06-20T13:21:33.019Z,cluster-resolve-v1,1.0.0,0.94,Selected Pyramids Health Logistics based on optimal unit cost and historical fill rate reliability.
@@ -9208,7 +9208,7 @@ DEC-009206,ORD-009206,SUP-021,2026-08-09T14:18:07.560Z,cluster-resolve-v1,1.0.0,
 DEC-009207,ORD-009207,SUP-016,2026-01-02T07:05:52.027Z,cluster-resolve-v1,1.0.0,0.84,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-009208,ORD-009208,SUP-009,2026-01-03T13:38:54.744Z,cluster-resolve-v1,1.0.0,0.87,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009209,ORD-009209,SUP-023,2026-08-12T12:07:26.245Z,cluster-resolve-v1,1.0.0,0.83,Selected Oasis Pharma Distribution based on optimal unit cost and historical fill rate reliability.
-DEC-009210,ORD-009210,SUP-012,2026-01-11T14:34:10.120Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Sovereign Medical Distro due to strategic volume contract despite higher per-unit quote.
+DEC-009210,ORD-009210,SUP-012,2026-01-11T14:34:10.120Z,cluster-resolve-v1,1.0.0,0.5,Selected Sovereign Medical Distro without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009211,ORD-009211,SUP-022,2026-03-31T04:11:54.285Z,cluster-resolve-v1,1.0.0,0.86,Selected Mediterranean Med Logistics based on optimal unit cost and historical fill rate reliability.
 DEC-009212,ORD-009212,SUP-015,2026-02-12T01:53:15.308Z,cluster-resolve-v1,1.0.0,0.88,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009213,ORD-009213,SUP-010,2026-02-21T08:27:41.443Z,cluster-resolve-v1,1.0.0,0.85,Selected Delta Prime Wholesale based on optimal unit cost and historical fill rate reliability.
@@ -9270,7 +9270,7 @@ DEC-009268,ORD-009268,SUP-015,2026-05-14T01:12:12.855Z,cluster-resolve-v1,1.0.0,
 DEC-009269,ORD-009269,SUP-011,2026-08-06T19:23:07.529Z,cluster-resolve-v1,1.0.0,0.93,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-009270,ORD-009270,SUP-016,2026-04-23T16:26:03.817Z,cluster-resolve-v1,1.0.0,0.95,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-009271,ORD-009271,SUP-013,2025-11-18T09:10:26.268Z,cluster-resolve-v1,1.0.0,0.85,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.
-DEC-009272,ORD-009272,SUP-004,2026-04-11T03:11:56.272Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cairo Valley Drug Distribution due to strategic volume contract despite higher per-unit quote.
+DEC-009272,ORD-009272,SUP-004,2026-04-11T03:11:56.272Z,cluster-resolve-v1,1.0.0,0.5,Selected Cairo Valley Drug Distribution without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009273,ORD-009273,SUP-020,2026-01-01T04:29:10.317Z,cluster-resolve-v1,1.0.0,0.9,Selected Nefertiti Drug Wholesale based on optimal unit cost and historical fill rate reliability.
 DEC-009274,ORD-009274,SUP-011,2026-01-08T05:28:29.119Z,cluster-resolve-v1,1.0.0,0.89,Selected Apex National Pharma Logistic based on optimal unit cost and historical fill rate reliability.
 DEC-009275,ORD-009275,SUP-015,2026-06-15T05:33:46.666Z,cluster-resolve-v1,1.0.0,0.72,Selected Lotus Drug Distribution under emergency stock allocation.
@@ -9341,7 +9341,7 @@ DEC-009339,ORD-009339,SUP-016,2026-08-02T12:19:50.019Z,cluster-resolve-v1,1.0.0,
 DEC-009340,ORD-009340,SUP-018,2026-04-28T16:06:29.939Z,cluster-resolve-v1,1.0.0,0.93,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-009341,ORD-009341,SUP-004,2026-04-08T04:46:00.890Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Cairo Valley Drug Distribution due to strategic volume contract despite higher per-unit quote.
 DEC-009342,ORD-009342,SUP-016,2026-05-20T07:36:37.398Z,cluster-resolve-v1,1.0.0,0.92,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-009343,ORD-009343,SUP-016,2026-07-31T11:50:48.093Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Amon Medical Supplies due to strategic volume contract despite higher per-unit quote.
+DEC-009343,ORD-009343,SUP-016,2026-07-31T11:50:48.093Z,cluster-resolve-v1,1.0.0,0.5,Selected Amon Medical Supplies without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009344,ORD-009344,SUP-008,2026-07-11T21:08:42.496Z,cluster-resolve-v1,1.0.0,0.88,Selected Middle East Pharmaceutical Hub based on optimal unit cost and historical fill rate reliability.
 DEC-009345,ORD-009345,SUP-015,2026-02-15T21:23:30.355Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009346,ORD-009346,SUP-012,2026-05-30T19:15:56.462Z,cluster-resolve-v1,1.0.0,0.95,Selected Sovereign Medical Distro based on optimal unit cost and historical fill rate reliability.
@@ -9503,7 +9503,7 @@ DEC-009501,ORD-009501,SUP-024,2026-08-13T03:40:27.207Z,cluster-resolve-v1,1.0.0,
 DEC-009502,ORD-009502,SUP-002,2025-10-02T16:04:02.475Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Horus Medical Supply Co. due to strategic volume contract despite higher per-unit quote.
 DEC-009503,ORD-009503,SUP-001,2026-01-14T10:38:33.063Z,cluster-resolve-v1,1.0.0,0.92,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009504,ORD-009504,SUP-016,2026-02-26T18:38:28.574Z,cluster-resolve-v1,1.0.0,0.87,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
-DEC-009505,ORD-009505,SUP-027,2026-08-13T09:16:02.832Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected United Egyptian Wholesalers due to strategic volume contract despite higher per-unit quote.
+DEC-009505,ORD-009505,SUP-027,2026-08-13T09:16:02.832Z,cluster-resolve-v1,1.0.0,0.5,Selected United Egyptian Wholesalers without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009506,ORD-009506,SUP-015,2026-05-31T10:50:42.683Z,cluster-resolve-v1,1.0.0,0.94,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009507,ORD-009507,SUP-001,2026-05-18T13:23:30.210Z,cluster-resolve-v1,1.0.0,0.88,Selected Nile Delta Pharma Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009508,ORD-009508,SUP-019,2026-07-31T05:32:35.858Z,cluster-resolve-v1,1.0.0,0.89,Selected Pharaonic Medical Logistics based on optimal unit cost and historical fill rate reliability.
@@ -9969,7 +9969,7 @@ DEC-009967,ORD-009967,SUP-008,2026-01-24T17:58:39.211Z,cluster-resolve-v1,1.0.0,
 DEC-009968,ORD-009968,SUP-015,2026-08-05T23:19:18.065Z,cluster-resolve-v1,1.0.0,0.84,Selected Lotus Drug Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009969,ORD-009969,SUP-009,2026-02-21T22:22:29.174Z,cluster-resolve-v1,1.0.0,0.85,Selected Al-Amal Medical Distribution based on optimal unit cost and historical fill rate reliability.
 DEC-009970,ORD-009970,SUP-016,2026-04-17T04:54:02.213Z,cluster-resolve-v1,1.0.0,0.72,Selected Amon Medical Supplies under emergency stock allocation.
-DEC-009971,ORD-009971,SUP-021,2026-05-08T06:45:42.074Z,cluster-resolve-v1,1.0.0,0.65,Procurement override: selected Red Sea Pharma Supply due to strategic volume contract despite higher per-unit quote.
+DEC-009971,ORD-009971,SUP-021,2026-05-08T06:45:42.074Z,cluster-resolve-v1,1.0.0,0.5,Selected Red Sea Pharma Supply without a recorded decision-time offer; evidence arrived after allocation.
 DEC-009972,ORD-009972,SUP-016,2026-05-08T08:13:19.269Z,cluster-resolve-v1,1.0.0,0.83,Selected Amon Medical Supplies based on optimal unit cost and historical fill rate reliability.
 DEC-009973,ORD-009973,SUP-018,2026-05-26T02:58:29.281Z,cluster-resolve-v1,1.0.0,0.84,Selected Ramses Healthcare Distro based on optimal unit cost and historical fill rate reliability.
 DEC-009974,ORD-009974,SUP-013,2026-07-28T16:37:14.396Z,cluster-resolve-v1,1.0.0,0.95,Selected Karnak Pharma Services based on optimal unit cost and historical fill rate reliability.

@@ -50,6 +50,17 @@ interface PreflightResultState {
   receiverGln?: string | null;
 }
 
+interface TraceabilityImportSummary {
+  id: string;
+  filename: string;
+  format: string;
+  preflight_status: 'PASS' | 'FAIL';
+  event_count: number;
+  finding_count: number;
+  created_at: string;
+  source_type: 'CUSTOMER' | 'OFFICIAL_REFERENCE_TEST' | 'TEST';
+}
+
 interface CanonicalEvent {
   id: string;
   event_type: string;
@@ -114,10 +125,10 @@ interface ExpiryItem {
   productName?: string | null;
 }
 
-// Sample test fixtures for instant one-click demonstration
-const SAMPLE_FIXTURES = {
+// Explicit official-reference/test examples. They are never presented as customer data.
+const REFERENCE_FIXTURES = {
   VALID_CSV: {
-    name: 'Official EPTTS Valid Commissioning & Packing (CSV)',
+    name: 'EPTTS Reference/Test: Valid CSV',
     format: 'CSV',
     content: `seqNo,Bizstep,eventTime,timeOffset,readPointGLN,bizLocationGLN,epc,Parent,import,expiryDate,manufDate
 1,commissioning,2026-08-01T08:00:00Z,+02:00,6221234567891,6221234567891,(01)06221234567891(21)SN0001,(10)BATCH-A,0,2028-12-31,2026-07-01
@@ -127,14 +138,14 @@ const SAMPLE_FIXTURES = {
 5,packing,2026-08-01T09:00:00Z,+02:00,6221234567891,6221234567891,(01)06221234567891(21)SN0002,(00)062212340000000015,,,`,
   },
   ERROR_CSV: {
-    name: 'EPTTS CSV Rule Violations (Header & Sequence Gap)',
+    name: 'EPTTS Reference/Test: Invalid CSV',
     format: 'CSV',
     content: `seqNo,Bizstep,eventTime,readPointGLN,epc
 2,commissioning,2026-08-01T08:00:00Z,6221234567891,(01)06221234567899(21)SN0001
 4,commissioning,2026-08-01T07:00:00Z,6221234567891,(01)06221234567891(21)SN0002`,
   },
   VALID_XML_BARE: {
-    name: 'Bare EPCIS 1.2 Commissioning & Shipping (XML)',
+    name: 'EPTTS Reference/Test: Valid EPCIS XML',
     format: 'XML_BARE',
     content: `<?xml version="1.0" encoding="UTF-8"?>
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" schemaVersion="1.2" creationDate="2026-08-01T08:00:00Z">
@@ -180,6 +191,9 @@ export default function TraceabilityPage() {
   const [activeTab, setActiveTab] = useState<'PREFLIGHT' | 'EVENTS' | 'EXPIRY' | 'CROSSWALK' | 'RECONCILIATION'>('PREFLIGHT');
 
   const [processing, setProcessing] = useState(false);
+  const [operationError, setOperationError] = useState<string | null>(null);
+  const [persistenceStatus, setPersistenceStatus] = useState<'AVAILABLE' | 'UNAVAILABLE' | null>(null);
+  const [persistenceMessage, setPersistenceMessage] = useState<string>('');
 
   // Upload state
   const [pasteText, setPasteText] = useState('');
@@ -187,6 +201,7 @@ export default function TraceabilityPage() {
 
   // Persisted dataset state
   const [events, setEvents] = useState<CanonicalEvent[]>([]);
+  const [imports, setImports] = useState<TraceabilityImportSummary[]>([]);
   const [totalEvents, setTotalEvents] = useState(0);
   const [links, setLinks] = useState<ProductLink[]>([]);
   const [reconciliations, setReconciliations] = useState<ReconciliationItem[]>([]);
@@ -209,12 +224,15 @@ export default function TraceabilityPage() {
         const data = await res.json();
 
         if (!isCancelled) {
+          setImports(data.imports || []);
           setEvents(data.events || []);
           setTotalEvents(data.totalEventsCount || 0);
           setLinks(data.links || []);
           setReconciliations(data.reconciliations || []);
           setExpirySummary(data.expirySummary || null);
           setExpiryItems(data.expiryItems || []);
+          setPersistenceStatus(data.persistenceStatus || 'AVAILABLE');
+          setPersistenceMessage(data.statusMessage || '');
         }
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -229,7 +247,11 @@ export default function TraceabilityPage() {
     };
   }, [activeDatasetId, refreshKey]);
 
-  async function handleExecutePreflight(content: string, filename: string) {
+  async function handleExecutePreflight(
+    content: string,
+    filename: string,
+    sourceType: 'CUSTOMER' | 'OFFICIAL_REFERENCE_TEST' = 'CUSTOMER'
+  ) {
     if (!activeDatasetId) {
       alert('Please select or create an active dataset first.');
       return;
@@ -237,6 +259,32 @@ export default function TraceabilityPage() {
 
     try {
       setProcessing(true);
+      setOperationError(null);
+
+      const file = new File(
+        [content],
+        filename,
+        { type: filename.toLowerCase().endsWith('.xml') ? 'application/xml' : 'text/csv' }
+      );
+      const uploadResponse = await fetch('/api/traceability/upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ datasetId: activeDatasetId, filename, sourceType }),
+      });
+      const upload = await uploadResponse.json();
+      if (!uploadResponse.ok) throw new Error(upload.error ?? 'Private upload initialization failed.');
+
+      const uploadBody = new FormData();
+      uploadBody.append('cacheControl', '3600');
+      uploadBody.append('', file);
+      const storedResponse = await fetch(upload.signedUrl, {
+        method: 'PUT',
+        headers: { 'x-upsert': 'false' },
+        body: uploadBody,
+      });
+      if (!storedResponse.ok) {
+        throw new Error(`Private Storage upload failed with status ${storedResponse.status}.`);
+      }
 
       const res = await fetch('/api/traceability/process', {
         method: 'POST',
@@ -244,7 +292,8 @@ export default function TraceabilityPage() {
         body: JSON.stringify({
           datasetId: activeDatasetId,
           filename,
-          rawContent: content,
+          storagePath: upload.storagePath,
+          fileSizeBytes: file.size,
         }),
       });
 
@@ -258,9 +307,21 @@ export default function TraceabilityPage() {
       setRefreshKey((k) => k + 1);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      alert(`EPTTS Preflight Error: ${msg}`);
+      setOperationError(`EPTTS preflight could not be persisted: ${msg}`);
     } finally {
       setProcessing(false);
+    }
+  }
+
+  async function handleReferenceFile(path: string, filename: string) {
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Could not load ${filename}.`);
+      const content = await response.text();
+      setPasteText(content);
+      await handleExecutePreflight(content, filename, 'OFFICIAL_REFERENCE_TEST');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Reference file could not be loaded.');
     }
   }
 
@@ -310,26 +371,38 @@ export default function TraceabilityPage() {
       <PageBody wide>
         <PageHeader
           title="EPTTS Preflight & Traceability Reconciliation"
-          subtitle="Pre-submission GS1 & EPCIS preflight validation against official Egyptian Drug Authority EPTTS specifications."
+          subtitle="Upload EPTTS CSV or XML to run preflight validation and derive traceability intelligence from privately stored files."
           actions={
-            <div className="flex items-center gap-2">
+            <div className="flex max-w-full flex-wrap items-center gap-2">
               <StatusChip label="EDREX:NP.CIP.004/2026 CSV v2.0" tone="neutral" />
               <StatusChip label="EDREX:NP.CIP.011/2026 XML v1.0" tone="neutral" />
             </div>
           }
         />
 
+        {persistenceStatus === 'UNAVAILABLE' && (
+          <div className="mb-6 rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm text-danger">
+            Traceability persistence is unavailable: {persistenceMessage}
+          </div>
+        )}
+
+        {operationError && (
+          <div className="mb-6 rounded-lg border border-danger/30 bg-danger/5 p-4 text-sm text-danger">
+            {operationError}
+          </div>
+        )}
+
         {/* Mandatory Preflight Notice Banner */}
         <div className="mb-6 rounded-lg border border-primary/30 bg-primary/5 p-4 flex items-start gap-3 text-xs text-body">
           <ShieldAlert className="w-5 h-5 text-primary shrink-0 mt-0.5" />
           <div>
             <span className="font-bold text-heading">Preflight Compliance Disclaimer: </span>
-            This engine executes strict deterministic preflight validation against implemented official EPTTS rule sets. Preflight approval confirms file format and rule compliance prior to platform submission. This is not an official EDA certification.
+            This engine executes deterministic checks derived from the cited EPTTS rule sets. A PASS means the implemented checks passed; it is not submission approval or an official EDA certification.
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex border-b border-border mb-6 gap-2">
+        <div className="mb-6 flex gap-2 overflow-x-auto whitespace-nowrap border-b border-border">
           <button
             onClick={() => setActiveTab('PREFLIGHT')}
             className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${
@@ -397,42 +470,104 @@ export default function TraceabilityPage() {
             {/* Quick Fixture Selector */}
             <Panel className="p-4 bg-surface-sunken/40">
               <div className="text-xs font-semibold uppercase text-muted tracking-wider mb-2">
-                Quick Test Fixtures (Pre-configured Official Spec Examples):
+                OFFICIAL REFERENCE / TEST FILES · NOT CUSTOMER DATA
               </div>
+              <p className="mb-3 text-xs text-body">
+                Each try action uses the same signed private upload, backend validator, and persistence path as a customer file.
+              </p>
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => {
-                    setPasteText(SAMPLE_FIXTURES.VALID_CSV.content);
-                    handleExecutePreflight(SAMPLE_FIXTURES.VALID_CSV.content, 'valid_commissioning_packing.csv');
+                    setPasteText(REFERENCE_FIXTURES.VALID_CSV.content);
+                    handleExecutePreflight(REFERENCE_FIXTURES.VALID_CSV.content, 'valid.csv', 'OFFICIAL_REFERENCE_TEST');
                   }}
                   className="rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-xs font-medium text-heading hover:bg-surface-sunken flex items-center gap-1.5"
                 >
                   <FileSpreadsheet className="w-3.5 h-3.5 text-success" />
-                  {SAMPLE_FIXTURES.VALID_CSV.name}
+                  {REFERENCE_FIXTURES.VALID_CSV.name}
                 </button>
 
                 <button
                   onClick={() => {
-                    setPasteText(SAMPLE_FIXTURES.ERROR_CSV.content);
-                    handleExecutePreflight(SAMPLE_FIXTURES.ERROR_CSV.content, 'error_sequence_gap.csv');
+                    setPasteText(REFERENCE_FIXTURES.ERROR_CSV.content);
+                    handleExecutePreflight(REFERENCE_FIXTURES.ERROR_CSV.content, 'invalid.csv', 'OFFICIAL_REFERENCE_TEST');
                   }}
                   className="rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-xs font-medium text-heading hover:bg-surface-sunken flex items-center gap-1.5"
                 >
                   <AlertCircle className="w-3.5 h-3.5 text-danger" />
-                  {SAMPLE_FIXTURES.ERROR_CSV.name}
+                  {REFERENCE_FIXTURES.ERROR_CSV.name}
                 </button>
 
                 <button
                   onClick={() => {
-                    setPasteText(SAMPLE_FIXTURES.VALID_XML_BARE.content);
-                    handleExecutePreflight(SAMPLE_FIXTURES.VALID_XML_BARE.content, 'epcis_bare_valid.xml');
+                    setPasteText(REFERENCE_FIXTURES.VALID_XML_BARE.content);
+                    handleExecutePreflight(REFERENCE_FIXTURES.VALID_XML_BARE.content, 'valid.xml', 'OFFICIAL_REFERENCE_TEST');
                   }}
                   className="rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-xs font-medium text-heading hover:bg-surface-sunken flex items-center gap-1.5"
                 >
                   <FileCode className="w-3.5 h-3.5 text-primary" />
-                  {SAMPLE_FIXTURES.VALID_XML_BARE.name}
+                  {REFERENCE_FIXTURES.VALID_XML_BARE.name}
+                </button>
+
+                <button
+                  onClick={() => void handleReferenceFile('/reference/eptts/invalid.xml', 'invalid.xml')}
+                  className="rounded-lg bg-surface-raised border border-border px-3 py-1.5 text-xs font-medium text-heading hover:bg-surface-sunken flex items-center gap-1.5"
+                >
+                  <AlertCircle className="w-3.5 h-3.5 text-danger" />
+                  Invalid EPCIS XML → FAIL
                 </button>
               </div>
+              <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs">
+                {[
+                  ['Valid CSV', '/reference/eptts/valid.csv'],
+                  ['Invalid CSV', '/reference/eptts/invalid.csv'],
+                  ['Valid XML', '/reference/eptts/valid.xml'],
+                  ['Invalid XML', '/reference/eptts/invalid.xml'],
+                ].map(([label, href]) => (
+                  <a key={href} href={href} download className="font-semibold text-primary hover:underline">
+                    Download {label}
+                  </a>
+                ))}
+              </div>
+            </Panel>
+
+            <Panel
+              title={`Persisted traceability imports (${imports.length})`}
+              description="Backend records for the active dataset, with honest source classification."
+            >
+              {imports.length === 0 ? (
+                <p className="text-sm text-body">No EPTTS imports have been persisted for this dataset yet.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[680px] text-left text-xs">
+                    <thead className="border-b border-border bg-surface-sunken text-muted">
+                      <tr>
+                        <th className="p-3">File</th>
+                        <th className="p-3">Source</th>
+                        <th className="p-3">Preflight</th>
+                        <th className="p-3">Events / Findings</th>
+                        <th className="p-3">Imported</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {imports.map((item) => (
+                        <tr key={item.id}>
+                          <td className="p-3 font-mono text-heading">{item.filename}</td>
+                          <td className="p-3">
+                            <StatusChip
+                              label={item.source_type === 'OFFICIAL_REFERENCE_TEST' ? 'OFFICIAL REFERENCE / TEST' : item.source_type}
+                              tone={item.source_type === 'CUSTOMER' ? 'brand' : 'neutral'}
+                            />
+                          </td>
+                          <td className="p-3"><StatusChip label={item.preflight_status} tone={item.preflight_status === 'PASS' ? 'success' : 'danger'} /></td>
+                          <td className="p-3 text-body">{item.event_count} / {item.finding_count}</td>
+                          <td className="p-3 text-body">{new Date(item.created_at).toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </Panel>
 
             {/* Upload / Paste Area */}

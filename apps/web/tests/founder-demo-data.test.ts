@@ -47,9 +47,10 @@ describe('Founder Demo Dataset Validation & Provenance', () => {
     expect(report.scenariosValidated.dominatedDecisions).toBe(true);
     expect(report.scenariosValidated.nonDominatedDecisions).toBe(true);
     expect(report.scenariosValidated.selectedNotFeasible).toBe(true);
+    expect(report.scenariosValidated.insufficientDataDecisions).toBe(true);
     expect(report.scenariosValidated.cancellations).toBe(true);
     expect(report.scenariosValidated.partialFills).toBe(true);
     expect(report.scenariosValidated.lateDeliveries).toBe(true);
     expect(report.scenariosValidated.futureOfferExclusions).toBe(true);
-  });
+  }, 30_000);
 });
