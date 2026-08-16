@@ -84,8 +84,16 @@ export async function upsertRegulatoryNotices(
     created_at: new Date().toISOString(),
   }));
 
+  // Deduplicate by onConflict target (notice_number, year) to prevent Postgres batch conflict error
+  const dedupedMap = new Map<string, typeof rows[0]>();
+  for (const row of rows) {
+    const key = `${row.notice_number}:${row.year}`;
+    dedupedMap.set(key, row);
+  }
+  const uniqueRows = Array.from(dedupedMap.values());
+
   try {
-    const insertPayload = rows.map(withoutId);
+    const insertPayload = uniqueRows.map(withoutId);
 
     const { data, error } = await supabase
       .from('regulatory_notices' as never)
@@ -96,7 +104,7 @@ export async function upsertRegulatoryNotices(
 
     if (error) {
       if (error.code === 'PGRST205') {
-        for (const row of rows) {
+        for (const row of uniqueRows) {
           const key = `${row.notice_number}:${row.year}`;
           memoryNotices.set(key, row as unknown as RegulatoryNoticeRow);
         }
@@ -317,15 +325,15 @@ export async function evaluateAndPersistExposures(
   // 4. Run deterministic evaluation
   const summary = evaluateRegulatoryExposures(datasetId, notices, products, orderRecords, asOfDate);
 
-  // Map notice numbers to notice DB UUIDs
+  // Map notice numbers + year to notice DB UUIDs
   const noticeDbMap = new Map<string, string>();
   for (const n of dbNotices) {
-    noticeDbMap.set(n.notice_number, n.id);
+    noticeDbMap.set(`${n.notice_number}:${n.year}`, n.id);
   }
 
   // 5. Persist exposures
   const exposureRows = summary.exposures.map((e) => {
-    const noticeId = noticeDbMap.get(e.noticeNumber) || `notice_${e.noticeNumber}`;
+    const noticeId = noticeDbMap.get(`${e.noticeNumber}:${e.year}`) || `notice_${e.noticeNumber}_${e.year}`;
 
     return {
       id: randomUUID(),
@@ -346,16 +354,24 @@ export async function evaluateAndPersistExposures(
     };
   });
 
-  if (exposureRows.length > 0) {
+  // Deduplicate by onConflict target (dataset_id, notice_id) to prevent Postgres batch conflict error
+  const dedupedExpMap = new Map<string, typeof exposureRows[0]>();
+  for (const row of exposureRows) {
+    const key = `${row.dataset_id}:${row.notice_id}`;
+    dedupedExpMap.set(key, row);
+  }
+  const uniqueExposureRows = Array.from(dedupedExpMap.values());
+
+  if (uniqueExposureRows.length > 0) {
     try {
       const { error: expErr } = await supabase
         .from('regulatory_exposures' as never)
-        .upsert(exposureRows.map(withoutId) as never, {
+        .upsert(uniqueExposureRows.map(withoutId) as never, {
           onConflict: 'dataset_id,notice_id',
         });
       if (expErr) {
         if (expErr.code === 'PGRST205') {
-          for (const row of exposureRows) {
+          for (const row of uniqueExposureRows) {
             memoryExposures.set(`${datasetId}:${row.notice_id}`, {
               ...row,
               historical_value_minor: BigInt(row.historical_value_minor),
@@ -368,7 +384,7 @@ export async function evaluateAndPersistExposures(
     } catch (err: unknown) {
       const errObj = err as { code?: string; message?: string };
       if (errObj?.code === 'PGRST205' || errObj?.message?.includes('PGRST205')) {
-        for (const row of exposureRows) {
+        for (const row of uniqueExposureRows) {
           memoryExposures.set(`${datasetId}:${row.notice_id}`, {
             ...row,
             historical_value_minor: BigInt(row.historical_value_minor),
