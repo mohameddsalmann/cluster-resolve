@@ -83,7 +83,7 @@ export async function runFounderDemoImport(options: FounderImportOptions = {}): 
         await new Promise((r) => setTimeout(r, 1000));
       }
     };
-    await deleteWithRetry('regulatory_exposures', () => (supabase as any).from('regulatory_exposures').delete().eq('dataset_id', targetDatasetId));
+    await deleteWithRetry('regulatory_exposures', () => supabase.from('regulatory_exposures' as never).delete().eq('dataset_id', targetDatasetId));
     await deleteWithRetry('order_exceptions', () => supabase.from('order_exceptions').delete().eq('dataset_id', targetDatasetId));
     await deleteWithRetry('supplier_product_reliability_snapshots', () => supabase.from('supplier_product_reliability_snapshots').delete().eq('dataset_id', targetDatasetId));
     await deleteWithRetry('supplier_reliability_snapshots', () => supabase.from('supplier_reliability_snapshots').delete().eq('dataset_id', targetDatasetId));

@@ -114,7 +114,7 @@ export function TopContextBar({
   );
 
   return (
-    <div className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur-[2px]">
+    <div className="sticky top-[56px] lg:top-0 z-20 border-b border-line bg-white/95 backdrop-blur-[2px]">
       <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 md:px-8">
         <div className="min-w-0 flex-1">
           <p className="truncate text-[0.9375rem] font-semibold text-ink">{title}</p>

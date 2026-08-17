@@ -428,12 +428,12 @@ export function PageHeader({
 }) {
   return (
     <header className="mb-8">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <h1 className="cl-page-title">{title}</h1>
           {subtitle ? <p className="mt-2 text-[1.0625rem] text-body">{subtitle}</p> : null}
         </div>
-        {actions ? <div className="flex shrink-0 flex-wrap gap-3">{actions}</div> : null}
+        {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">{actions}</div> : null}
       </div>
       {children ? <div className="mt-6">{children}</div> : null}
     </header>
@@ -454,9 +454,9 @@ export function Panel({
   className?: string;
 }) {
   return (
-    <section className={cn('cl-panel p-6', className)}>
+    <section className={cn('cl-panel p-4 sm:p-6', className)}>
       {title ? (
-        <div className="mb-4 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
           <div className="min-w-0">
             <h2 className="cl-card-title">{title}</h2>
             {description ? <p className="mt-1 text-[0.875rem] text-body">{description}</p> : null}

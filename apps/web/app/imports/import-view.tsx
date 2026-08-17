@@ -607,8 +607,55 @@ export function ImportView() {
                   </div>
                 )}
 
-                {/* Mapping Table */}
-                <div className="overflow-x-auto rounded-[8px] border border-line">
+                {/* Mobile Mapping Cards (md:hidden) */}
+                <div className="space-y-3 md:hidden">
+                  {rawHeaders.map((header) => {
+                    const inferred = inferredMappings.find((m) => m.sourceHeader === header);
+                    const currentTarget = userMapping[header] ?? '';
+                    const confidence: MappingConfidence = inferred?.confidence ?? 'UNMAPPED';
+                    const sampleVals = inferred?.sampleValues ?? [];
+
+                    return (
+                      <div key={header} className="rounded-lg border border-line bg-white p-3 space-y-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-mono text-xs font-semibold text-ink truncate">{header}</span>
+                          <ConfidenceChip confidence={currentTarget === null ? 'HIGH' : confidence} />
+                        </div>
+                        <div>
+                          <label htmlFor={`map-select-${header}`} className="sr-only">Map {header} to Resolve canonical field</label>
+                          <select
+                            id={`map-select-${header}`}
+                            className="cl-field py-2 text-xs w-full"
+                            value={currentTarget}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              updateMapping(header, val === '__IGNORE__' ? null : val || null);
+                            }}
+                          >
+                            <option value="">— Select Resolve field —</option>
+                            <option value="__IGNORE__">❌ Ignore column (do not import)</option>
+                            <optgroup label="Canonical Fields">
+                              {canonicalOptions.map((opt) => (
+                                <option key={opt.field} value={opt.field}>
+                                  {opt.label}
+                                </option>
+                              ))}
+                            </optgroup>
+                          </select>
+                        </div>
+                        {sampleVals.length > 0 && (
+                          <div className="text-[11px] text-body font-mono truncate">
+                            <span className="font-sans font-medium text-slate-500">Sample: </span>
+                            {sampleVals.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Desktop Mapping Table (hidden md:block) */}
+                <div className="hidden md:block overflow-x-auto rounded-[8px] border border-line">
                   <table className="w-full text-left text-sm">
                     <thead className="bg-surface border-b border-line text-xs font-semibold text-ink">
                       <tr>

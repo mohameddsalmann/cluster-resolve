@@ -483,9 +483,9 @@ export default function RegulatoryPage() {
 
         {/* Interactive Notice Detail Drawer / Modal */}
         {selectedNotice && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-            <div className="relative w-full max-w-2xl rounded-xl border border-border bg-surface p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-              <div className="flex items-start justify-between border-b border-border pb-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4 backdrop-blur-sm">
+            <div className="relative w-full max-w-2xl rounded-xl border border-border bg-surface p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+              <div className="flex items-start justify-between border-b border-border pb-4 gap-2">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold uppercase tracking-wider text-muted font-mono">
@@ -503,7 +503,7 @@ export default function RegulatoryPage() {
                 </div>
                 <button
                   onClick={() => setSelectedNotice(null)}
-                  className="rounded-lg p-1.5 text-muted hover:bg-surface-raised hover:text-heading"
+                  className="rounded-lg p-1.5 text-muted hover:bg-surface-raised hover:text-heading shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -512,29 +512,29 @@ export default function RegulatoryPage() {
               {/* Notice Metadata */}
               <div className="mt-4 space-y-4">
                 <div className="rounded-lg bg-surface-sunken p-3 text-xs space-y-2 font-mono">
-                  <div className="flex justify-between">
-                    <span className="text-muted">Target Product:</span>
-                    <span className="font-semibold text-heading">{selectedNotice.product_name}</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
+                    <span className="text-muted shrink-0">Target Product:</span>
+                    <span className="font-semibold text-heading sm:text-right">{selectedNotice.product_name}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted">Manufacturer:</span>
-                    <span className="text-heading">{selectedNotice.manufacturer || 'Not Specified'}</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
+                    <span className="text-muted shrink-0">Manufacturer:</span>
+                    <span className="text-heading sm:text-right">{selectedNotice.manufacturer || 'Not Specified'}</span>
                   </div>
                   {selectedNotice.batch_numbers && selectedNotice.batch_numbers.length > 0 && (
-                    <div className="flex justify-between">
-                      <span className="text-muted">Affected Batches:</span>
-                      <span className="text-heading">{selectedNotice.batch_numbers.join(', ')}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
+                      <span className="text-muted shrink-0">Affected Batches:</span>
+                      <span className="text-heading sm:text-right">{selectedNotice.batch_numbers.join(', ')}</span>
                     </div>
                   )}
                   {selectedNotice.reason && (
-                    <div className="flex justify-between">
-                      <span className="text-muted">Regulatory Defect:</span>
-                      <span className="text-heading">{selectedNotice.reason}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
+                      <span className="text-muted shrink-0">Regulatory Defect:</span>
+                      <span className="text-heading sm:text-right">{selectedNotice.reason}</span>
                     </div>
                   )}
-                  <div className="flex justify-between border-t border-border/50 pt-2">
-                    <span className="text-muted">Official Source SHA256:</span>
-                    <span className="text-muted truncate max-w-[280px]">
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2 border-t border-border/50 pt-2">
+                    <span className="text-muted shrink-0">Official Source SHA256:</span>
+                    <span className="text-muted truncate sm:max-w-[280px]">
                       {selectedNotice.source_checksum || 'Cached reference digest'}
                     </span>
                   </div>
@@ -561,7 +561,7 @@ export default function RegulatoryPage() {
                           <div className="text-xs font-semibold uppercase text-muted">
                             Impacted Procurement Orders ({selectedNotice.exposure.affected_orders_count})
                           </div>
-                          <div className="rounded-lg border border-border overflow-hidden">
+                          <div className="rounded-lg border border-border overflow-x-auto">
                             <table className="w-full text-left text-xs">
                               <thead className="bg-surface-sunken text-muted">
                                 <tr>
