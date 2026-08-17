@@ -42,8 +42,8 @@ In high-velocity pharmaceutical procurement, autonomous AI buying agents make th
 * **Quantify Regret in Minor Units**: Measure exact dollar-for-dollar overspend when an autonomous agent selects suboptimal suppliers or fails to bundle discounts.
 
 ### 2. 🛡️ Live Regulatory Shield (Official EDA Integration)
-* **Real-time Circular Synchronization**: Ingests and monitors official Egyptian Drug Authority (EDA) recall notices, batch blacklists, and regulatory suspensions.
-* **Proactive Exposure Mapping**: Instantly flags matching batches and supplier inventory *before* orders are fulfilled, preventing non-compliant shipments and steep license penalties.
+* **Live EDA Circular Synchronization**: Fetches current Egyptian Drug Authority (EDA) recall notices, batch blacklists, and regulatory suspensions from official EDA pages when the synchronization job is run.
+* **Proactive Exposure Mapping**: Instantly flags matching batches and supplier inventory *before* orders are fulfilled, helping teams identify potentially non-compliant shipments and regulatory exposure.
 
 ### 3. 📈 Supplier Drift & Reliability Radar
 * **True Supplier Scorecards**: Quantify real-world fulfillment reliability (on-time delivery, fill rate accuracy, invoice discrepancies) vs advertised distributor SLAs.
@@ -58,23 +58,26 @@ In high-velocity pharmaceutical procurement, autonomous AI buying agents make th
 
 ---
 
-## 📊 Live Pre-Loaded Founder Dataset
+## 📊 Pre-Loaded Founder Demo Dataset
 
 Cluster Resolve ships with a high-fidelity, production-scale **Founder Demo Scenario** persisted directly in hosted Supabase:
 
 | Metric | Pre-Loaded Founder Volume |
 | :--- | :--- |
-| 📦 **Customer Orders** | `10,000` real procurement orders |
-| 🏷️ **Distributor Offers** | `40,468` live market quotes |
-| 🤖 **AI Buying Decisions** | `10,000` replayed decisions |
-| 🚚 **Fulfillment Outcomes** | `10,000` tracked deliveries |
-| 💊 **Verified Products** | `200` essential SKUs |
-| 🏢 **Distributor Network** | `10` active suppliers |
-| 🏥 **Monitored Pharmacies** | `50` regional pharmacies |
-| 📜 **Official EDA Notices** | `182` live regulatory circulars |
+| 📦 **Customer Orders** | `10,000` deterministic synthetic procurement orders |
+| 🏷️ **Distributor Offers** | `40,468` deterministic synthetic market quotes |
+| 🤖 **AI Buying Decisions** | `10,000` deterministic synthetic replayable decisions |
+| 🚚 **Fulfillment Outcomes** | `10,000` deterministic synthetic delivery outcomes |
+| 💊 **Verified Products** | `200` product reference records |
+| 🏢 **Distributor Network** | `10` active suppliers in the seeded demo scenario |
+| 🏥 **Monitored Pharmacies** | `50` synthetic demo pharmacies |
+| 📜 **Official EDA Notices** | Up to `182` notices depending on the synchronized/reference dataset |
+
+> [!NOTE]
+> The Founder Demo operational dataset is deterministically generated for demonstration and testing. It does **not** contain real pharmacy procurement transactions, patient records, or customer production data. Product reference data and regulatory notice sources may originate from public sources, while operational orders, offers, decisions, outcomes, pharmacy identities, and supplier behavior profiles are synthetic.
 
 > [!TIP]
-> **Bring Your Own Data (`/imports`)**: Founders can also drop their own operational CSV files directly into the platform to see their supply chain audited live in seconds.
+> **Bring Your Own Data (`/imports`)**: Founders can also import supported operational CSV files into the platform and run the same deterministic analysis pipeline on their own dataset.
 
 ---
 
@@ -118,6 +121,8 @@ pnpm dev
 ```
 
 Open **`http://localhost:3000`** in your browser to explore the live control tower.
+
+For development workflow, validation commands, and pull request guidance, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ---
 
